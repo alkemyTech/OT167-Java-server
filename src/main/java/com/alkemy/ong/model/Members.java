@@ -1,7 +1,6 @@
 package com.alkemy.ong.model;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDate;
 import javax.persistence.*;
 import lombok.*;
@@ -15,8 +14,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "members")
 public class Members {
     
-    private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_member")
