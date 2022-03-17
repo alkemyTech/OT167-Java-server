@@ -5,8 +5,12 @@ import java.time.LocalDate;
 import javax.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
+@SQLDelete(sql = "UPDATE members SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 @Entity
 @Data
 @NoArgsConstructor
@@ -44,8 +48,7 @@ public class Members {
     @Column(name = "date_modified")
     private LocalDate dateModified;
 
-    @Column(name = "is_active")
-    private Boolean isActive = Boolean.TRUE;
+    private Boolean deleted = Boolean.FALSE;
 
    
 }
