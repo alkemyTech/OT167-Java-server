@@ -1,4 +1,4 @@
-package model;
+package com.alkemy.ong.model;
 
 
 import com.sun.istack.NotNull;
