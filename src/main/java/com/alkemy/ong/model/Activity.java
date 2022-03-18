@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -21,11 +22,11 @@ public class Activity {
     @NotNull
     private String image;
     @CreationTimestamp
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern="dd/MM/yyyy")
     @Column(name = "creation_date")
-    private Date creationDate;
+    private LocalDate creationDate;
     @UpdateTimestamp
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(pattern="dd/MM/yyyy")
     @Column(name = "update_date")
-    private Date updateDate;
+    private LocalDate updateDate;
 }
