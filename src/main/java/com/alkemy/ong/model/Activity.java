@@ -14,11 +14,11 @@ public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+    @NotNull @Column(nullable = false)
     private String name;
-    @NotNull
+    @NotNull @Column(nullable = false)
     private String content;
-    @NotNull
+    @NotNull @Column(nullable = false)
     private String image;
     @CreationTimestamp
     @JsonFormat(pattern="dd/MM/yyyy")
