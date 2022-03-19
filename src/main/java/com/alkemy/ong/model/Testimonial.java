@@ -27,7 +27,7 @@ public class Testimonial implements Serializable{
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     
-    @NotNull
+    @NotNull(message = "The name cannot be empty")
     private String name;
     @Nullable
     private String image;
@@ -42,6 +42,6 @@ public class Testimonial implements Serializable{
     @Column(name = "update_date")
     private LocalDate updateDate;
     
-    private boolean deleted = Boolean.FALSE;
+    private boolean delete = Boolean.FALSE;
     
 }
