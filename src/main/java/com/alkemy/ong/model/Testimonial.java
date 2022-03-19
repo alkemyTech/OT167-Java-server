@@ -19,8 +19,8 @@ import org.springframework.lang.Nullable;
 @Entity
 @Table(name = "testimonials")
 @Data
-@SQLDelete(sql = "UPDATE testimonials SET delete = true WHERE id = ?")
-@Where(clause = "delete = false")
+@SQLDelete(sql = "UPDATE testimonials SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Testimonial implements Serializable{
     
     @Id
@@ -42,6 +42,6 @@ public class Testimonial implements Serializable{
     @Column(name = "update_date")
     private LocalDate updateDate;
     
-    private boolean delete = Boolean.FALSE;
+    private boolean deleted = Boolean.FALSE;
     
 }
