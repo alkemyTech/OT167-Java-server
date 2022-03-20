@@ -1,14 +1,16 @@
 package com.alkemy.ong.model;
 
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
-import org.springframework.format.annotation.DateTimeFormat;
+import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -29,28 +31,31 @@ public class User {
 
     private boolean deleted = Boolean.FALSE;
 
-    @NotNull
+    @NotNull(message = "firstName cannot be null")
     private String firstName;
 
-    @NotNull
+    @NotNull(message = "lastName cannot be null")
     private String lastName;
 
-    @NotNull
+    @NotNull(message = "email cannot be null")
     private String email;
 
-    @NotNull
+    @NotNull(message = "password cannot be null")
     private String password;
 
     @Nullable
     private String photo;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate createDate;
+    @CreationTimestamp
+    @Column(name = "creation_date")
+    @JsonFormat(pattern="dd/MM/yyyy")
+    private LocalDate creationDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate renovationDate;
+    @UpdateTimestamp
+    @Column(name = "update_date")
+    @JsonFormat(pattern="dd/MM/yyyy")
+    private LocalDate updateDate;
 
-    //Falta entidad Role
     @ManyToMany
     @JoinTable(
             name = "user_role",
