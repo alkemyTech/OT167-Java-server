@@ -1,4 +1,4 @@
-package com.alkemy.ong.service.serviceImpl;
+package com.alkemy.ong.service.impl;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Organization;
 import com.alkemy.ong.repository.OrganizationRepository;
@@ -18,9 +18,5 @@ public class OrganizationServiceImpl implements OrganizationService {
     public Optional<Organization> getOrganizationById(Long id){
         if(organizationRepository.findById(id).isEmpty()) throw new NotFoundException("no one organization was add or created");
         return organizationRepository.findById(id);
-    }
-    @Override
-    public Organization createOrganization(Organization organization) {
-        return organizationRepository.save(organization);
     }
 }
