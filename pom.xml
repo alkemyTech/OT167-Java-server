@@ -54,6 +54,24 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+                <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+        </dependency>
+	 <dependency>
+	  <groupId>javax.validation</groupId>
+	  <artifactId>validation-api</artifactId>
+	  <version>1.0.0.GA</version>
+	  <type>jar</type>
+	 </dependency>
+	 <dependency>
+	  <groupId>org.hibernate.validator</groupId>
+	  <artifactId>hibernate-validator</artifactId>
+	  <version>6.2.0.Final</version>
+	  <type>jar</type>
+	 </dependency>
 	</dependencies>
 
 	<build>
