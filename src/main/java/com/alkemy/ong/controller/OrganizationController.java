@@ -16,7 +16,8 @@ public class OrganizationController {
     private OrganizationMapper organizationMapper;
 
     @GetMapping(value = "/public/{id}")
-    public ResponseEntity<?> getAllOrganizations(@PathVariable Long id){
-        return ResponseEntity.ok(organizationMapper.organizationToDto(organizationService.getOrganizationById(id).get()));
+    public ResponseEntity<?> findOrganizationById(@PathVariable Long id){
+        return ResponseEntity.ok(organizationMapper.organizationToDto(organizationService.findById(id).get()));
     }
+
 }

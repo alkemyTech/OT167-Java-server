@@ -3,5 +3,5 @@ import com.alkemy.ong.model.Organization;
 import java.util.Optional;
 
 public interface OrganizationService {
-    Optional<Organization> getOrganizationById(Long id);
+    Optional<Organization> findById(Long id);
 }

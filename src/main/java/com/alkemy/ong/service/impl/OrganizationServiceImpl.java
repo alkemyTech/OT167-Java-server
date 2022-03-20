@@ -15,7 +15,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     private final OrganizationRepository organizationRepository;
     @Override
-    public Optional<Organization> getOrganizationById(Long id){
+    public Optional<Organization> findById(Long id){
         if(organizationRepository.findById(id).isEmpty()) throw new NotFoundException("no one organization was add or created");
         return organizationRepository.findById(id);
     }
