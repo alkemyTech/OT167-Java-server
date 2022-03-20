@@ -19,8 +19,4 @@ public class OrganizationServiceImpl implements OrganizationService {
         if(organizationRepository.findById(id).isEmpty()) throw new NotFoundException("no one organization was add or created");
         return organizationRepository.findById(id);
     }
-    @Override
-    public Organization createOrganization(Organization organization) {
-        return organizationRepository.save(organization);
-    }
 }

@@ -4,5 +4,4 @@ import java.util.Optional;
 
 public interface OrganizationService {
     Optional<Organization> getOrganizationById(Long id);
-    Organization createOrganization(Organization organization);
 }
