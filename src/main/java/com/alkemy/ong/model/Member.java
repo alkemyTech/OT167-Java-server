@@ -16,7 +16,7 @@ import org.hibernate.annotations.Where;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "members")
-public class Members {
+public class Member {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
