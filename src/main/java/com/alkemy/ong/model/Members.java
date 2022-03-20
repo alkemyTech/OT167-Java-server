@@ -23,7 +23,7 @@ public class Members {
     @Column(name = "id_member")
     private Long idMember;
 
-    @NotNull
+    @NotNull(message = "Name cannot be null")
     private String name;
 
     @Column(name = "facebook_url")
@@ -35,12 +35,12 @@ public class Members {
     @Column(name = "linkedin_url")
     private String linkedinUrl;
 
-    @NotNull
+    @NotNull(message = "Image cannot be null")
     private String image;
 
     private String description;
 
-    @CreationTimestamp
+    @CreationTimestamp  
     @Column(name = "date_created")
     private LocalDate dateCreated;
 
