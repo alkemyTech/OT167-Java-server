@@ -1,19 +1,16 @@
 package com.alkemy.ong.model;
 
 
-import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Where;
+import lombok.*;
+import org.hibernate.annotations.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDate;
+import javax.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "categories")
@@ -31,25 +28,25 @@ public class CategoriesEntity {
     @Column(name = "id_categories")
     private Long idCategories;
 
-    @NotNull
+    @NotNull(message = "the name cannot be empty")
     private String name;
 
-    @NotNull
+    @NotNull(message = "the description cannot be empty")
     private String description;
 
-    @NotNull
+    @NotNull(message = "the image cannto be empty")
     private String image;
 
     @Column(name = "deleted")
     private boolean deleted = Boolean.FALSE;
 
     @CreationTimestamp
-    @Column(name = "creation_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "creation_date",updatable = false)
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate creationDate;
 
     @UpdateTimestamp
     @Column(name = "update_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate updateDate;
 }
