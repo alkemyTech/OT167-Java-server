@@ -21,6 +21,6 @@ public class UserMapper {
         return usrDtoList;
     }
     public User createUser(UserDtoCreator dto) {
-        return new User(dto.getFirstName(),dto.getLastName(),dto.getEmail(),dto.getPassword(),dto.getPassword());
+        return new User(null,Boolean.FALSE,dto.getFirstName(),dto.getLastName(),dto.getEmail(),dto.getPassword(),dto.getPassword(),dto.getPhoto(),null,null,null);
     }
 }
