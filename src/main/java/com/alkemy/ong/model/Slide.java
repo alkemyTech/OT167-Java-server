@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "slide")
+@Table(name = "slides")
 public class Slide {
 
     @Id
