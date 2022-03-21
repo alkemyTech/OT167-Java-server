@@ -1,7 +1,6 @@
 package com.alkemy.ong.dto.Mapper;
 import com.alkemy.ong.dto.OrganizationCreationDto;
 import com.alkemy.ong.dto.OrganizationDto;
-import com.alkemy.ong.model.Organization;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;

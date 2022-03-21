@@ -1,7 +1,5 @@
 package com.alkemy.ong.service.impl;
 import com.alkemy.ong.exception.NotFoundException;
-import com.alkemy.ong.model.Organization;
-import com.alkemy.ong.repository.OrganizationRepository;
 import com.alkemy.ong.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
