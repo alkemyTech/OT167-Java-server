@@ -1,4 +1,6 @@
-package com.alkemy.ong.dto;
+package com.alkemy.ong.dto.Mapper;
+import com.alkemy.ong.dto.OrganizationCreationDto;
+import com.alkemy.ong.dto.OrganizationDto;
 import com.alkemy.ong.model.Organization;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -20,6 +22,14 @@ public class OrganizationMapper {
         return orgDtoList;
     }
     public Organization creationOrganization(OrganizationCreationDto dto) {
-        return new Organization(null, dto.getName(), dto.getImage(), dto.getAddress(), dto.getPhone(), dto.getEmail(), dto.getWelcomeText(), dto.getAboutUsText(), null, null);
+        Organization organization = new Organization();
+        organization.setName(dto.getName());
+        organization.setEmail(dto.getEmail());
+        organization.setImage(dto.getImage());
+        organization.setAddress(dto.getAddress());
+        organization.setPhone(dto.getPhone());
+        organization.setWelcomeText(dto.getWelcomeText());
+        organization.setAboutUsText(dto.getAboutUsText());
+        return organization;
     }
 }
