@@ -1,8 +1,9 @@
 package com.alkemy.ong.auth.service;
 
 import com.alkemy.ong.auth.dto.UserRequestDTO;
-import com.alkemy.ong.auth.repository.UserRepository;
+
 import com.alkemy.ong.exception.NotFoundException;
+import com.alkemy.ong.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alkemy.ong.model.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
