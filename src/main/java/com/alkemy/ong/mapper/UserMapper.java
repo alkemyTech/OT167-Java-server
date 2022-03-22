@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class UserMapper {
     
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
     
     public UserDto convertUserToDto (User user){
         UserDto userDto = new UserDto();
@@ -27,7 +27,7 @@ public class UserMapper {
         userDto.setPhoto(user.getPhoto());
         return userDto;
     }
-    public List<UserDto> UserDtoList (List<User> user){
+    public List<UserDto> userDtoList (List<User> user){
         List<UserDto> usrDtoList = new ArrayList<>();
         user.forEach(usr -> usrDtoList.add(convertUserToDto(usr)));
         return usrDtoList;
@@ -37,13 +37,13 @@ public class UserMapper {
     }
     
     
-    public User UserRegisterRequestDto2User(UserRegisterRequest userDto) {
+    public User userRegisterRequestDto2User(UserRegisterRequest userDto) {
        
         if ( userDto == null ) {
             return null;
         }
-        List<Role> rol = new ArrayList<>();
-        rol.add(userDto.getRol());
+        List<Role> role = new ArrayList<>();
+        role.add(userDto.getRol());
 
         User user = new User();
         user.setFirstName(userDto.getFirstName());
@@ -52,12 +52,12 @@ public class UserMapper {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setPhoto(userDto.getPhoto());
         user.setCreationDate(LocalDate.now());
-        user.setRoles(rol);
+        user.setRoles(role);
 
         return user;
     }
     
-    public UserRegisterResponse User2UserRegisterResponseDto(User user) {
+    public UserRegisterResponse user2UserRegisterResponseDto(User user) {
         if ( user == null ) {
             return null;
         }

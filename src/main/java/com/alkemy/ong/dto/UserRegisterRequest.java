@@ -26,7 +26,7 @@ public class UserRegisterRequest {
     private String email;
 
     @NotBlank(message = "Password is mandatory.")
-    @Size(min = 6, message = "Password must be between 6")
+    @Size(min = 6, message = "The password must be at least 6 characters")
     
     private String password;
     private String photo;

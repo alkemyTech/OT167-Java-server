@@ -2,7 +2,7 @@ package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.UserRegisterRequest;
 import com.alkemy.ong.dto.UserRegisterResponse;
-import com.alkemy.ong.exception.DataAlreadyExistException;
+import com.alkemy.ong.exception.dataAlreadyExistException;
 import com.alkemy.ong.mapper.UserMapper;
 import com.alkemy.ong.model.User;
 import com.alkemy.ong.repository.UserRepository;
@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
   
     @Override
     public User findByUsername(String username) {
@@ -30,14 +30,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException {
+    public UserRegisterResponse register(UserRegisterRequest userReq) throws dataAlreadyExistException {
 
         if (this.findByEmail(userReq.getEmail()) != null) {
-            throw new DataAlreadyExistException("This email is already registered");
+            throw new dataAlreadyExistException("This email is already registered");
         }
-        User user = userMapper.UserRegisterRequestDto2User(userReq);
+        User user = userMapper.userRegisterRequestDto2User(userReq);
         User userSaved = userRepository.save(user);
-        return userMapper.User2UserRegisterResponseDto(userSaved);
+        return userMapper.user2UserRegisterResponseDto(userSaved);
         
         
     }
