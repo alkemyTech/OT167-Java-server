@@ -7,9 +7,7 @@ import com.alkemy.ong.mapper.UserMapper;
 import com.alkemy.ong.model.User;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.service.UserService;
-import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,11 +17,8 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
     UserMapper userMapper;
-
+  
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -40,11 +35,11 @@ public class UserServiceImpl implements UserService {
         if (this.findByEmail(userReq.getEmail()) != null) {
             throw new DataAlreadyExistException("This email is already registered");
         }
-        //Falta asignar rol
-        User user = userMapper.UserRegisterDto2User(userReq);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setCreationDate(LocalDate.now());
-        return userMapper.User2UserRegisterDto(userRepository.save(user));
+        User user = userMapper.UserRegisterRequestDto2User(userReq);
+        User userSaved = userRepository.save(user);
+        return userMapper.User2UserRegisterResponseDto(userSaved);
+        
+        
     }
 
 }
