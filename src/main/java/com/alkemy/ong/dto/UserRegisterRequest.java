@@ -3,11 +3,10 @@ package com.alkemy.ong.dto;
 import javax.validation.constraints.*;
 
 import com.alkemy.ong.model.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRegisterRequest {
@@ -28,13 +27,5 @@ public class UserRegisterRequest {
 
     private String photo;
 
-    public static User mapToEntity(UserRegisterRequest req) {
-        User u = new User();
-        u.setFirstName(req.firstName);
-        u.setLastName(req.lastName);
-        u.setEmail(req.email);
-        u.setPassword(req.password);
-        u.setPhoto(req.photo);
-        return u;
-    }
+    
 }
