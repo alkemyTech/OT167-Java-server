@@ -1,20 +1,22 @@
 package com.alkemy.ong.model;
 
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "organization")
+@Table(name = "organizations")
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE organization SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE organizations SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 public class Organization {
 
@@ -22,10 +24,10 @@ public class Organization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotNull(message = "Name cannot be null")
     private String name;
 
-    @NotNull
+    @NotNull(message = "Image cannot be null")
     private String image;
 
     @Nullable
@@ -34,10 +36,10 @@ public class Organization {
     @Nullable
     private Integer phone;
 
-    @NotNull
+    @NotNull(message = "email cannot be null")
     private String email;
 
-    @NotNull
+    @NotNull(message = "Welcome text cannot be null")
     @Column(name = "welcome")
     private String welcomeText;
 
@@ -45,12 +47,14 @@ public class Organization {
     @Column(name = "about_us")
     private String aboutUsText;
 
+    @CreationTimestamp
     @Column(name = "creation_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="dd/MM/yyyy")
     private LocalDate creationDate;
 
+    @UpdateTimestamp
     @Column(name = "update_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="dd/MM/yyyy")
     private LocalDate updateDate;
 
     @Column(name = "deleted")
