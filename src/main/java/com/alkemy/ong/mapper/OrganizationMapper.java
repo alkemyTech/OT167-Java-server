@@ -21,7 +21,7 @@ public class OrganizationMapper {
         organization.forEach(org -> orgDtoList.add(organizationToDto(org)));
         return orgDtoList;
     }
-    public Organization creationOrganization(OrganizationCreationDto dto) {
+    public Organization creationOrgFromOrganizationDto(OrganizationCreationDto dto) {
         Organization organization = new Organization();
         organization.setName(dto.getName());
         organization.setEmail(dto.getEmail());
