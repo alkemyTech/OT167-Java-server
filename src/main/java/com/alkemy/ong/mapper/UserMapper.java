@@ -1,5 +1,7 @@
-package com.alkemy.ong.dto;
+package com.alkemy.ong.mapper;
 
+import com.alkemy.ong.dto.UserDto;
+import com.alkemy.ong.dto.UserDtoCreator;
 import org.springframework.stereotype.Component;
 import com.alkemy.ong.model.User;
 import java.util.ArrayList;
