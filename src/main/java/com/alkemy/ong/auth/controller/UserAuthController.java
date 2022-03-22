@@ -1,13 +1,13 @@
 package com.alkemy.ong.auth.controller;
 
 import com.alkemy.ong.auth.dto.UserRequestDTO;
-import com.alkemy.ong.auth.model.UserEntity;
-import com.alkemy.ong.auth.repository.UserRepository;
-import com.alkemy.ong.auth.service.UserDetailsCustomService;
+import com.alkemy.ong.auth.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.alkemy.ong.model.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +19,21 @@ import javax.validation.Valid;
 public class UserAuthController {
 
     @Autowired
-    UserDetailsCustomService userDetailsCustomService;
+    private UserService userService;
 
-    @PostMapping("/login")
+    @PostMapping("/singup")
+    public ResponseEntity<?> singUp(@Valid @RequestBody UserRequestDTO userRequestDTO){
+
+        userService.save(userRequestDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/login")
     //recive un mail y una contraseña, y devuelve un jwt
-    public ResponseEntity<UserEntity> singIn(@Valid @RequestBody UserRequestDTO userRequest) throws Exception {
+    public ResponseEntity<User> logIn(@Valid @RequestBody UserRequestDTO userRequest) throws Exception {
         /*toma el mail de usuario y contraseña y los autentica, UserDetails es una libreria de spring*/
-        UserEntity userEntity = userDetailsCustomService.authenticateUser(userRequest);
+        User userEntity = userService.authenticateUser(userRequest);
 
         return ResponseEntity.ok(userEntity);
     }

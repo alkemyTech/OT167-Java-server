@@ -1,6 +1,7 @@
 package com.alkemy.ong.model;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,10 +18,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Getter
 @Setter
-//chequear que esta bien cuando se realize softDelete de una categoria
 @SQLDelete(sql = "UPDATE categories SET deleted = true WHERE id_categories=?")
 @Where(clause = "deleted=false")
-public class CategoriesEntity {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +41,7 @@ public class CategoriesEntity {
 
     @CreationTimestamp
     @Column(name = "creation_date",updatable = false)
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDate creationDate;
 
     @UpdateTimestamp
