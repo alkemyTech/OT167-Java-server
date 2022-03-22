@@ -1,5 +1,5 @@
 package com.alkemy.ong.controller;
-import com.alkemy.ong.dto.Mapper.OrganizationMapper;
+import com.alkemy.ong.mapper.OrganizationMapper;
 import com.alkemy.ong.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
