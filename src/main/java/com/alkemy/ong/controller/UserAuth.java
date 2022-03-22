@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/auth/me")
+@RequestMapping("/auth")
 public class UserAuth {
 
     @Autowired
@@ -24,7 +24,7 @@ public class UserAuth {
     @Autowired
     private UserMapper userMapper;
 
-    @GetMapping("")
+    @GetMapping("/me")
     public ResponseEntity<?> userData(HttpServletRequest request){
         final String authorizationHeader = request.getHeader("Authorization");
 
