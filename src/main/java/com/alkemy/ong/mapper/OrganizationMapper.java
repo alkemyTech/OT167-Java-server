@@ -1,4 +1,4 @@
-package com.alkemy.ong.dto.Mapper;
+package com.alkemy.ong.mapper;
 import com.alkemy.ong.dto.OrganizationCreationDto;
 import com.alkemy.ong.dto.OrganizationDto;
 import com.alkemy.ong.model.Organization;
@@ -21,7 +21,7 @@ public class OrganizationMapper {
         organization.forEach(org -> orgDtoList.add(organizationToDto(org)));
         return orgDtoList;
     }
-    public Organization creationOrganization(OrganizationCreationDto dto) {
+    public Organization creationOrgFromOrganizationDto(OrganizationCreationDto dto) {
         Organization organization = new Organization();
         organization.setName(dto.getName());
         organization.setEmail(dto.getEmail());
