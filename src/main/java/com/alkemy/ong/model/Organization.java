@@ -14,8 +14,9 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "organizations")
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @SQLDelete(sql = "UPDATE organizations SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 public class Organization {
@@ -49,12 +50,12 @@ public class Organization {
 
     @CreationTimestamp
     @Column(name = "creation_date")
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate creationDate;
 
     @UpdateTimestamp
     @Column(name = "update_date")
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate updateDate;
 
     @Column(name = "deleted")

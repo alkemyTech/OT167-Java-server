@@ -3,6 +3,8 @@ package com.alkemy.ong.model;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -42,10 +44,12 @@ public class Member {
 
     @CreationTimestamp  
     @Column(name = "date_created")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate dateCreated;
 
     @UpdateTimestamp
     @Column(name = "date_modified")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate dateModified;
 
     private Boolean deleted = Boolean.FALSE;

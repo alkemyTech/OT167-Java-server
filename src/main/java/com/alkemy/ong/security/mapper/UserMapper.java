@@ -1,4 +1,4 @@
-package com.alkemy.ong.mapper;
+package com.alkemy.ong.security.mapper;
 
 import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserDtoCreator;

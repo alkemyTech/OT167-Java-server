@@ -1,8 +1,8 @@
 package com.alkemy.ong.security.controller;
 
-import com.alkemy.ong.mapper.UserMapper;
+import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.security.service.JwtUtils;
-import com.alkemy.ong.service.UserService;
+import com.alkemy.ong.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/auth")
-public class UserAuth {
+public class UserAuthController {
 
     @Autowired
     private JwtUtils jwtUtil;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
     private UserMapper userMapper;
@@ -36,6 +36,7 @@ public class UserAuth {
             username = jwtUtil.extractUsername(jwt);
         }
 
-        return ResponseEntity.ok(userMapper.convertUserToDto(userService.findByUsername(username)));
+        return ResponseEntity.ok(userMapper.convertUserToDto(userServiceImpl.findByUsername(username)));
+
     }
 }
