@@ -7,48 +7,41 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "organizations")
-@Getter
-@Setter
-@SQLDelete(sql = "UPDATE organizations SET deleted = true WHERE id=?")
+@Table(name = "news")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@SQLDelete(sql = "UPDATE news SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
-public class Organization {
+public class News {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_news")
     private Long id;
 
-    @NotNull(message = "Name cannot be null")
+    @NotNull(message = "name cannot be null")
     private String name;
 
-    @NotNull(message = "Image cannot be null")
+    @NotNull(message = "name cannot be null")
+    private String content;
+
+    @NotNull(message = "image cannot be null")
     private String image;
 
-    @Nullable
-    private String address;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Column(name = "category_id")
+    private Category categoryId;
 
-    @Nullable
-    private Integer phone;
-
-    @NotNull(message = "email cannot be null")
-    private String email;
-
-    @NotNull(message = "Welcome text cannot be null")
-    @Column(name = "welcome")
-    private String welcomeText;
-
-    @Nullable
-    @Column(name = "about_us")
-    private String aboutUsText;
+    private Boolean deleted = Boolean.FALSE;
 
     @CreationTimestamp
-    @Column(name = "creation_date")
+    @Column(name = "creation_date",updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate creationDate;
 
@@ -56,8 +49,5 @@ public class Organization {
     @Column(name = "update_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate updateDate;
-
-    @Column(name = "deleted")
-    private boolean softDeleted = Boolean.FALSE;
 
 }
