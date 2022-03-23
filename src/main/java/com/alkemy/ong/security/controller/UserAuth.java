@@ -47,23 +47,9 @@ public class UserAuth {
         return ResponseEntity.ok(userMapper.convertUserToDto(userServiceImpl.findByUsername(username)));
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<?> getAllUsers(Authentication authentication){
-
-        User userAuth = userServiceImpl.findByEmail(authentication.getName());
-        Role role = userServiceImpl.getRole("ROLE_ADMIN");
-
-        if (!userAuth.getRoles().contains(role)){
-            return new ResponseEntity<>("Not allowed", HttpStatus.METHOD_NOT_ALLOWED);
-        }
-
-        List<UserDto> users = userServiceImpl.getUsers().stream().map(user -> userMapper.convertUserToDto(user)).collect(Collectors.toList());
-
-        return ResponseEntity.ok().body(users);
-    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/users2")
+    @GetMapping("/users")
     public ResponseEntity<List<UserDto>>getAllUsersD() {
         return new ResponseEntity<List<UserDto>>(userServiceImpl.getAllUsers(), HttpStatus.OK);
     }
