@@ -11,7 +11,18 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-
+import com.alkemy.ong.dto.UserDto;
+import com.alkemy.ong.mapper.UserMapper;
+import com.alkemy.ong.model.Role;
+import com.alkemy.ong.repository.RoleRepository;
+import com.alkemy.ong.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.alkemy.ong.model.User;
+import com.alkemy.ong.repository.UserRepository;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.stream.Collectors;
+ 
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -23,14 +34,25 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private MessageSource messageSource;
+
+    @Autowired
+    private RoleRepository roleRepository;
   
     @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByEmail(String email) {
+
+    @Override
+    public User findByUsername(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override
-    public User findByEmail(String email) {
+    public List<User> getUsers(){
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User findByEmail(String email)    {
         return userRepository.findByEmail(email);
     }
 
@@ -46,5 +68,15 @@ public class UserServiceImpl implements UserService {
         
         
     }
+      
+    @Override
+    public Role getRole(String name) {
 
+        return roleRepository.findByName(name);
+    }
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream().map(user -> userMapper.convertUserToDto(user)).collect(Collectors.toList());
+    }
 }
