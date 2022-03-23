@@ -9,7 +9,6 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDate;
-import javax.*;
 import javax.validation.constraints.NotNull;
 
 @Entity

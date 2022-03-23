@@ -1,15 +1,24 @@
 package com.alkemy.ong.security.controller;
 
+import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.mapper.UserMapper;
+import com.alkemy.ong.model.Role;
+import com.alkemy.ong.model.User;
 import com.alkemy.ong.security.service.JwtUtils;
 import com.alkemy.ong.service.UserService;
+import com.alkemy.ong.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/auth")
@@ -38,4 +47,12 @@ public class UserAuth {
 
         return ResponseEntity.ok(userMapper.convertUserToDto(userService.findByUsername(username)));
     }
+
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDto>>getAllUsersD() {
+        return new ResponseEntity<List<UserDto>>(userService.getAllUsers(), HttpStatus.OK);
+    }
+
 }
