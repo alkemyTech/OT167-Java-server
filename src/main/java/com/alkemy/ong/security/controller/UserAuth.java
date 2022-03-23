@@ -5,6 +5,7 @@ import com.alkemy.ong.mapper.UserMapper;
 import com.alkemy.ong.model.Role;
 import com.alkemy.ong.model.User;
 import com.alkemy.ong.security.service.JwtUtils;
+import com.alkemy.ong.service.UserService;
 import com.alkemy.ong.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class UserAuth {
     private JwtUtils jwtUtil;
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
 
     @Autowired
     private UserMapper userMapper;
@@ -44,14 +45,14 @@ public class UserAuth {
             username = jwtUtil.extractUsername(jwt);
         }
 
-        return ResponseEntity.ok(userMapper.convertUserToDto(userServiceImpl.findByUsername(username)));
+        return ResponseEntity.ok(userMapper.convertUserToDto(userService.findByUsername(username)));
     }
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>>getAllUsersD() {
-        return new ResponseEntity<List<UserDto>>(userServiceImpl.getAllUsers(), HttpStatus.OK);
+        return new ResponseEntity<List<UserDto>>(userService.getAllUsers(), HttpStatus.OK);
     }
 
 }
