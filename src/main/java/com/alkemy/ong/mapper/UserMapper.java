@@ -14,15 +14,16 @@ public class UserMapper {
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
-        userDto.getPhoto(user.getPhoto());
+        userDto.setPhoto(user.getPhoto());
         return userDto;
     }
-    public List<UserDto> UserDtoList (List<User> user){
-        List<UserDto> usrDtoList = new ArrayList<>();
-        user.forEach(usr -> usrDtoList.add(convertUserToDto(usr)));
-        return usrDtoList;
-    }
-    public User createUser(UserDtoCreator dto) {
-        return new User(null,Boolean.FALSE,dto.getFirstName(),dto.getLastName(),dto.getEmail(),dto.getPassword(),dto.getPassword(),dto.getPhoto(),null,null,null);
+
+    public User UserDtoToEntity(UserDtoCreator dto) {
+        User user= new User();
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setEmail(dto.getEmail());
+        user.setPhoto(dto.getPhoto());
+        return user;
     }
 }
