@@ -1,38 +1,20 @@
 package com.alkemy.ong.service;
 
+import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.model.Role;
-import com.alkemy.ong.repository.RoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.alkemy.ong.model.User;
-import com.alkemy.ong.repository.UserRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class UserService {
+public interface UserService {
+    public User findByUsername(String email);
 
-    @Autowired
-    private UserRepository userRepository;
+    public List<User> getUsers();
 
-    @Autowired
-    private RoleRepository roleRepository;
+    public User findByEmail(String email);
 
-    public User findByUsername(String email) {
-        return userRepository.findByEmail(email);
-    }
+    public Role getRole(String name);
 
-    public List<User> getUsers(){
-        return userRepository.findAll();
-    }
+    public List<UserDto> getAllUsers();
 
-    public User findByEmail(String email)
-    {
-        return userRepository.findByEmail(email);
-    }
-
-    public Role getRole(String name) {
-
-        return roleRepository.findByName(name);
-    }
 }

@@ -5,10 +5,11 @@ import com.alkemy.ong.mapper.UserMapper;
 import com.alkemy.ong.model.Role;
 import com.alkemy.ong.model.User;
 import com.alkemy.ong.security.service.JwtUtils;
-import com.alkemy.ong.service.UserService;
+import com.alkemy.ong.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class UserAuth {
     private JwtUtils jwtUtil;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
     private UserMapper userMapper;
@@ -43,22 +44,28 @@ public class UserAuth {
             username = jwtUtil.extractUsername(jwt);
         }
 
-        return ResponseEntity.ok(userMapper.convertUserToDto(userService.findByUsername(username)));
+        return ResponseEntity.ok(userMapper.convertUserToDto(userServiceImpl.findByUsername(username)));
     }
 
     @GetMapping("/users")
-    public ResponseEntity<?> getUsuarios(Authentication authentication){
+    public ResponseEntity<?> getAllUsers(Authentication authentication){
 
-        User userAuth = userService.findByEmail(authentication.getName());
-        Role role = userService.getRole("ROLE_ADMIN");
+        User userAuth = userServiceImpl.findByEmail(authentication.getName());
+        Role role = userServiceImpl.getRole("ROLE_ADMIN");
 
         if (!userAuth.getRoles().contains(role)){
             return new ResponseEntity<>("Not allowed", HttpStatus.METHOD_NOT_ALLOWED);
         }
 
-        List<UserDto> users = userService.getUsers().stream().map(user -> userMapper.convertUserToDto(user)).collect(Collectors.toList());
+        List<UserDto> users = userServiceImpl.getUsers().stream().map(user -> userMapper.convertUserToDto(user)).collect(Collectors.toList());
 
         return ResponseEntity.ok().body(users);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/users2")
+    public ResponseEntity<List<UserDto>>getAllUsersD() {
+        return new ResponseEntity<List<UserDto>>(userServiceImpl.getAllUsers(), HttpStatus.OK);
     }
 
 }
