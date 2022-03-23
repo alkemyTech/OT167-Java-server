@@ -1,5 +1,6 @@
 package com.alkemy.ong.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -35,18 +36,18 @@ public class News {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @Column(name = "category_id")
-    private CategoriesEntity categoryId;
+    private Category categoryId;
 
     private Boolean deleted = Boolean.FALSE;
 
     @CreationTimestamp
     @Column(name = "creation_date",updatable = false)
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate creationDate;
 
     @UpdateTimestamp
     @Column(name = "update_date")
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate updateDate;
 
 }
