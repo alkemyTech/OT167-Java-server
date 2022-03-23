@@ -1,4 +1,4 @@
-package com.alkemy.ong.controller;
+package com.alkemy.ong.security.controller;
 
 import com.alkemy.ong.mapper.UserMapper;
 import com.alkemy.ong.security.service.JwtUtils;
