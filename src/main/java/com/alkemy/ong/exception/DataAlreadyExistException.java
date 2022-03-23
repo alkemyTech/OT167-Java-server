@@ -1,9 +1,12 @@
 package com.alkemy.ong.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-public class dataAlreadyExistException extends Exception {
+@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+public class DataAlreadyExistException extends Exception {
 
-    public dataAlreadyExistException (String message) {
+    public DataAlreadyExistException (String message) {
 
         super(message);
     }
