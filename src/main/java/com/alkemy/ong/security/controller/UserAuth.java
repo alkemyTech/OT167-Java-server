@@ -70,7 +70,7 @@ public class UserAuth {
         return new ResponseEntity<List<UserDto>>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/usuarios/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<UserDto> findUserById(@PathVariable Long id){
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
     }
