@@ -1,17 +1,27 @@
 package com.alkemy.ong.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alkemy.ong.dto.UserDto;
+import com.alkemy.ong.dto.UserRegisterRequest;
+import com.alkemy.ong.dto.UserRegisterResponse;
+import com.alkemy.ong.exception.DataAlreadyExistException;
+import com.alkemy.ong.exception.NotFoundException;
+import com.alkemy.ong.model.Role;
 import com.alkemy.ong.model.User;
-import com.alkemy.ong.repository.UserRepository;
-import org.springframework.stereotype.Service;
 
-@Service
-public class UserService {
+import java.io.IOException;
+import java.util.List;
 
-    @Autowired
-    private UserRepository userRepository;
+public interface UserService {
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername();
-    }
+    User findByEmail(User user) throws NotFoundException;
+
+    User findByEmail(String username);
+
+    List<User> getUsers();
+
+    Role getRole(String name);
+
+    List<UserDto> getAllUsers();
+
+    public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException, IOException;
 }

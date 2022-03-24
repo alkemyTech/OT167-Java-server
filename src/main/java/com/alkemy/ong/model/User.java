@@ -49,12 +49,12 @@ public class User {
 
     @CreationTimestamp
     @Column(name = "creation_date")
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate creationDate;
 
     @UpdateTimestamp
     @Column(name = "update_date")
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate updateDate;
 
     @ManyToMany
