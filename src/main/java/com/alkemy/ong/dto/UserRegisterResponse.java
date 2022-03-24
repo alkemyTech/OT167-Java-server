@@ -1,18 +1,19 @@
 package com.alkemy.ong.dto;
 
-import com.alkemy.ong.model.User;
+
+
 import lombok.*;
 
-//@RequiredArgsConstructor
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
-public class UserDto {
+@AllArgsConstructor
+public class UserRegisterResponse {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
-    private String photo;
-
+    
 
 }

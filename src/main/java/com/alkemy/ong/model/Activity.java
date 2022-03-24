@@ -16,10 +16,13 @@ public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull(message = "name cant be null")
     private String name;
+
     @NotNull(message = "content cant be null")
     private String content;
+
     @NotNull(message = "image cant be null")
     private String image;
 
@@ -27,8 +30,10 @@ public class Activity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
+
     @UpdateTimestamp
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     @Column(name = "update_date")
     private LocalDateTime updateDate;
+
 }

@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @SQLDelete(sql = "UPDATE categories SET deleted = true WHERE id_categories=?")
 @Where(clause = "deleted=false")
-public class Categorie {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +39,7 @@ public class Categorie {
 
     @CreationTimestamp
     @Column(name = "creation_date",updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyy HH:mm:ss")
     private LocalDate creationDate;
 
     @UpdateTimestamp

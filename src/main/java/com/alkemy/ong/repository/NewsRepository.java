@@ -1,10 +1,8 @@
 package com.alkemy.ong.repository;
-
-import com.alkemy.ong.model.Role;
+import com.alkemy.ong.model.News;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
-    Role findByName(String name);
+public interface NewsRepository extends JpaRepository<News, Long> {
 }

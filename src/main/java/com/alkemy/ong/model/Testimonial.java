@@ -39,12 +39,12 @@ public class Testimonial implements Serializable{
     private String image;
     @Nullable
     private String content;
-    
+
     @CreationTimestamp
-    @Column(name = "creation_date")
+    @Column(name = "creation_date",updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate creationDate;
-    
+
     @UpdateTimestamp
     @Column(name = "update_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
