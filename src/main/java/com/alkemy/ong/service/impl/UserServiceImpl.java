@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,6 +74,11 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.userRegisterRequestDto2User(userReq);
         User userSaved = userRepository.save(user);
         return userMapper.user2UserRegisterResponseDto(userSaved);
+    }
+
+    @Override
+    public Optional<User> findUserById(Long id) {
+        return Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
     }
 
     @Override

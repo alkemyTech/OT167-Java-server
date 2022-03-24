@@ -10,6 +10,7 @@ import com.alkemy.ong.model.User;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -24,4 +25,6 @@ public interface UserService {
     List<UserDto> getAllUsers();
 
     public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException, IOException;
+
+    Optional<User> findUserById(Long id);
 }
