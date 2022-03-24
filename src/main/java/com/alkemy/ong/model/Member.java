@@ -44,15 +44,15 @@ public class Member {
 
     private String description;
 
-    @CreationTimestamp  
-    @Column(name = "date_created")
+    @CreationTimestamp
+    @Column(name = "creation_date",updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime dateCreated;
+    private LocalDate creationDate;
 
     @UpdateTimestamp
-    @Column(name = "date_modified")
+    @Column(name = "update_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime dateModified;
+    private LocalDate updateDate;
 
     private Boolean deleted = Boolean.FALSE;
 

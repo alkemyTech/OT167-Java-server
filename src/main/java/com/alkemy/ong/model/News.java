@@ -35,7 +35,6 @@ public class News {
     private String image;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Column(name = "category_id")
     private Category categoryId;
 
     private Boolean deleted = Boolean.FALSE;

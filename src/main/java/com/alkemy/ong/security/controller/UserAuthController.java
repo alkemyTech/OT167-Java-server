@@ -5,8 +5,8 @@ import com.alkemy.ong.dto.UserDtoCreator;
 import com.alkemy.ong.dto.UserRegisterRequest;
 import com.alkemy.ong.dto.UserRegisterResponse;
 import com.alkemy.ong.exception.DataAlreadyExistException;
-import com.alkemy.ong.mapper.UserMapper;
 import com.alkemy.ong.model.User;
+import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.security.service.JwtUtils;
 import com.alkemy.ong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/auth")
-public class UserAuth {
+public class UserAuthController {
 
     @Autowired
     private JwtUtils jwtUtil;
@@ -70,8 +70,10 @@ public class UserAuth {
         return new ResponseEntity<List<UserDto>>(userService.getAllUsers(), HttpStatus.OK);
     }
 
+
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDto> findUserById(@PathVariable Long id){
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
     }
 }
+
