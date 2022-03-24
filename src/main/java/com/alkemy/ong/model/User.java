@@ -2,10 +2,7 @@ package com.alkemy.ong.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.Nullable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,8 +14,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")

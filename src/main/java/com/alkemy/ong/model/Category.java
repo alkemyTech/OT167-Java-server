@@ -4,7 +4,6 @@ package com.alkemy.ong.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -16,8 +15,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "categories")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @SQLDelete(sql = "UPDATE categories SET deleted = true WHERE id_categories=?")
 @Where(clause = "deleted=false")
 public class Category {

@@ -15,6 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class OrganizationServiceImpl implements OrganizationService {
+
     private final MessageSource messageSource;
     private final OrganizationRepository organizationRepository;
     @Override
@@ -22,4 +23,5 @@ public class OrganizationServiceImpl implements OrganizationService {
         if(organizationRepository.findById(id).isEmpty()) throw new NotFoundException(messageSource.getMessage("organization.not.found",null, Locale.ENGLISH));
         return organizationRepository.findById(id);
     }
+
 }
