@@ -74,10 +74,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.userRegisterRequestDto2User(userReq);
         User userSaved = userRepository.save(user);
         return userMapper.user2UserRegisterResponseDto(userSaved);
-<<<<<<< HEAD
-             
-=======
->>>>>>> 1f8730e428ceb368da7f9d651a5527066a17d041
+
     }
 
     @Override
