@@ -2,10 +2,7 @@ package com.alkemy.ong.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.Nullable;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,8 +14,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 @Entity
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
@@ -49,12 +45,12 @@ public class User {
 
     @CreationTimestamp
     @Column(name = "creation_date")
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate creationDate;
 
     @UpdateTimestamp
     @Column(name = "update_date")
-    @JsonFormat(pattern="dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate updateDate;
 
     @ManyToMany

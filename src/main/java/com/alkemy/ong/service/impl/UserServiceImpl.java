@@ -1,29 +1,33 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserRegisterRequest;
 import com.alkemy.ong.dto.UserRegisterResponse;
 import com.alkemy.ong.exception.DataAlreadyExistException;
-import com.alkemy.ong.mapper.UserMapper;
+import com.alkemy.ong.exception.NotFoundException;
+import com.alkemy.ong.model.Role;
 import com.alkemy.ong.model.User;
+import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.repository.UserRepository;
+import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.service.UserService;
-import java.util.Locale;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.alkemy.ong.dto.UserDto;
-import com.alkemy.ong.mapper.UserMapper;
-import com.alkemy.ong.model.Role;
-import com.alkemy.ong.repository.RoleRepository;
-import com.alkemy.ong.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.alkemy.ong.model.User;
-import com.alkemy.ong.repository.UserRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
- 
+
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -31,25 +35,33 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
-    
+
     @Autowired
     private MessageSource messageSource;
 
     @Autowired
     private RoleRepository roleRepository;
-  
-    @Override
-    public User findByUsername(String email) {
-        return userRepository.findByEmail(email);
-    }
+
 
     @Override
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public User findByEmail(String email)    {
+    public User findByEmail(User user) throws NotFoundException {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        User userFound = userRepository.findByEmail(user.getEmail());
+
+        if(!(passwordEncoder.matches(userFound.getPassword(), user.getPassword()))){
+            throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
+        }
+        return userFound;
+    }
+
+    @Override
+    public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
@@ -62,12 +74,19 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.userRegisterRequestDto2User(userReq);
         User userSaved = userRepository.save(user);
         return userMapper.user2UserRegisterResponseDto(userSaved);
+<<<<<<< HEAD
              
+=======
+>>>>>>> 1f8730e428ceb368da7f9d651a5527066a17d041
     }
-      
+
+    @Override
+    public Optional<User> findUserById(Long id) {
+        return Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
+    }
+
     @Override
     public Role getRole(String name) {
-
         return roleRepository.findByName(name);
     }
 

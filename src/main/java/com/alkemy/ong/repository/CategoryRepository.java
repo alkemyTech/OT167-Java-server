@@ -1,10 +1,9 @@
 package com.alkemy.ong.repository;
-
-import com.alkemy.ong.model.CategoriesEntity;
+import com.alkemy.ong.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoriesRepository extends JpaRepository<CategoriesEntity, Long> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 
 }

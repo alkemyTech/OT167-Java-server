@@ -1,6 +1,6 @@
 package com.alkemy.ong.dto;
 
-import com.alkemy.ong.model.User;
+
 
 import lombok.*;
 

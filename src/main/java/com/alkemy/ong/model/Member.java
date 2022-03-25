@@ -4,6 +4,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -42,15 +44,15 @@ public class Member {
 
     private String description;
 
-    @CreationTimestamp  
-    @Column(name = "date_created")
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime dateCreated;
+    @CreationTimestamp
+    @Column(name = "creation_date",updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDate creationDate;
 
     @UpdateTimestamp
-    @Column(name = "date_modified")
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime dateModified;
+    @Column(name = "update_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDate updateDate;
 
     private Boolean deleted = Boolean.FALSE;
 
