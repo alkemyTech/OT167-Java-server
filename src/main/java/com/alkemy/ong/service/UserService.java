@@ -21,9 +21,7 @@ public interface UserService {
     public Role getRole(String name);
 
     public List<UserDto> getAllUsers();
-  
-    public User findByEmail(String email);
-    
+      
     public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException, IOException;
 
 }

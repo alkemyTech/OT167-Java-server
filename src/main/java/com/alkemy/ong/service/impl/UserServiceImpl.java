@@ -39,9 +39,6 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
   
     @Override
-    public User findByEmail(String email) {
-
-    @Override
     public User findByUsername(String email) {
         return userRepository.findByEmail(email);
     }
@@ -65,8 +62,7 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.userRegisterRequestDto2User(userReq);
         User userSaved = userRepository.save(user);
         return userMapper.user2UserRegisterResponseDto(userSaved);
-        
-        
+             
     }
       
     @Override
