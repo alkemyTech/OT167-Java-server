@@ -9,11 +9,18 @@ import com.alkemy.ong.model.Role;
 import com.alkemy.ong.model.User;
 import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.repository.UserRepository;
+import com.alkemy.ong.security.filter.JwtRequestFilter;
 import com.alkemy.ong.security.mapper.UserMapper;
+import com.alkemy.ong.security.service.JwtUtils;
 import com.alkemy.ong.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,6 +48,12 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private JwtUtils jwtUtil;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
 
     @Override
     public List<User> getUsers() {
@@ -48,15 +61,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmail(User user) throws NotFoundException {
+    public String findByEmail(User user) throws NotFoundException {
+
+        UserDetails userDetails = null;
+
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         User userFound = userRepository.findByEmail(user.getEmail());
 
-        if(!(passwordEncoder.matches(userFound.getPassword(), user.getPassword()))){
+        try{
+            if((passwordEncoder.matches(userFound.getPassword(), user.getPassword()))){
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(userFound.getEmail(),userFound.getPassword())
+                );
+                userDetails = (UserDetails) authentication.getPrincipal();
+            }
+        }catch (BadCredentialsException ex){
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
         }
-        return userFound;
+        return jwtUtil.generateToken(userDetails);
     }
 
     @Override

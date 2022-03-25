@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface UserService {
 
-    User findByEmail(User user) throws NotFoundException;
+    String findByEmail(User user) throws NotFoundException;
 
     User findByEmail(String username);
 

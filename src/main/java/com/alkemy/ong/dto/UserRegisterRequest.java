@@ -27,8 +27,8 @@ public class UserRegisterRequest {
 
     @NotBlank(message = "Password is mandatory.")
     @Size(min = 6, message = "The password must be at least 6 characters")
-    
     private String password;
+
     private String photo;
     private LocalDate creationDate;
     private Role rol;
