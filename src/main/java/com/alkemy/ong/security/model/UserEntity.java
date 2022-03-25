@@ -1,5 +1,6 @@
-package com.alkemy.ong.model;
+package com.alkemy.ong.security.model;
 
+import com.alkemy.ong.model.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sun.istack.Nullable;
 import lombok.*;
@@ -20,7 +21,7 @@ import java.util.Collection;
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
 @Where(clause = "deleted = false")
-public class User {
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
