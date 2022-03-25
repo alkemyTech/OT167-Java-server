@@ -1,5 +1,7 @@
 package com.alkemy.ong.controller;
 
+import com.alkemy.ong.dto.ContactCreationDto;
+import com.alkemy.ong.mapper.ContactMapper;
 import com.alkemy.ong.model.Contact;
 import com.alkemy.ong.service.ContactService;
 import com.alkemy.ong.service.EmailService;
@@ -23,10 +25,13 @@ public class ContactController {
     private final EmailService emailService;
     private final MessageSource messageSource;
     @Autowired
-    private final ContactService contactService;
+    private ContactService contactService;
+    @Autowired
+    private ContactMapper contactMapper;
 
     @PostMapping("/register")
-    public ResponseEntity<?> contact(@Valid @RequestBody Contact contact) {
+    public ResponseEntity<?> contact(@Valid @RequestBody ContactCreationDto contactDto) {
+        Contact contact = contactMapper.creationContFromContactDto(contactDto);
         contactService.saveContact(contact);
         emailService.sendEmail(
                 messageSource.getMessage("email.subject", new Object[]{contact.getName()}, Locale.ENGLISH),
