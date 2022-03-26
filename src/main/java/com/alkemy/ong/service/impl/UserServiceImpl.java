@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     AuthenticationManager authenticationManager;
 
-
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
