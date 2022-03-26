@@ -1,8 +1,12 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.enums.MailMessage;
 import static com.alkemy.ong.enums.TipLog.ERROR;
 import static com.alkemy.ong.enums.TipLog.INFO;
+import com.alkemy.ong.model.Organization;
+import com.alkemy.ong.model.User;
 import com.alkemy.ong.service.EmailService;
+import com.alkemy.ong.service.OrganizationService;
 import com.alkemy.ong.utils.UtilsLog;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -14,7 +18,6 @@ import com.sendgrid.helpers.mail.objects.Email;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -22,20 +25,22 @@ import org.thymeleaf.context.Context;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-    @Autowired
-    private Environment env;
     @Value("${alkemy.ong.email.sender}")
     private String emailSender;
+    @Value("${alkemy.ong.email.api_key}")
+    private String api_key;    
 
     @Autowired
     private TemplateEngine templateEngine;
-
-    public void sendWelcomeEmailTo(String to) {
-        String apiKey = env.getProperty("EMAIL_API_KEY");
-        SendGrid sg = new SendGrid(apiKey);
+    
+    @Autowired
+    private OrganizationService organizationService;
+    
+    public void sendWelcomeEmailTo(User user, Long id) {
+        SendGrid sg = new SendGrid(api_key);
 
         try {
-            Request request = this.buildRequest(to);
+            Request request = this.buildRequest(user, id);
             Response response = sg.api(request);
 
             UtilsLog.registrarInfo(EmailService.class, INFO, String.valueOf(response.getStatusCode()));
@@ -46,28 +51,33 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    private String preparedWelcomeBodyEmail() {
+    private String preparedWelcomeBodyEmail(User user, Long id) {
 
+        Organization org = organizationService.findById(id).get();
+        
         Context context = new Context();
-        context.setVariable("contact", "Lavalle 1856");
+        context.setVariable("contactMail", MailMessage.CONTACT_MAIL + org.getEmail());
+        context.setVariable("contactPhone", MailMessage.CONTACT_PHONE + String.valueOf(org.getPhone()));
+        context.setVariable("contactAddress", MailMessage.CONTACT_ADDRESS + org.getAddress());
+        context.setVariable("messegeWelcome", MailMessage.getWelcomeMsg(user.getFirstName(), user.getLastName()));
         
         return templateEngine.process("plantilla_email.html", context);
 
     }
 
-    public Mail buildMail(String to) {
+    public Mail buildMail(User user, Long id) {
 
-        Content content = new Content("text/html", preparedWelcomeBodyEmail());
+        Content content = new Content("text/html", preparedWelcomeBodyEmail(user, id));
         Email fromEmail = new Email(emailSender);
-        Email toEmail = new Email(to);
+        Email toEmail = new Email(user.getEmail());
         String subject = "ONG Alkemy";
 
         return new Mail(fromEmail, subject, toEmail, content);
     }
 
-    public Request buildRequest(String to) throws IOException {
+    public Request buildRequest(User user, Long id) throws IOException {
 
-        Mail mail = this.buildMail(to);
+        Mail mail = this.buildMail(user, id);
         Request request = new Request();
         request.setMethod(Method.POST);
         request.setEndpoint("mail/send");
@@ -75,4 +85,5 @@ public class EmailServiceImpl implements EmailService {
 
         return request;
     }
+    
 }

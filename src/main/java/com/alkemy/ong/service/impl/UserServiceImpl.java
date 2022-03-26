@@ -10,6 +10,7 @@ import com.alkemy.ong.model.User;
 import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.security.mapper.UserMapper;
+import com.alkemy.ong.service.EmailService;
 import com.alkemy.ong.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+    
+    @Autowired
+    private EmailService emailService;
 
 
     @Override
@@ -66,19 +69,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException {
+    public UserRegisterResponse register(UserRegisterRequest userReq, Long id) throws DataAlreadyExistException {
 
         if (this.findByEmail(userReq.getEmail()) != null) {
             throw new DataAlreadyExistException(messageSource.getMessage("email.already.exist",null, Locale.ENGLISH));
         }
         User user = userMapper.userRegisterRequestDto2User(userReq);
         User userSaved = userRepository.save(user);
+        emailService.sendWelcomeEmailTo(user, id);
         return userMapper.user2UserRegisterResponseDto(userSaved);
-    }
-
-    @Override
-    public Optional<User> findUserById(Long id) {
-        return Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
     }
 
     @Override
