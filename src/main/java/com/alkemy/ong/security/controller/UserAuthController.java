@@ -46,7 +46,7 @@ public class UserAuthController {
         return ResponseEntity.ok(userMapper.convertUserToDto(userService.findByEmail(username)));
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> logIn(@Valid @RequestBody UserDtoCreator userDto){
 
         User user = userMapper.UserDtoToEntity(userDto);
