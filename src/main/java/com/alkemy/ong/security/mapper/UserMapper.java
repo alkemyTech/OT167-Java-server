@@ -2,11 +2,11 @@ package com.alkemy.ong.security.mapper;
 
 import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserDtoCreator;
-import com.alkemy.ong.dto.UserRegisterRequest;
-import com.alkemy.ong.dto.UserRegisterResponse;
 import com.alkemy.ong.model.Role;
+import com.alkemy.ong.security.dto.UserRegisterRequest;
+import com.alkemy.ong.security.dto.UserRegisterResponse;
 import org.springframework.stereotype.Component;
-import com.alkemy.ong.model.User;
+import com.alkemy.ong.security.model.UserEntity;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class UserMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-    public UserDto convertUserToDto (User user){
+    public UserDto convertUserToDto (UserEntity user){
         UserDto userDto = new UserDto();
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
@@ -28,8 +28,8 @@ public class UserMapper {
         return userDto;
     }
 
-    public User UserDtoToEntity(UserDtoCreator dto) {
-        User user= new User();
+    public UserEntity UserDtoToEntity(UserDtoCreator dto) {
+        UserEntity user= new UserEntity();
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
@@ -38,27 +38,28 @@ public class UserMapper {
     }
     
     
-    public User userRegisterRequestDto2User(UserRegisterRequest userDto) {
+    public UserEntity userRegisterRequestDto2User(UserRegisterRequest userDto) {
        
         if ( userDto == null ) {
             return null;
         }
-        List<Role> role = new ArrayList<>();
-        role.add(userDto.getRol());
-
-        User user = new User();
+//        List<Role> role = new ArrayList<>();
+//        Role roleUser = new Role();
+//        roleUser.setName("USER");
+//        role.add(roleUser);
+                     
+        UserEntity user = new UserEntity();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setPhoto(userDto.getPhoto());
         user.setCreationDate(LocalDate.now());
-        user.setRoles(role);
+//        user.setRoles(role);
 
         return user;
     }
     
-    public UserRegisterResponse user2UserRegisterResponseDto(User user) {
+    public UserRegisterResponse user2UserRegisterResponseDto(UserEntity user) {
         if ( user == null ) {
             return null;
         }
