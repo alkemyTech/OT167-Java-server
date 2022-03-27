@@ -8,7 +8,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import com.alkemy.ong.config.AmazonS3Configuration;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,19 +25,10 @@ import java.util.Date;
 @Transactional
 public class PhotoServiceImpl implements PhotoService {
 
-    AmazonS3 s3client;
+    private AmazonS3 s3client;
 
-    @Value("${amazonProperties.endpointUrl}")
-    String endpointUrl;
-
-    @Value("${amazonProperties.bucketName}")
-    String bucketName;
-
-    @Value("${amazonProperties.accessKey}")
-    String accessKey;
-
-    @Value("${amazonProperties.secretKey}")
-    String secretKey;
+    @Autowired
+    private AmazonS3Configuration amazonS3Configuration;
 
     @Override
     public String uploadImage(MultipartFile multipartFile) {
@@ -45,7 +37,7 @@ public class PhotoServiceImpl implements PhotoService {
         try {
             File file = convertMultiPartToFile(multipartFile);
             String fileName = generateFileName(multipartFile);
-            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
+            fileUrl = amazonS3Configuration.getEndpointUrl() + "/" + amazonS3Configuration.getBucketName() + "/" + fileName;
             uploadFileTos3bucket(fileName, file);
             file.delete();
         } catch (Exception e) {
@@ -71,12 +63,12 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     @PostConstruct
     public void initializeAmazon() {
-        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+        AWSCredentials credentials = new BasicAWSCredentials(amazonS3Configuration.getAccessKey(), amazonS3Configuration.getSecretKey());
         this.s3client = new AmazonS3Client(credentials);
     }
 
     private void uploadFileTos3bucket(String fileName, File file) {
-        s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
+        s3client.putObject(new PutObjectRequest(amazonS3Configuration.getBucketName(), fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
 
