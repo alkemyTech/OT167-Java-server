@@ -19,4 +19,14 @@ public class CategoryMapper {
         return newCategory;
 
     }
+
+    public CategoryDto categoryEntity2Dto(Category category){
+
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setId(category.getIdCategories());
+        categoryDto.setName(category.getName());
+        categoryDto.setDescription(category.getDescription());
+        categoryDto.setImage(category.getImage());
+        return categoryDto;
+    }
 }

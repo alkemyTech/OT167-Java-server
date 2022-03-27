@@ -1,6 +1,7 @@
 package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.CategoryDto;
+import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.mapper.CategoryMapper;
 import com.alkemy.ong.model.Category;
 import com.alkemy.ong.service.CategoryService;
@@ -24,13 +25,14 @@ public class CategoryController {
     @Autowired
     private CategoryMapper categoryMapper;
 
-    /*@PostMapping()
-    public ResponseEntity<Category> addNewCategory(@Valid @RequestBody CategoryDto categoryDto){
+    @PostMapping()
+    public ResponseEntity<CategoryDto> addNewCategory(@Valid @RequestBody CategoryDto categoryDto) throws DataAlreadyExistException {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.save(categoryMapper.categoryDto2Entity(categoryDto)));
+        Category category = categoryService.save(categoryMapper.categoryDto2Entity(categoryDto));
 
-    }*/
+        CategoryDto categoryDtoResponse = categoryMapper.categoryEntity2Dto(category);
 
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryDtoResponse);
 
-
+    }
 }

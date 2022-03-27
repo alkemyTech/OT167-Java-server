@@ -2,15 +2,12 @@ package com.alkemy.ong.security.controller;
 
 import com.alkemy.ong.dto.*;
 import com.alkemy.ong.exception.DataAlreadyExistException;
-import com.alkemy.ong.mapper.CategoryMapper;
-import com.alkemy.ong.model.Category;
 import com.alkemy.ong.security.dto.UserRegisterRequest;
 import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.security.service.JwtUtils;
 import com.alkemy.ong.security.service.UserDetailsCustomService;
-import com.alkemy.ong.service.CategoryService;
 import com.alkemy.ong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,12 +37,7 @@ public class UserAuthController {
     @Autowired
     private UserMapper userMapper;
 
-    //---------------a eliminar-----------------------------------------
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private CategoryMapper categoryMapper;
-    //---------------a eliminar-----------------------------------------
+
 
     @GetMapping("/me")
     public ResponseEntity<?> userData(HttpServletRequest request){
@@ -81,22 +73,9 @@ public class UserAuthController {
         return new ResponseEntity<List<UserDto>>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDto> findUserById(@PathVariable Long id){
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
-    }
-
-
-
-    /*devolver este metodo a CategoryController cuando se termine de probar*/
-    @PostMapping("/categories")
-    public ResponseEntity<Category> addNewCategory(@Valid @RequestBody CategoryDto categoryDto) throws DataAlreadyExistException {
-
-        Category category = categoryService.save(categoryMapper.categoryDto2Entity(categoryDto));
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(category);
-
     }
 }
 

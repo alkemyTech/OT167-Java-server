@@ -13,7 +13,7 @@ public class CategoryDto {
     
     @NotBlank(message = "Name is mandatory")
     private String name;
-
+    private Long id;
     private String description;
     private String image;
 
