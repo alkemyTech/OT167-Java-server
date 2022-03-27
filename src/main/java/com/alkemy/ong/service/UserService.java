@@ -1,32 +1,26 @@
 package com.alkemy.ong.service;
 
 import com.alkemy.ong.dto.UserDto;
-import com.alkemy.ong.dto.UserRegisterRequest;
-import com.alkemy.ong.dto.UserRegisterResponse;
-import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Role;
-import com.alkemy.ong.model.User;
+import com.alkemy.ong.security.model.UserEntity;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
 
-    String findByEmail(User user) throws NotFoundException;
+    UserEntity loginUser(UserEntity user) throws NotFoundException;
 
-    User findByEmail(String username);
+    UserEntity loginUser(String username);
 
-    List<User> getUsers();
+    List<UserEntity> getUsers();
 
     Role getRole(String name);
 
     List<UserDto> getAllUsers();
 
-    public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException, IOException;
-
-    Optional<User> findUserById(Long id);
+    Optional<UserEntity> findUserById(Long id);
 }
 
 

@@ -1,26 +1,17 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.UserDto;
-import com.alkemy.ong.dto.UserRegisterRequest;
-import com.alkemy.ong.dto.UserRegisterResponse;
-import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Role;
-import com.alkemy.ong.model.User;
 import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.repository.UserRepository;
-import com.alkemy.ong.security.filter.JwtRequestFilter;
 import com.alkemy.ong.security.mapper.UserMapper;
-import com.alkemy.ong.security.service.JwtUtils;
+import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -50,56 +41,34 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
 
     @Autowired
-    private JwtUtils jwtUtil;
-
-    @Autowired
     AuthenticationManager authenticationManager;
 
     @Override
-    public List<User> getUsers() {
+    public List<UserEntity> getUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public String findByEmail(User user) throws NotFoundException {
-
-        UserDetails userDetails = null;
+    public UserEntity loginUser(UserEntity user) throws NotFoundException {
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        User userFound = userRepository.findByEmail(user.getEmail());
+        UserEntity userFound = loginUser(user.getEmail());
 
-        try{
-            if((passwordEncoder.matches(userFound.getPassword(), user.getPassword()))){
-                Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(userFound.getEmail(),userFound.getPassword())
-                );
-                userDetails = (UserDetails) authentication.getPrincipal();
-            }
-        }catch (BadCredentialsException ex){
+        if(!(passwordEncoder.matches(user.getPassword(),userFound.getPassword()))){
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
         }
-        return jwtUtil.generateToken(userDetails);
+
+        return userFound;
     }
 
     @Override
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public UserEntity loginUser(String email) {
+        return userRepository.findUserEntityByEmail(email);
     }
 
     @Override
-    public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException {
-
-        if (this.findByEmail(userReq.getEmail()) != null) {
-            throw new DataAlreadyExistException(messageSource.getMessage("email.already.exist",null, Locale.ENGLISH));
-        }
-        User user = userMapper.userRegisterRequestDto2User(userReq);
-        User userSaved = userRepository.save(user);
-        return userMapper.user2UserRegisterResponseDto(userSaved);
-    }
-
-    @Override
-    public Optional<User> findUserById(Long id) {
+    public Optional<UserEntity> findUserById(Long id) {
         return Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
     }
 

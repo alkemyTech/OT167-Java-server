@@ -2,9 +2,15 @@ package com.alkemy.ong.security.controller;
 
 import com.alkemy.ong.dto.*;
 import com.alkemy.ong.exception.DataAlreadyExistException;
-import com.alkemy.ong.model.User;
+import com.alkemy.ong.mapper.CategoryMapper;
+import com.alkemy.ong.model.Category;
+import com.alkemy.ong.security.dto.UserRegisterRequest;
+import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.mapper.UserMapper;
+import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.security.service.JwtUtils;
+import com.alkemy.ong.security.service.UserDetailsCustomService;
+import com.alkemy.ong.service.CategoryService;
 import com.alkemy.ong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +35,17 @@ public class UserAuthController {
     private UserService userService;
 
     @Autowired
+    private UserDetailsCustomService userDetailsCustomService;
+
+    @Autowired
     private UserMapper userMapper;
+
+    //---------------a eliminar-----------------------------------------
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private CategoryMapper categoryMapper;
+    //---------------a eliminar-----------------------------------------
 
     @GetMapping("/me")
     public ResponseEntity<?> userData(HttpServletRequest request){
@@ -43,20 +59,20 @@ public class UserAuthController {
             username = jwtUtil.extractUsername(jwt);
         }
 
-        return ResponseEntity.ok(userMapper.convertUserToDto(userService.findByEmail(username)));
+        return ResponseEntity.ok(userMapper.convertUserToDto(userService.loginUser(username)));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> logIn(@Valid @RequestBody UserDtoCreator userDto){
+    public ResponseEntity<UserEntity> logIn(@Valid @RequestBody UserDtoCreator userDto){
 
-        User user = userMapper.UserDtoToEntity(userDto);
+        UserEntity user = userMapper.UserDtoToEntity(userDto);
 
-        return ResponseEntity.ok(new AuthenticationResponse(userService.findByEmail(user)));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.loginUser(user));
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserRegisterResponse> registerUser(@Valid @RequestBody UserRegisterRequest userReq) throws DataAlreadyExistException, IOException {
-        return new ResponseEntity<>(userService.register(userReq), HttpStatus.CREATED);
+        return new ResponseEntity<>(userDetailsCustomService.register(userReq), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -69,6 +85,18 @@ public class UserAuthController {
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDto> findUserById(@PathVariable Long id){
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
+    }
+
+
+
+    /*devolver este metodo a CategoryController cuando se termine de probar*/
+    @PostMapping("/categories")
+    public ResponseEntity<Category> addNewCategory(@Valid @RequestBody CategoryDto categoryDto) throws DataAlreadyExistException {
+
+        Category category = categoryService.save(categoryMapper.categoryDto2Entity(categoryDto));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(category);
+
     }
 }
 
