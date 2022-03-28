@@ -11,7 +11,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @PropertySource("classpath:application.properties")
 public class SendGridConfig {
-    @Value("${sendgrid.api.key}")
+    @Value("${alkemy.ong.email.api_key}")
     private String key;
     @Bean
     public SendGrid getSendrid(){
