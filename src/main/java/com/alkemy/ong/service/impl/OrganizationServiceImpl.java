@@ -29,9 +29,9 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization editOrganization(Long id, OrganizationCreationDto organizationCreationDto) {
+    public Organization editOrganization(OrganizationCreationDto organizationCreationDto) {
 
-        Organization organization = organizationRepository.findById(id).orElse(null);
+        Organization organization = organizationRepository.findAll().get(0);
 
         String phone = String.valueOf(organizationCreationDto.getPhone());
         if(organizationCreationDto.getName().isEmpty() || organizationCreationDto.getImage().isEmpty() ||

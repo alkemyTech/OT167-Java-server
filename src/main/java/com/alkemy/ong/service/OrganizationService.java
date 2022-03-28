@@ -7,5 +7,5 @@ import java.util.Optional;
 public interface OrganizationService {
     Optional<Organization> findById(Long id);
 
-    Organization editOrganization(Long id, OrganizationCreationDto organizationCreationDto);
+    Organization editOrganization(OrganizationCreationDto organizationCreationDto);
 }

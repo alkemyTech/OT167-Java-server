@@ -25,9 +25,8 @@ public class OrganizationController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/public/{id}")
-    public ResponseEntity<?> editOrganization(@Valid @PathVariable Long id,
-                                              @RequestBody OrganizationCreationDto organizationCreationDto){
-        return ResponseEntity.ok(organizationService.editOrganization(id, organizationCreationDto));
+    @PutMapping("/public")
+    public ResponseEntity<?> editOrganization(@RequestBody OrganizationCreationDto organizationCreationDto){
+        return ResponseEntity.ok(organizationService.editOrganization(organizationCreationDto));
     }
 }
