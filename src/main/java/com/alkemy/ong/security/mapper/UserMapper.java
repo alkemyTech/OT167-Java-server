@@ -5,8 +5,10 @@ import com.alkemy.ong.dto.UserDtoCreator;
 import com.alkemy.ong.model.Role;
 import com.alkemy.ong.security.dto.UserRegisterRequest;
 import com.alkemy.ong.security.dto.UserRegisterResponse;
+import com.alkemy.ong.security.enums.RoleEnum;
 import org.springframework.stereotype.Component;
 import com.alkemy.ong.security.model.UserEntity;
+import com.alkemy.ong.service.RoleService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,9 @@ public class UserMapper {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private RoleService roleService;
     
     public UserDto convertUserToDto (UserEntity user){
         UserDto userDto = new UserDto();
@@ -43,10 +48,8 @@ public class UserMapper {
         if ( userDto == null ) {
             return null;
         }
-//        List<Role> role = new ArrayList<>();
-//        Role roleUser = new Role();
-//        roleUser.setName("USER");
-//        role.add(roleUser);
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(roleService.findByName(RoleEnum.USER.getName()));
                      
         UserEntity user = new UserEntity();
         user.setFirstName(userDto.getFirstName());
@@ -54,7 +57,7 @@ public class UserMapper {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setCreationDate(LocalDate.now());
-//        user.setRoles(role);
+        user.setRoles(roleList);
 
         return user;
     }
