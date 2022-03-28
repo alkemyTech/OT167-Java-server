@@ -1,11 +1,13 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.ContactDto;
-import com.alkemy.ong.exception.ParamNotFound;
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.ContactMapper;
 import com.alkemy.ong.model.Contact;
 import com.alkemy.ong.repository.ContactRepository;
+import com.alkemy.ong.service.ContactService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +19,15 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ContactServiceImpl {
+public class ContactServiceImpl implements ContactService {
 
+    @Autowired
     private ContactMapper contactMapper;
 
+    @Autowired
     private ContactRepository contactRepository;
 
+    @Autowired
     private final MessageSource messageSource;
 
     public ContactDto save(ContactDto dto) {
@@ -41,7 +46,7 @@ public class ContactServiceImpl {
     public void delete(Long id) {
         Optional<Contact> contact = this.contactRepository.findById(id);
         if (!contact.isPresent()) {
-            throw new ParamNotFound(messageSource.getMessage
+            throw new NotFoundException(messageSource.getMessage
                     ("contact.not.found", null, Locale.ENGLISH));
         }
     }
