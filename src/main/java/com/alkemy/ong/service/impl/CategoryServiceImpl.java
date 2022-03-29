@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
 
             return categoryRepository.save(category);
         }else{
-            throw new NotFoundException("No existe");
+            throw new NotFoundException(messageSource.getMessage("category.not.found", null,Locale.ENGLISH));
         }
     }
 }

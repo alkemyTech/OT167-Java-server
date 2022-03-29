@@ -39,9 +39,9 @@ public class CategoryController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id,@RequestBody Category category){
         try{
-            Category category1= categoryService.updateCategory(id,category);
+            Category categoryUpdated= categoryService.updateCategory(id,category);
 
-            CategoryDto categoryDtoResponse = categoryMapper.categoryEntity2Dto(category);
+            CategoryDto categoryDtoResponse = categoryMapper.categoryEntity2Dto(categoryUpdated);
 
             return ResponseEntity.ok(categoryDtoResponse);
         }catch (NotFoundException e){
