@@ -6,6 +6,7 @@ import static com.alkemy.ong.enums.TipLog.INFO;
 import com.alkemy.ong.model.Organization;
 import com.alkemy.ong.model.User;
 import com.alkemy.ong.repository.OrganizationRepository;
+import com.alkemy.ong.exception.BadRequestException;
 import com.alkemy.ong.service.EmailService;
 import com.alkemy.ong.service.OrganizationService;
 import com.alkemy.ong.utils.UtilsLog;
@@ -27,6 +28,8 @@ import org.thymeleaf.context.Context;
 
 @Service
 public class EmailServiceImpl implements EmailService {
+    @Autowired
+    SendGrid sendGrid;
 
     @Value("${alkemy.ong.email.sender}")
     private String emailSender;
@@ -97,5 +100,25 @@ public class EmailServiceImpl implements EmailService {
         Optional<Organization> result = findAll.stream().findFirst();
         
         return result.get();
+    }
+  
+    @Override
+    public Response sendEmail(String subject,String recipentEmail, String message) {
+        Mail mail = new Mail(new Email(emailSender),
+                subject,
+                new Email(recipentEmail),
+                new Content("text/plain", message));
+        mail.setReplyTo(new Email(emailSender));
+        Request request = new Request();
+        Response response = null;
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            response = this.sendGrid.api(request);
+
+        }catch (IOException ex){
+            throw new BadRequestException(ex.getMessage());}
+        return response;
     }
 }

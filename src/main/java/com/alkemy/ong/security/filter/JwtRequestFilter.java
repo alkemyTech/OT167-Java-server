@@ -1,7 +1,7 @@
 package com.alkemy.ong.security.filter;
 
 import com.alkemy.ong.security.service.JwtUtils;
-import com.alkemy.ong.security.service.UserDetailsService;
+import com.alkemy.ong.security.service.UserDetailsCustomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsCustomService userDetailsService;
 
     @Autowired
     private JwtUtils jwtUtil;
@@ -54,9 +54,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                       .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
               SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
           }
-
         }
         chain.doFilter(request, response);
     }
-
 }
