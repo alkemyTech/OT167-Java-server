@@ -7,6 +7,7 @@ import com.alkemy.ong.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ public class CategoryController {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getCategory(@Valid @PathVariable Long id){
         return ResponseEntity.ok(categoryMapper.categoryToDto(categoryService.findById(id).get()));
