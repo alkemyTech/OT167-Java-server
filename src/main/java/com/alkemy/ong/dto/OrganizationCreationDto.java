@@ -12,6 +12,9 @@ public class OrganizationCreationDto {
     private String address;
     private int phone;
     private String email;
+    private String instagramUrl;
+    private String facebookUrl;
+    private String linkedInUrl;
     private String welcomeText;
     private String aboutUsText;
 }

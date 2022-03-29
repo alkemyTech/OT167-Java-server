@@ -44,6 +44,15 @@ public class Organization {
     private String welcomeText;
 
     @Nullable
+    private String linkedInUrl;
+
+    @Nullable
+    private String facebookUrl;
+
+    @Nullable
+    private String instagramUrl;
+
+    @Nullable
     @Column(name = "about_us")
     private String aboutUsText;
 
