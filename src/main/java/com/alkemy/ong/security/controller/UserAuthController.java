@@ -2,12 +2,13 @@ package com.alkemy.ong.security.controller;
 
 import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserDtoCreator;
-import com.alkemy.ong.dto.UserRegisterRequest;
-import com.alkemy.ong.dto.UserRegisterResponse;
 import com.alkemy.ong.exception.DataAlreadyExistException;
-import com.alkemy.ong.model.User;
+import com.alkemy.ong.security.dto.UserRegisterRequest;
+import com.alkemy.ong.security.dto.UserRegisterResponse;
+import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.security.service.JwtUtils;
+import com.alkemy.ong.security.service.UserDetailsCustomService;
 import com.alkemy.ong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,9 @@ public class UserAuthController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private UserDetailsCustomService userDetailsCustomService;
 
     @Autowired
     private UserMapper userMapper;
@@ -50,18 +54,18 @@ public class UserAuthController {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<User> logIn(@Valid @RequestBody UserDtoCreator userDto) throws Exception {
+    public ResponseEntity<UserEntity> logIn(@Valid @RequestBody UserDtoCreator userDto) throws Exception {
 
-        User user = userMapper.UserDtoToEntity(userDto);
+        UserEntity user = userMapper.UserDtoToEntity(userDto);
 
-        User userEntity = userService.findByEmail(user);
+        UserEntity userEntity = userService.findByEmail(user);
 
         return ResponseEntity.ok(userEntity);
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserRegisterResponse> registerUser(@Valid @RequestBody UserRegisterRequest userReq) throws DataAlreadyExistException, IOException {
-        return new ResponseEntity<>(userService.register(userReq), HttpStatus.CREATED);
+        return new ResponseEntity<>(userDetailsCustomService.register(userReq), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
