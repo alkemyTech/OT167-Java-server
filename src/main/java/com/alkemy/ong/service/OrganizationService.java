@@ -1,8 +1,6 @@
 package com.alkemy.ong.service;
-import com.alkemy.ong.model.Organization;
-
-import java.util.Optional;
+import com.alkemy.ong.dto.OrganizationDto;
 
 public interface OrganizationService {
-    Optional<Organization> findById(Long id);
+    OrganizationDto findById(Long id);
 }
