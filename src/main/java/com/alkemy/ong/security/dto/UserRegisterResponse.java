@@ -1,6 +1,6 @@
-package com.alkemy.ong.dto;
+package com.alkemy.ong.security.dto;
 
-
+import com.alkemy.ong.security.model.UserEntity;
 
 import lombok.*;
 
