@@ -5,6 +5,7 @@ import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Role;
 import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.repository.UserRepository;
+import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.security.service.JwtUtils;
@@ -13,10 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -57,22 +54,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity loginUser(UserEntity user) throws NotFoundException {
+    public UserRegisterResponse findByEmail(UserEntity user) throws NotFoundException {
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        UserEntity userFound = loginUser(user.getEmail());
+        UserEntity userFound = this.findByEmail(user.getEmail());
 
         if(!(passwordEncoder.matches(user.getPassword(),userFound.getPassword()))){
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
         }
-
-        return userFound;
+        return userMapper.user2UserRegisterResponseDto(userFound);
     }
 
-    @Override
-    public UserEntity loginUser(String email) {
-        return userRepository.findUserEntityByEmail(email);
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override

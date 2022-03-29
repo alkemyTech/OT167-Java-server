@@ -51,7 +51,7 @@ public class UserAuthController {
             username = jwtUtil.extractUsername(jwt);
         }
 
-        return ResponseEntity.ok(userMapper.convertUserToDto(userService.loginUser(username)));
+        return ResponseEntity.ok(userMapper.convertUserToDto(userService.findByEmail(username)));
     }
 
     @PostMapping("/login")
@@ -59,7 +59,7 @@ public class UserAuthController {
 
         UserEntity user = userMapper.UserDtoToEntity(userDto);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.loginUser(user));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.findByEmail(user));
     }
 
     @PostMapping("/register")
