@@ -2,6 +2,7 @@ package com.alkemy.ong.service.impl;
 
 import static com.alkemy.ong.enums.TipLog.ERROR;
 import static com.alkemy.ong.enums.TipLog.INFO;
+import com.alkemy.ong.exception.BadRequestException;
 import com.alkemy.ong.service.EmailService;
 import com.alkemy.ong.utils.UtilsLog;
 import com.sendgrid.Method;
@@ -21,6 +22,8 @@ import org.thymeleaf.context.Context;
 
 @Service
 public class EmailServiceImpl implements EmailService {
+    @Autowired
+    SendGrid sendGrid;
 
     @Autowired
     private Environment env;
@@ -74,5 +77,24 @@ public class EmailServiceImpl implements EmailService {
         request.setBody(mail.build());
 
         return request;
+    }
+    @Override
+    public Response sendEmail(String subject,String recipentEmail, String message) {
+        Mail mail = new Mail(new Email(emailSender),
+                subject,
+                new Email(recipentEmail),
+                new Content("text/plain", message));
+        mail.setReplyTo(new Email(emailSender));
+        Request request = new Request();
+        Response response = null;
+        try {
+            request.setMethod(Method.POST);
+            request.setEndpoint("mail/send");
+            request.setBody(mail.build());
+            response = this.sendGrid.api(request);
+
+        }catch (IOException ex){
+            throw new BadRequestException(ex.getMessage());}
+        return response;
     }
 }
