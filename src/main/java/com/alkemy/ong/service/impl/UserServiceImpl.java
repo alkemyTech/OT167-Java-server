@@ -1,12 +1,9 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.UserDto;
-import com.alkemy.ong.dto.UserRegisterRequest;
-import com.alkemy.ong.dto.UserRegisterResponse;
-import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Role;
-import com.alkemy.ong.model.User;
+import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.security.mapper.UserMapper;
@@ -44,15 +41,15 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<User> getUsers() {
+    public List<UserEntity> getUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public User findByEmail(User user) throws NotFoundException {
+    public UserEntity findByEmail(UserEntity user) throws NotFoundException {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        User userFound = userRepository.findByEmail(user.getEmail());
+        UserEntity userFound = userRepository.findByEmail(user.getEmail());
 
         if(!(passwordEncoder.matches(userFound.getPassword(), user.getPassword()))){
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
@@ -61,24 +58,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByEmail(String email) {
+    public UserEntity findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException {
-
-        if (this.findByEmail(userReq.getEmail()) != null) {
-            throw new DataAlreadyExistException(messageSource.getMessage("email.already.exist",null, Locale.ENGLISH));
-        }
-        User user = userMapper.userRegisterRequestDto2User(userReq);
-        User userSaved = userRepository.save(user);
-        return userMapper.user2UserRegisterResponseDto(userSaved);
-
-    }
-
-    @Override
-    public Optional<User> findUserById(Long id) {
+    public Optional<UserEntity> findUserById(Long id) {
         return Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
     }
 

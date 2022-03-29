@@ -1,6 +1,6 @@
 package com.alkemy.ong.dto;
 
-import java.sql.Timestamp;
+import com.alkemy.ong.security.dto.UserRegisterRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Getter;
