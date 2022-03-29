@@ -26,7 +26,7 @@ public class OrganizationController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/public")
-    public ResponseEntity<?> editOrganization(@RequestBody OrganizationCreationDto organizationCreationDto){
+    public ResponseEntity<?> editOrganization(@Valid @RequestBody OrganizationCreationDto organizationCreationDto){
         return ResponseEntity.ok(organizationService.editOrganization(organizationCreationDto));
     }
 }

@@ -1,6 +1,5 @@
 package com.alkemy.ong.dto;
 
-import com.alkemy.ong.model.User;
 import lombok.*;
 
 //@RequiredArgsConstructor
@@ -13,6 +12,5 @@ public class UserDto {
     private String lastName;
     private String email;
     private String photo;
-
 
 }

@@ -34,12 +34,6 @@ public class OrganizationServiceImpl implements OrganizationService {
         Organization organization = organizationRepository.findAll().get(0);
 
         String phone = String.valueOf(organizationCreationDto.getPhone());
-        if(organizationCreationDto.getName().isEmpty() || organizationCreationDto.getImage().isEmpty() ||
-            organizationCreationDto.getAddress().isEmpty() || phone.isEmpty() || organizationCreationDto.getEmail().isEmpty() ||
-            organizationCreationDto.getWelcomeText().isEmpty() || organizationCreationDto.getAboutUsText().isEmpty()){
-
-           throw new BadRequest(messageSource.getMessage("fields.empty",null, Locale.ENGLISH));
-        }
 
         organization.setName(organizationCreationDto.getName());
         organization.setImage(organizationCreationDto.getImage());
@@ -48,7 +42,6 @@ public class OrganizationServiceImpl implements OrganizationService {
         organization.setEmail(organizationCreationDto.getEmail());
         organization.setWelcomeText(organizationCreationDto.getWelcomeText());
         organization.setAboutUsText(organizationCreationDto.getAboutUsText());
-        organization.setUpdateDate(LocalDate.now());
 
         return organizationRepository.save(organization);
     }
