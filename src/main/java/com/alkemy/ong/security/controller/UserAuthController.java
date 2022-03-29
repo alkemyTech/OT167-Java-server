@@ -1,12 +1,11 @@
 package com.alkemy.ong.security.controller;
 
-import com.alkemy.ong.dto.UserDto;
-import com.alkemy.ong.dto.UserDtoCreator;
+import com.alkemy.ong.dto.*;
 import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.security.dto.UserRegisterRequest;
 import com.alkemy.ong.security.dto.UserRegisterResponse;
-import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.security.mapper.UserMapper;
+import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.security.service.JwtUtils;
 import com.alkemy.ong.security.service.UserDetailsCustomService;
 import com.alkemy.ong.service.UserService;
@@ -31,12 +30,14 @@ public class UserAuthController {
 
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private UserDetailsCustomService userDetailsCustomService;
 
     @Autowired
     private UserMapper userMapper;
+
+
 
     @GetMapping("/me")
     public ResponseEntity<?> userData(HttpServletRequest request){
@@ -53,14 +54,12 @@ public class UserAuthController {
         return ResponseEntity.ok(userMapper.convertUserToDto(userService.findByEmail(username)));
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<UserEntity> logIn(@Valid @RequestBody UserDtoCreator userDto) throws Exception {
+    @PostMapping("/login")
+    public ResponseEntity<?> logIn(@Valid @RequestBody UserDtoCreator userDto){
 
         UserEntity user = userMapper.UserDtoToEntity(userDto);
 
-        UserEntity userEntity = userService.findByEmail(user);
-
-        return ResponseEntity.ok(userEntity);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.findByEmail(user));
     }
 
     @PostMapping("/register")
@@ -73,7 +72,6 @@ public class UserAuthController {
     public ResponseEntity<List<UserDto>>getAllUsersD() {
         return new ResponseEntity<List<UserDto>>(userService.getAllUsers(), HttpStatus.OK);
     }
-
 
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDto> findUserById(@PathVariable Long id){

@@ -3,14 +3,17 @@ package com.alkemy.ong.service.impl;
 import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Role;
-import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.repository.UserRepository;
+import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.mapper.UserMapper;
+import com.alkemy.ong.security.model.UserEntity;
+import com.alkemy.ong.security.service.JwtUtils;
 import com.alkemy.ong.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +42,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
     @Override
     public List<UserEntity> getUsers() {
@@ -46,18 +54,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findByEmail(UserEntity user) throws NotFoundException {
+    public UserRegisterResponse findByEmail(UserEntity user) throws NotFoundException {
+
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-        UserEntity userFound = userRepository.findByEmail(user.getEmail());
+        UserEntity userFound = this.findByEmail(user.getEmail());
 
-        if(!(passwordEncoder.matches(userFound.getPassword(), user.getPassword()))){
+        if(!(passwordEncoder.matches(user.getPassword(),userFound.getPassword()))){
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
         }
-        return userFound;
+        return userMapper.user2UserRegisterResponseDto(userFound);
     }
 
-    @Override
     public UserEntity findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
@@ -76,4 +84,5 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream().map(user -> userMapper.convertUserToDto(user)).collect(Collectors.toList());
     }
+
 }
