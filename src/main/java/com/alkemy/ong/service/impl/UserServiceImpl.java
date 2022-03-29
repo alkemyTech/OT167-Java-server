@@ -57,9 +57,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loginUser(UserEntity user) throws NotFoundException {
+    public UserEntity loginUser(UserEntity user) throws NotFoundException {
 
-        /*PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         UserEntity userFound = loginUser(user.getEmail());
 
@@ -67,25 +67,7 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
         }
 
-        return userFound;*/
-
-        UserDetails userDetails = null;
-
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-        UserEntity userFound = userRepository.findUserEntityByEmail(user.getEmail());
-
-        try{
-            if((passwordEncoder.matches(user.getPassword(), userFound.getPassword()))){
-                Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword())
-                );
-                userDetails = (UserDetails) authentication.getPrincipal();
-            }
-        }catch (BadCredentialsException ex){
-            throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
-        }
-        return userDetails;
+        return userFound;
     }
 
     @Override

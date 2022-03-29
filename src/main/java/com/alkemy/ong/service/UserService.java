@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    UserDetails loginUser(UserEntity user) throws NotFoundException;
+    UserEntity loginUser(UserEntity user) throws NotFoundException;
 
     UserEntity loginUser(String username);
 
