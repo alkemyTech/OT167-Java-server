@@ -10,6 +10,7 @@ import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.security.service.JwtUtils;
 import com.alkemy.ong.security.service.UserDetailsCustomService;
 import com.alkemy.ong.service.UserService;
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import javax.persistence.EntityNotFoundException;
 
 @Controller
 @RequestMapping("/auth")
@@ -31,7 +33,7 @@ public class UserAuthController {
 
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private UserDetailsCustomService userDetailsCustomService;
 
@@ -39,13 +41,13 @@ public class UserAuthController {
     private UserMapper userMapper;
 
     @GetMapping("/me")
-    public ResponseEntity<?> userData(HttpServletRequest request){
+    public ResponseEntity<?> userData(HttpServletRequest request) {
         final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;
         String jwt = null;
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             username = jwtUtil.extractUsername(jwt);
         }
@@ -70,14 +72,19 @@ public class UserAuthController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>>getAllUsersD() {
+    public ResponseEntity<List<UserDto>> getAllUsersD() {
         return new ResponseEntity<List<UserDto>>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserDto> findUserById(@PathVariable Long id){
+    public ResponseEntity<UserDto> findUserById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
     }
-}
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Empty> delete(@PathVariable Long id) throws EntityNotFoundException {
+        userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+}

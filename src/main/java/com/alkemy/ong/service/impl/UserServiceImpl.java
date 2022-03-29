@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -39,7 +38,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
-
     @Override
     public List<UserEntity> getUsers() {
         return userRepository.findAll();
@@ -51,8 +49,8 @@ public class UserServiceImpl implements UserService {
 
         UserEntity userFound = userRepository.findByEmail(user.getEmail());
 
-        if(!(passwordEncoder.matches(userFound.getPassword(), user.getPassword()))){
-            throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
+        if (!(passwordEncoder.matches(userFound.getPassword(), user.getPassword()))) {
+            throw new NotFoundException(messageSource.getMessage("password.not.same", null, Locale.ENGLISH));
         }
         return userFound;
     }
@@ -64,7 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<UserEntity> findUserById(Long id) {
-        return Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
+        return Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found", null, Locale.ENGLISH))));
     }
 
     @Override
@@ -75,5 +73,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream().map(user -> userMapper.convertUserToDto(user)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void delete(Long id) {
+        Optional<UserEntity> user = findUserById(id);
+        user.get().setDeleted(Boolean.TRUE);
+        userRepository.save(user.get());        
     }
 }

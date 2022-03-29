@@ -20,6 +20,8 @@ public interface UserService {
     List<UserDto> getAllUsers();
 
     Optional<UserEntity> findUserById(Long id);
+
+    void delete(Long id);
 }
 
 
