@@ -55,7 +55,7 @@ public class UserAuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserEntity> logIn(@Valid @RequestBody UserDtoCreator userDto){
+    public ResponseEntity<?> logIn(@Valid @RequestBody UserDtoCreator userDto){
 
         UserEntity user = userMapper.UserDtoToEntity(userDto);
 

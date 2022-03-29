@@ -7,11 +7,16 @@ import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.security.model.UserEntity;
+import com.alkemy.ong.security.service.JwtUtils;
 import com.alkemy.ong.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -43,15 +48,18 @@ public class UserServiceImpl implements UserService {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    @Autowired
+    JwtUtils jwtUtils;
+
     @Override
     public List<UserEntity> getUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public UserEntity loginUser(UserEntity user) throws NotFoundException {
+    public UserDetails loginUser(UserEntity user) throws NotFoundException {
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        /*PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         UserEntity userFound = loginUser(user.getEmail());
 
@@ -59,7 +67,25 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
         }
 
-        return userFound;
+        return userFound;*/
+
+        UserDetails userDetails = null;
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        UserEntity userFound = userRepository.findUserEntityByEmail(user.getEmail());
+
+        try{
+            if((passwordEncoder.matches(user.getPassword(), userFound.getPassword()))){
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword())
+                );
+                userDetails = (UserDetails) authentication.getPrincipal();
+            }
+        }catch (BadCredentialsException ex){
+            throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
+        }
+        return userDetails;
     }
 
     @Override
