@@ -39,8 +39,6 @@ public class UserAuthController {
     @Autowired
     private UserMapper userMapper;
 
-
-
     @GetMapping("/me")
     public ResponseEntity<?> userData(HttpServletRequest request) {
         final String authorizationHeader = request.getHeader("Authorization");
@@ -80,10 +78,6 @@ public class UserAuthController {
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity<Empty> delete(@PathVariable Long id) throws EntityNotFoundException {
-        userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    
 
 }
