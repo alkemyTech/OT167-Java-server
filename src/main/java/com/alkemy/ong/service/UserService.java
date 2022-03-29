@@ -23,5 +23,5 @@ public interface UserService {
 
     List<UserDto> getAllUsers();
 
-    public UserRegisterResponse register(UserRegisterRequest userReq, Long id) throws DataAlreadyExistException, IOException;
+    public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException, IOException;
 }

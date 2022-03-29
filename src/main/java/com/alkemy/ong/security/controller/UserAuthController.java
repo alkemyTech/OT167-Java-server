@@ -64,7 +64,7 @@ public class UserAuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserRegisterResponse> registerUser(@Valid @RequestBody UserRegisterRequest userReq, @RequestParam Long id) throws DataAlreadyExistException, IOException {
-        return new ResponseEntity<>(userService.register(userReq, id), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.register(userReq), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

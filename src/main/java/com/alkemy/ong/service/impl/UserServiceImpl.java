@@ -19,8 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -69,14 +67,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRegisterResponse register(UserRegisterRequest userReq, Long id) throws DataAlreadyExistException {
+    public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException {
 
         if (this.findByEmail(userReq.getEmail()) != null) {
             throw new DataAlreadyExistException(messageSource.getMessage("email.already.exist",null, Locale.ENGLISH));
         }
         User user = userMapper.userRegisterRequestDto2User(userReq);
         User userSaved = userRepository.save(user);
-        emailService.sendWelcomeEmailTo(user, id);
+        emailService.sendWelcomeEmailTo(user);
         return userMapper.user2UserRegisterResponseDto(userSaved);
     }
 
