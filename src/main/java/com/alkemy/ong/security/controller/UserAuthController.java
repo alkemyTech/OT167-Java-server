@@ -14,12 +14,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/auth")
@@ -51,15 +54,15 @@ public class UserAuthController {
             username = jwtUtil.extractUsername(jwt);
         }
 
-        return ResponseEntity.ok(userMapper.convertUserToDto(userService.loginUser(username)));
+        return ResponseEntity.ok(userMapper.convertUserToDto(userService.findByEmail(username)));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserEntity> logIn(@Valid @RequestBody UserDtoCreator userDto){
+    public ResponseEntity<?> logIn(@Valid @RequestBody UserDtoCreator userDto){
 
         UserEntity user = userMapper.UserDtoToEntity(userDto);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.loginUser(user));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.findByEmail(user));
     }
 
     @PostMapping("/register")
@@ -78,4 +81,3 @@ public class UserAuthController {
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
     }
 }
-
