@@ -28,4 +28,7 @@ public interface UserService {
     public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException, IOException;
 
     Optional<UserEntity> findUserById(Long id);
+
+    void delete(Long id);
 }
+

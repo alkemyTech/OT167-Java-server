@@ -102,4 +102,11 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream().map(user -> userMapper.convertUserToDto(user)).collect(Collectors.toList());
     }
 
+    @Override
+    public void delete(Long id) {
+       Optional<UserEntity> user = findUserById(id);
+        user.get().setDeleted(Boolean.TRUE);
+        userRepository.save(user.get());    
+    }
+
 }
