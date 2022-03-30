@@ -1,7 +1,6 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.CategoryDto;
-import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.mapper.CategoryMapper;
 import com.alkemy.ong.model.Category;
 import com.alkemy.ong.repository.CategoryRepository;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -25,19 +24,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private MessageSource messageSource;
-
-    public Category save(Category category) throws DataAlreadyExistException {
-        Category categorySaved = null;
-
-        try{
-            if(categoryRepository.findByName(category.getName()) == null){
-                categorySaved = categoryRepository.save(category);
-            }
-        }catch (Exception ex) {
-            throw new DataAlreadyExistException(messageSource.getMessage("category.already.exist", null, Locale.ENGLISH));
-        }
-        return categorySaved;
-    }
 
     private List<Category> getALLCategories(){
         return categoryRepository.findAll();
@@ -54,11 +40,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     public List<String> getAllCategoriesByName() {
         List<CategoryDto> listAllCategoryDto = listAllCategoryDto();
-        List<String> ListcategoriesByName = new ArrayList<>();
-        for (CategoryDto categoryDto : listAllCategoryDto){
-            ListcategoriesByName.add(categoryDto.getName());
-    }
-    return ListcategoriesByName;
-
+        return listAllCategoryDto.stream()
+                .map(categoryDto ->  categoryDto.getName())
+                .collect(Collectors.toList());
     }
 }
+
