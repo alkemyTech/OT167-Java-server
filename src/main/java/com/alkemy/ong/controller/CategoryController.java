@@ -1,6 +1,7 @@
 package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.CategoryDto;
+import com.alkemy.ong.exception.BadRequestException;
 import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.mapper.CategoryMapper;
@@ -43,8 +44,8 @@ public class CategoryController {
 
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<?> categoryDelete(@PathVariable Long id){
-        categoryService.deleteCategoryById(id);
+    public ResponseEntity<?> categoryDelete(@PathVariable String id){
+        categoryService.deleteCategoryById(Long.valueOf(id));
         Map<String, String> message = new HashMap<>(){{put("message: ", messageSource
                 .getMessage("category.delete.sucessfuly", new Object[]{id}, Locale.ENGLISH));}};
         return ResponseEntity.ok().body(message);
