@@ -1,8 +1,8 @@
 package com.alkemy.ong.service.impl;
 
 
-import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.exception.DataAlreadyExistException;
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Category;
 import com.alkemy.ong.repository.CategoryRepository;
 import com.alkemy.ong.service.CategoryService;
@@ -22,7 +22,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     public Category save(Category category) throws DataAlreadyExistException {
         Category categorySaved = null;
-        
         try{
             if(categoryRepository.findByName(category.getName()) == null){
                 categorySaved = categoryRepository.save(category);
@@ -31,5 +30,17 @@ public class CategoryServiceImpl implements CategoryService {
             throw new DataAlreadyExistException(messageSource.getMessage("category.already.exist", null, Locale.ENGLISH));
         }
         return categorySaved;
+    }
+
+    public Category updateCategory(Long id, Category category ){
+        Category categoryExist=categoryRepository.findById(id).get();
+
+        if (categoryExist != null){
+            category.setIdCategories(categoryExist.getIdCategories());
+
+            return categoryRepository.save(category);
+        }else{
+            throw new NotFoundException(messageSource.getMessage("category.not.found", null,Locale.ENGLISH));
+        }
     }
 }
