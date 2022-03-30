@@ -1,5 +1,6 @@
 package com.alkemy.ong.security.service;
 
+import com.alkemy.ong.security.model.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -39,6 +40,11 @@ public class JwtUtils {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userDetails.getUsername());
+    }
+
+    public String generateJwt(UserEntity userEntity) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, userEntity.getEmail());
     }
 
     private  String createToken(Map<String, Object> claims, String subject) {

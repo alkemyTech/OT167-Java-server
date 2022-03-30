@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         if(!(passwordEncoder.matches(user.getPassword(),userFound.getPassword()))){
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
         }
-        return userMapper.user2UserRegisterResponseDto(userFound);
+        return userMapper.user2UserRegisterResponseDto(userFound, jwtUtils.generateJwt(userFound));
     }
 
     public UserEntity findByEmail(String email) {
