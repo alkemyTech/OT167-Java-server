@@ -8,4 +8,5 @@ public interface CategoryService {
 
     Category save(Category category) throws DataAlreadyExistException;
 
+    void deleteCategoryById(Long id);
 }
