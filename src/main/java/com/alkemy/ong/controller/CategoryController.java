@@ -45,9 +45,8 @@ public class CategoryController {
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> categoryDelete(@PathVariable Long id){
         categoryService.deleteCategoryById(id);
-        Map<String, String> message = new HashMap<>();
-        message.put("message: ", messageSource
-                .getMessage("category.delete.sucessfuly", new Object[]{id}, Locale.ENGLISH));
+        Map<String, String> message = new HashMap<>(){{put("message: ", messageSource
+                .getMessage("category.delete.sucessfuly", new Object[]{id}, Locale.ENGLISH));}};
         return ResponseEntity.ok().body(message);
         }
     }
