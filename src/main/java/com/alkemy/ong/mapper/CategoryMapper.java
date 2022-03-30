@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Locale;
+
 
 @Component
 public class CategoryMapper {
@@ -19,11 +23,25 @@ public class CategoryMapper {
     public Category categoryDto2Entity(CategoryDto categoryDto) throws IncorrectPatternExeption {
 
         Category newCategory = new Category();
+
         newCategory.setName(categoryDto.getName());
+
+
+        newCategory.setName(validate(categoryDto.getName()));
+
         newCategory.setDescription(categoryDto.getDescription());
         newCategory.setImage(categoryDto.getImage());
         return newCategory;
 
+    }
+
+
+    private String validate(String parameter) throws IncorrectPatternExeption {
+        boolean valid = parameter.matches("[A-Za-z]{1,4}");
+        if(!valid) {
+            throw new IncorrectPatternExeption(messageSource.getMessage("data.incorrect", null, Locale.ENGLISH));
+        }
+        return parameter;
     }
 
     public CategoryDto categoryEntity2Dto(Category category){

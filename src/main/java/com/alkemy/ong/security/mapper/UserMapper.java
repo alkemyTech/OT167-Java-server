@@ -39,6 +39,7 @@ public class UserMapper {
         user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
         user.setPhoto(dto.getPhoto());
+        user.setPassword(dto.getPassword());
         return user;
     }
     
@@ -61,22 +62,22 @@ public class UserMapper {
 
         return user;
     }
-    
-    public UserRegisterResponse user2UserRegisterResponseDto(UserEntity user) {
+
+    public UserRegisterResponse user2UserRegisterResponseDto(UserEntity user, String jwt) {
         if ( user == null ) {
             return null;
         }
         UserRegisterResponse user1 = new UserRegisterResponse();
+
         user1.setId(user.getId());
         user1.setFirstName(user.getFirstName());
         user1.setLastName(user.getLastName());
         user1.setEmail(user.getEmail());
+        user1.setJwt(jwt);
         return user1;
-        
-        
+
+
     }
 
-    
-  
-    
+
 }
