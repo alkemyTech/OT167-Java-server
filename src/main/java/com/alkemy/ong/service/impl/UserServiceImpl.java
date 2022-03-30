@@ -7,6 +7,7 @@ import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.mapper.UserMapper;
+import com.alkemy.ong.service.EmailService;
 import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.security.service.JwtUtils;
 import com.alkemy.ong.service.UserService;
@@ -18,11 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,6 +39,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+    
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -71,6 +72,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException {
+
+        if (this.findByEmail(userReq.getEmail()) != null) {
+            throw new DataAlreadyExistException(messageSource.getMessage("email.already.exist",null, Locale.ENGLISH));
+        }
+        User user = userMapper.userRegisterRequestDto2User(userReq);
+        User userSaved = userRepository.save(user);
+        emailService.sendWelcomeEmailTo(user);
+        return userMapper.user2UserRegisterResponseDto(userSaved);
+    }
+  
     public Optional<UserEntity> findUserById(Long id) {
         return Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
     }

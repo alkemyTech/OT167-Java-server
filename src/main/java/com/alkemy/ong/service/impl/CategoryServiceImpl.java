@@ -6,7 +6,6 @@ import com.alkemy.ong.model.Category;
 import com.alkemy.ong.repository.CategoryRepository;
 import com.alkemy.ong.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     public Category save(Category category) throws DataAlreadyExistException {
         Category categorySaved = null;
-        
         try{
             if(categoryRepository.findByName(category.getName()) == null){
                 categorySaved = categoryRepository.save(category);
@@ -43,5 +41,17 @@ public class CategoryServiceImpl implements CategoryService {
             throw new NotFoundException(messageSource.getMessage("not.found", null, Locale.ENGLISH));
         }
         return categoryRepository.findById(id);
+    }
+
+    public Category updateCategory(Long id, Category category ){
+        Category categoryExist=categoryRepository.findById(id).get();
+
+        if (categoryExist != null){
+            category.setIdCategories(categoryExist.getIdCategories());
+
+            return categoryRepository.save(category);
+        }else{
+            throw new NotFoundException(messageSource.getMessage("category.not.found", null,Locale.ENGLISH));
+        }
     }
 }

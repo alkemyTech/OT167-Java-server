@@ -35,7 +35,6 @@ public class CategoryMapper {
         }
         return parameter;
     }
-
     public CategoryDto categoryEntity2Dto(Category category){
 
         CategoryDto categoryDto = new CategoryDto();

@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CategoryDto {
 
+
     @NotBlank(message = "Name is mandatory")
     private String name;
     private Long id;
