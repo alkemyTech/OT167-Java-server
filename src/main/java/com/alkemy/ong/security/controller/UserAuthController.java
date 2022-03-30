@@ -78,6 +78,4 @@ public class UserAuthController {
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
     }
 
-    
-
 }

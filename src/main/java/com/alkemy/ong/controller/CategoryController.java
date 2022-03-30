@@ -6,6 +6,7 @@ import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.mapper.CategoryMapper;
 import com.alkemy.ong.model.Category;
 import com.alkemy.ong.service.CategoryService;
+import com.alkemy.ong.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -35,5 +37,18 @@ public class CategoryController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryDtoResponse);
 
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> updateCategory(@PathVariable Long id,@RequestBody Category category){
+        try{
+            Category categoryUpdated= categoryService.updateCategory(id,category);
+
+            CategoryDto categoryDtoResponse = categoryMapper.categoryEntity2Dto(categoryUpdated);
+
+            return ResponseEntity.ok(categoryDtoResponse);
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(category);
+        }
     }
 }
