@@ -4,11 +4,10 @@ import com.alkemy.ong.enums.MailMessage;
 import static com.alkemy.ong.enums.TipLog.ERROR;
 import static com.alkemy.ong.enums.TipLog.INFO;
 import com.alkemy.ong.model.Organization;
-import com.alkemy.ong.model.User;
 import com.alkemy.ong.repository.OrganizationRepository;
 import com.alkemy.ong.exception.BadRequestException;
+import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.service.EmailService;
-import com.alkemy.ong.service.OrganizationService;
 import com.alkemy.ong.utils.UtilsLog;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -42,7 +41,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private OrganizationRepository organizationRepository;
 
-    public void sendWelcomeEmailTo(User user) {
+    public void sendWelcomeEmailTo(UserEntity user) {
         SendGrid sg = new SendGrid(api_key);
 
         try {
@@ -61,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
 
     }
 
-    private String preparedWelcomeBodyEmail(User user, Organization org) {
+    private String preparedWelcomeBodyEmail(UserEntity user, Organization org) {
 
         Context context = new Context();
         context.setVariable("contactMail", MailMessage.CONTACT_MAIL + org.getEmail());
@@ -73,7 +72,7 @@ public class EmailServiceImpl implements EmailService {
 
     }
 
-    public Mail buildMail(User user, Organization org) {
+    public Mail buildMail(UserEntity user, Organization org) {
 
         Content content = new Content("text/html", preparedWelcomeBodyEmail(user, org));
         Email fromEmail = new Email(emailSender);
@@ -83,7 +82,7 @@ public class EmailServiceImpl implements EmailService {
         return new Mail(fromEmail, subject, toEmail, content);
     }
 
-    public Request buildRequest(User user, Organization org) throws IOException {
+    public Request buildRequest(UserEntity user, Organization org) throws IOException {
 
         Mail mail = this.buildMail(user, org);
         Request request = new Request();
