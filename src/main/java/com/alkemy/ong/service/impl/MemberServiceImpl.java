@@ -25,6 +25,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDto saveMember(MemberDto memberDto) {
+        if(memberDto.getName() == null) throw new BadRequestException(messageSource.getMessage("member.name.empty", null, Locale.ENGLISH));
         if(memberDto.getName().matches(".*[0-9].*")) throw new BadRequestException(messageSource.getMessage("member.error.name",new Object[]{memberDto.getName()}, Locale.ENGLISH));
         Member member = memberRepository.save(memberMapper.creationMember(memberDto));
         return memberMapper.memberToDto(member);
