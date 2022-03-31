@@ -7,13 +7,11 @@ import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.service.UserService;
 import java.util.Collections;
-import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Locale;
 import org.springframework.context.MessageSource;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,6 +32,9 @@ public class UserDetailsCustomService implements UserDetailsService {
     @Autowired
     private MessageSource messageSource;
 
+    @Autowired
+    private JwtUtils jwtUtils;
+
     public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException {
 
         if (userService.findByEmail(userReq.getEmail()) != null) {
@@ -41,9 +42,12 @@ public class UserDetailsCustomService implements UserDetailsService {
         }
         UserEntity user = userMapper.userRegisterRequestDto2User(userReq);
         UserEntity userSaved = userRepository.save(user);
-        return userMapper.user2UserRegisterResponseDto(userSaved);
+        String jwt = jwtUtils.generateJwt(userSaved);
+        return userMapper.user2UserRegisterResponseDto(userSaved, jwt);
              
     }
+
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

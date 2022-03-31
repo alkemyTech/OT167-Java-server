@@ -1,6 +1,5 @@
 package com.alkemy.ong.mapper;
 
-
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.model.Category;
@@ -9,6 +8,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 import java.util.Locale;
+
+
 
 @Component
 public class CategoryMapper {
@@ -37,7 +38,7 @@ public class CategoryMapper {
     public CategoryDto categoryEntity2Dto(Category category){
 
         CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setId(category.getIdCategories());
+       // categoryDto.setId(category.getIdCategories());
         categoryDto.setName(category.getName());
         categoryDto.setDescription(category.getDescription());
         categoryDto.setImage(category.getImage());
