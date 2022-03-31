@@ -1,5 +1,7 @@
 package com.alkemy.ong.service.impl;
+
 import com.alkemy.ong.dto.CategoryDto;
+import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.mapper.CategoryMapper;
 import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.NotFoundException;
@@ -21,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
+
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
@@ -45,6 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(categoryDto ->  categoryDto.getName())
                 .collect(Collectors.toList());
     }
+
     public Category save(Category category) throws DataAlreadyExistException {
         Category categorySaved = null;
         try{
@@ -74,6 +78,15 @@ public class CategoryServiceImpl implements CategoryService {
             throw new NotFoundException(messageSource.getMessage("category.not.found", null,Locale.ENGLISH));
         }
     }
+
+    public String validate(String parameter) throws IncorrectPatternExeption {
+        boolean valid = parameter.matches("[A-Za-z]{1,4}");
+        if(!valid) {
+            throw new IncorrectPatternExeption(messageSource.getMessage("data.incorrect", null, Locale.ENGLISH));
+        }
+        return parameter;
+    }
+
     @Override
     public void deleteCategoryById(Long id) {
         Optional<Category> category = Optional.ofNullable(categoryRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource
