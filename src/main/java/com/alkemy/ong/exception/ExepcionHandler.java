@@ -1,4 +1,6 @@
 package com.alkemy.ong.exception;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -13,11 +15,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class ExepcionHandler {
+    @Autowired
+    private MessageSource messageSource;
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<MessagesInfo> handleValidationError(HttpServletRequest request, ConstraintViolationException exception) {
         Map<String, String> transformedError = new HashMap<>();
@@ -46,7 +51,20 @@ public class ExepcionHandler {
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<MessageInfo> notFoundExcept(HttpServletRequest request, NotFoundException exception) {
         String message = exception.getMessage();
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.NOT_FOUND.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler({BadRequestException.class})
+    public ResponseEntity<MessageInfo> badException(HttpServletRequest request, BadRequestException exception) {
+        String message = exception.getMessage();
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler({NumberFormatException.class})
+    public ResponseEntity<MessageInfo> notFoundExcept(HttpServletRequest request) {
+        String message = messageSource.getMessage
+                ("message.error.id.not.number", null, Locale.ENGLISH);
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.FORBIDDEN.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
     }
 }
