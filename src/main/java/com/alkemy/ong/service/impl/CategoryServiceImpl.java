@@ -1,22 +1,16 @@
 package com.alkemy.ong.service.impl;
 
 
-
 import com.alkemy.ong.dto.CategoryDto;
+import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.mapper.CategoryMapper;
-
-
 import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.NotFoundException;
-
-
-import com.alkemy.ong.exception.NotFoundException;
-import com.alkemy.ong.exception.DataAlreadyExistException;
-
 import com.alkemy.ong.model.Category;
 import com.alkemy.ong.repository.CategoryRepository;
 import com.alkemy.ong.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +28,6 @@ import java.util.Optional;
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
 
-
     @Autowired
     private CategoryRepository categoryRepository;
 
@@ -43,10 +36,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
     private MessageSource messageSource;
-
-    private final CategoryRepository categoryRepository;
-    private final MessageSource messageSource;
-
 
     private List<Category> getALLCategories(){
         return categoryRepository.findAll();
@@ -67,9 +56,6 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(categoryDto ->  categoryDto.getName())
                 .collect(Collectors.toList());
     }
-}
-
-    private MessageSource messageSource;
 
     public Category save(Category category) throws DataAlreadyExistException {
         Category categorySaved = null;
@@ -102,5 +88,15 @@ public class CategoryServiceImpl implements CategoryService {
         }else{
             throw new NotFoundException(messageSource.getMessage("category.not.found", null,Locale.ENGLISH));
         }
+
     }
+
+    public String validate(String parameter) throws IncorrectPatternExeption {
+        boolean valid = parameter.matches("[A-Za-z]{1,4}");
+        if(!valid) {
+            throw new IncorrectPatternExeption(messageSource.getMessage("data.incorrect", null, Locale.ENGLISH));
+        }
+        return parameter;
+    }
+
 }

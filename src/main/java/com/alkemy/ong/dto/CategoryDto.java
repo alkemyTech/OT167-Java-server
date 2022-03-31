@@ -1,21 +1,9 @@
 package com.alkemy.ong.dto;
 
-
-
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.validation.constraints.NotBlank;
-
-@Getter
-@Setter
-public class CategoryDto {
-
-
-
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
+
 
 @Data
 @AllArgsConstructor
@@ -27,4 +15,5 @@ public class CategoryDto {
     private Long id;
     private String description;
     private String image;
+
 }
