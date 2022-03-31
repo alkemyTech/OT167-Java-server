@@ -39,5 +39,7 @@ public class AmazonS3Configuration {
         return secretKey;
     }
 
-    
+    public String getRegion() {
+        return region;
+    } 
 }

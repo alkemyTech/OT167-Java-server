@@ -2,7 +2,8 @@ package com.alkemy.ong.dto;
 
 import lombok.*;
 
-//@RequiredArgsConstructor
+@Getter
+@Setter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

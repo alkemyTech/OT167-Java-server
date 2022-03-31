@@ -1,11 +1,12 @@
 package com.alkemy.ong.dto;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import javax.validation.constraints.NotBlank;
 
-import lombok.*;
-
-import javax.validation.constraints.*;
-
+@Getter
+@Setter
 @RequiredArgsConstructor
-@Getter @Setter
 public class CategoryDto {
     @NotBlank(message = "Name is mandatory")
     //@Pattern("{\D}")
@@ -13,5 +14,4 @@ public class CategoryDto {
     private Long id;
     private String description;
     private String image;
-
 }
