@@ -36,18 +36,10 @@ public class CategoryMapper {
     }
 
 
-    private String validate(String parameter) throws IncorrectPatternExeption {
-        boolean valid = parameter.matches("[A-Za-z]{1,4}");
-        if(!valid) {
-            throw new IncorrectPatternExeption(messageSource.getMessage("data.incorrect", null, Locale.ENGLISH));
-        }
-        return parameter;
-    }
-
     public CategoryDto categoryEntity2Dto(Category category){
 
         CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setId(category.getIdCategories());
+       // categoryDto.setId(category.getIdCategories());
         categoryDto.setName(category.getName());
         categoryDto.setDescription(category.getDescription());
         categoryDto.setImage(category.getImage());
