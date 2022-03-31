@@ -17,10 +17,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/categories")
@@ -36,16 +38,19 @@ public class CategoryController {
     public ResponseEntity<List<String>> listCategoriesByName(){
         return ResponseEntity.ok().body(categoryService.getAllCategoriesByName());
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<?> getCategory(@Valid @PathVariable Long id) {
         return ResponseEntity.ok(categoryMapper.categoryEntity2Dto(categoryService.findById(id).get()));
     }
-    @PostMapping()
+
+    @PostMapping
     public ResponseEntity<CategoryDto> addNewCategory(@Valid @RequestBody CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption {
         Category category = categoryService.save(categoryMapper.categoryDto2Entity(categoryDto));
         CategoryDto categoryDtoResponse = categoryMapper.categoryEntity2Dto(category);
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryDtoResponse);
+
     }
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id,@RequestBody Category category){
