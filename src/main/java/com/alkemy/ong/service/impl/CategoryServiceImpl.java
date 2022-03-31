@@ -2,6 +2,7 @@ package com.alkemy.ong.service.impl;
 
 
 import com.alkemy.ong.exception.DataAlreadyExistException;
+import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Category;
 import com.alkemy.ong.repository.CategoryRepository;
@@ -23,8 +24,10 @@ public class CategoryServiceImpl implements CategoryService {
     public Category save(Category category) throws DataAlreadyExistException {
         Category categorySaved = null;
         try{
-            if(categoryRepository.findByName(category.getName()) == null){
-                categorySaved = categoryRepository.save(category);
+            if(categoryRepository.findByName(category.getName()) == null ){
+                if(validate(category.getName())){
+                    categorySaved = categoryRepository.save(category);
+                }
             }
         }catch (Exception ex) {
             throw new DataAlreadyExistException(messageSource.getMessage("category.already.exist", null, Locale.ENGLISH));
@@ -42,5 +45,13 @@ public class CategoryServiceImpl implements CategoryService {
         }else{
             throw new NotFoundException(messageSource.getMessage("category.not.found", null,Locale.ENGLISH));
         }
+    }
+
+    private Boolean validate(String parameter) throws IncorrectPatternExeption {
+        boolean valid = parameter.matches("/D");
+        if(!valid) {
+            throw new IncorrectPatternExeption(messageSource.getMessage("data.incorrect", null, Locale.ENGLISH));
+        }
+        return true;
     }
 }

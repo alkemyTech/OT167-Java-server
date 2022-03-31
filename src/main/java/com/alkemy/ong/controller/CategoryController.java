@@ -28,7 +28,7 @@ public class CategoryController {
     @Autowired
     private CategoryMapper categoryMapper;
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<CategoryDto> addNewCategory(@Valid @RequestBody CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption {
 
         Category category = categoryService.save(categoryMapper.categoryDto2Entity(categoryDto));

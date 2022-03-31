@@ -1,6 +1,7 @@
 package com.alkemy.ong.service.impl;
 import com.alkemy.ong.dto.OrganizationCreationDto;
 import com.alkemy.ong.dto.OrganizationDto;
+import com.alkemy.ong.dto.UrlOrganizationDto;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.OrganizationMapper;
 import com.alkemy.ong.model.Organization;
@@ -44,6 +45,18 @@ public class OrganizationServiceImpl implements OrganizationService {
         organization.setAboutUsText(organizationCreationDto.getAboutUsText());
 
         return organizationRepository.save(organization);
+    }
+
+    @Override
+    public OrganizationDto editOrganizationUrl(UrlOrganizationDto urlOrganizationDto, Long id) {
+        Organization organization = organizationRepository.findById(id).get();
+        //caso en que no encuentra la organizacion
+        organization.setLinkedInUrl(urlOrganizationDto.getLinkedInUrl());
+        organization.setFacebookUrl(urlOrganizationDto.getFacebookUrl());
+        organization.setInstagramUrl(urlOrganizationDto.getInstagramUrl());
+
+        organization = organizationRepository.save(organization);
+        return organizationMapper.organizationToDto(organization);
     }
 
 }
