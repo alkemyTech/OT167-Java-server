@@ -29,9 +29,9 @@ public class ContactController {
     public ResponseEntity<?> contact(@Valid @RequestBody ContactDto contactDto, WebRequest request) {
         contactService.save(contactDto);
         emailService.sendEmail(
-                messageSource.getMessage("email.subject", new Object[]{contactDto.getName()}, Locale.ENGLISH),
+                messageSource.getMessage("contact.email.subject", new Object[]{contactDto.getName()}, Locale.ENGLISH),
                 contactDto.getEmail(),
-                messageSource.getMessage("email.message",null, Locale.ENGLISH));
+                messageSource.getMessage("contact.email.message",null, Locale.ENGLISH));
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageInfo(
                 messageSource.getMessage("contact.registered.successfully",null, Locale.ENGLISH),
                 HttpStatus.CREATED.value(),
