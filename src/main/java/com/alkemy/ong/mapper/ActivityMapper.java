@@ -2,8 +2,8 @@ package com.alkemy.ong.mapper;
 
 import com.alkemy.ong.dto.ActivityDto;
 import com.alkemy.ong.model.Activity;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,11 +32,8 @@ public class ActivityMapper {
     
     public List<ActivityDto> listActivityDto(List<Activity> listActivity){
         
-        List<ActivityDto> result = new ArrayList<>();
-        for (Activity activity : listActivity) {
-            result.add(activityToDTO(activity));
-        }
-       return result; 
+        return listActivity.stream()
+                .map(activity -> activityToDTO(activity))
+                .collect(Collectors.toList());
     }
-    
 }

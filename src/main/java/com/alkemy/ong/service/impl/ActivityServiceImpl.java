@@ -46,9 +46,9 @@ public class ActivityServiceImpl implements ActivityService{
     
     public Activity controlChanges(ActivityDto activityDto)throws NotFoundException{
         
-        if (activityDto.getName() == null) {
+        if (activityDto.getName().isBlank()) {
             throw new NotFoundException(messageSource.getMessage("name.not.null",null, Locale.ENGLISH));
-        } else if(activityDto.getContent() == null){
+        } else if(activityDto.getContent().isBlank()){
             throw new NotFoundException(messageSource.getMessage("content.not.null",null, Locale.ENGLISH));
         } 
         
