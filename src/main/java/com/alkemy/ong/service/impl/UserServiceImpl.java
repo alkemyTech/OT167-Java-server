@@ -77,17 +77,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-    @Override
-    public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException {
-
-        if (this.findByEmail(userReq.getEmail()) != null) {
-            throw new DataAlreadyExistException(messageSource.getMessage("email.already.exist",null, Locale.ENGLISH));
-        }
-        UserEntity user = userMapper.userRegisterRequestDto2User(userReq);
-        UserEntity userSaved = userRepository.save(user);
-        return userMapper.user2UserRegisterResponseDto(userSaved);
-    }
-  
     public Optional<UserEntity> findUserById(Long id) {
         return Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
     }
