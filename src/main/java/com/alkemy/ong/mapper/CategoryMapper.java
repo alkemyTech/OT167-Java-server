@@ -7,11 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import java.util.Locale;
+
 
 
 @Component
@@ -24,18 +21,20 @@ public class CategoryMapper {
 
         Category newCategory = new Category();
 
-        newCategory.setName(categoryDto.getName());
-
-
         newCategory.setName(validate(categoryDto.getName()));
-
         newCategory.setDescription(categoryDto.getDescription());
         newCategory.setImage(categoryDto.getImage());
         return newCategory;
 
     }
 
-
+    private String validate(String parameter) throws IncorrectPatternExeption {
+        boolean valid = parameter.matches("[A-Za-z]{1,4}");
+        if(!valid) {
+            throw new IncorrectPatternExeption(messageSource.getMessage("data.incorrect", null, Locale.ENGLISH));
+        }
+        return parameter;
+    }
     public CategoryDto categoryEntity2Dto(Category category){
 
         CategoryDto categoryDto = new CategoryDto();
@@ -45,22 +44,4 @@ public class CategoryMapper {
         categoryDto.setImage(category.getImage());
         return categoryDto;
     }
-
-
-    public List<Category> categoryDTOList2EntityyList(List<CategoryDto> dtos) throws IncorrectPatternExeption {
-        List<Category> categories = new ArrayList<>();
-        for (CategoryDto dto : dtos){
-            categories.add(this.categoryDto2Entity(dto));
-        }
-        return categories;
-    }
-
-    public List<CategoryDto> categoryList2CategoryDTOList(List<Category> categories){
-        List<CategoryDto> dtos = new ArrayList<>();
-        for (Category category : categories){
-            dtos.add(categoryEntity2Dto(category));
-        }
-        return dtos;
-    }
-
 }

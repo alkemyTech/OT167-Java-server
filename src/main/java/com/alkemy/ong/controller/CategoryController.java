@@ -1,18 +1,5 @@
 package com.alkemy.ong.controller;
 
-
-import com.alkemy.ong.mapper.CategoryMapper;
-import com.alkemy.ong.service.CategoryService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-@RestController
-@RequiredArgsConstructor
-
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.IncorrectPatternExeption;
@@ -33,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
-
 @RequestMapping("/categories")
 public class CategoryController {
 
@@ -44,22 +30,11 @@ public class CategoryController {
     private CategoryMapper categoryMapper;
 
 
-
-
-
-    @GetMapping
-    public ResponseEntity<List<String>> listCategoriesByName(){
-        return ResponseEntity.ok().body(categoryService.getAllCategoriesByName());
-    }
-
-
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getCategory(@Valid @PathVariable Long id) {
         return ResponseEntity.ok(categoryMapper.categoryEntity2Dto(categoryService.findById(id).get()));
     }
-
     @PostMapping()
     public ResponseEntity<CategoryDto> addNewCategory(@Valid @RequestBody CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption {
 
@@ -84,5 +59,4 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(category);
         }
     }
-
 }
