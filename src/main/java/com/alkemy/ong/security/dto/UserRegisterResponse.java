@@ -1,6 +1,5 @@
 package com.alkemy.ong.security.dto;
 
-import com.alkemy.ong.security.model.UserEntity;
 
 import lombok.*;
 
@@ -14,6 +13,6 @@ public class UserRegisterResponse {
     private String firstName;
     private String lastName;
     private String email;
-    
+    private String jwt;
 
 }

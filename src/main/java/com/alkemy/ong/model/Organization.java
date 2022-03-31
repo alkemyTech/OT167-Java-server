@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.lang.Nullable;
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,18 +27,23 @@ public class Organization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Name cannot be empty")
     @NotNull(message = "Name cannot be null")
     private String name;
 
+    @NotEmpty(message = "Name cannot be empty")
     @NotNull(message = "Image cannot be null")
     private String image;
 
+    @NotEmpty(message = "Name cannot be empty")
     @Nullable
     private String address;
 
+    @NotEmpty(message = "Name cannot be empty")
     @Nullable
     private Integer phone;
 
+    @NotEmpty(message = "Name cannot be empty")
     @NotNull(message = "email cannot be null")
     private String email;
 
