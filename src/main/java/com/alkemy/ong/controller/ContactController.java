@@ -30,10 +30,10 @@ public class ContactController {
     @PostMapping("/register")
     public ResponseEntity<?> contact(@Valid @RequestBody ContactDto contactDto, WebRequest request) {
         contactService.save(contactDto);
-//        emailService.sendEmail(
-//                messageSource.getMessage("contact.email.subject", new Object[]{contactDto.getName()}, Locale.ENGLISH),
-//                contactDto.getEmail(),
-//                messageSource.getMessage("contact.email.message",null, Locale.ENGLISH));
+        emailService.sendEmail(
+                messageSource.getMessage("contact.email.subject", new Object[]{contactDto.getName()}, Locale.ENGLISH),
+                contactDto.getEmail(),
+                messageSource.getMessage("contact.email.message",null, Locale.ENGLISH));
         return ResponseEntity.status(HttpStatus.CREATED).body(new MessageInfo(
                 messageSource.getMessage("contact.registered.successfully",null, Locale.ENGLISH),
                 HttpStatus.CREATED.value(),
