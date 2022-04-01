@@ -10,6 +10,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,9 @@ public class Organization {
     @NotEmpty(message = "Address cannot be empty")
     private String address;
 
-    @NotEmpty(message = "Phone cannot be empty")
-    private Integer phone;
+    @NotNull(message = "Phone cannot be empty")
+    @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$", message = "number no valid")
+    private String phone;
 
     @NotEmpty(message = "Email cannot be empty")
     //@NotNull(message = "email cannot be null")

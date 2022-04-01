@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -29,5 +31,11 @@ public class MemberServiceImpl implements MemberService {
         if(memberDto.getName().matches(".*[0-9].*")) throw new BadRequestException(messageSource.getMessage("member.error.name",new Object[]{memberDto.getName()}, Locale.ENGLISH));
         Member member = memberRepository.save(memberMapper.creationMember(memberDto));
         return memberMapper.memberToDto(member);
+    }
+
+    @Override
+    public List<MemberDto> listAllMembers() {
+        List<Member> memberList = memberRepository.findAll();
+        return memberMapper.memberListToDtoList(memberList);
     }
 }
