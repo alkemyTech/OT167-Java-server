@@ -6,6 +6,7 @@ import com.alkemy.ong.security.dto.UserRegisterRequest;
 import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.service.UserService;
+import com.alkemy.ong.service.impl.EmailServiceImpl;
 import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class UserDetailsCustomService implements UserDetailsService {
 
     @Autowired
     private JwtUtils jwtUtils;
+    
+    @Autowired
+    private EmailServiceImpl emailServiceImpl;
 
     public UserRegisterResponse register(UserRegisterRequest userReq) throws DataAlreadyExistException {
 
@@ -42,6 +46,7 @@ public class UserDetailsCustomService implements UserDetailsService {
         }
         UserEntity user = userMapper.userRegisterRequestDto2User(userReq);
         UserEntity userSaved = userRepository.save(user);
+        emailServiceImpl.sendWelcomeEmailTo(user);
         String jwt = jwtUtils.generateJwt(userSaved);
         return userMapper.user2UserRegisterResponseDto(userSaved, jwt);
              

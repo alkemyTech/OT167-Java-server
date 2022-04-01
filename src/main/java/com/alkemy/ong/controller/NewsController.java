@@ -25,4 +25,10 @@ public class NewsController {
         NewsDto newsSaved = newsService.save(newsDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newsSaved);
     }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<NewsDto> findNewsById(@PathVariable Long id){
+        NewsDto newsDto = newsService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(newsDto);
+    }
 }
