@@ -28,23 +28,21 @@ public class Organization {
     private Long id;
 
     @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "Name cannot be null")
+    //@NotNull(message = "Name cannot be null")
     private String name;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "Image cannot be null")
+    @NotEmpty(message = "Image cannot be empty")
+    //@NotNull(message = "Image cannot be null")
     private String image;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @Nullable
+    @NotEmpty(message = "Address cannot be empty")
     private String address;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @Nullable
+    @NotEmpty(message = "Phone cannot be empty")
     private Integer phone;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "email cannot be null")
+    @NotEmpty(message = "Email cannot be empty")
+    //@NotNull(message = "email cannot be null")
     private String email;
 
     @NotNull(message = "Welcome text cannot be null")

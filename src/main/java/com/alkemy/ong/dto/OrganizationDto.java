@@ -10,6 +10,6 @@ public class OrganizationDto{
     private String instagramUrl;
     private String facebookUrl;
     private String linkedInUrl;
-    private int phone;
+    private Integer phone;
 
 }

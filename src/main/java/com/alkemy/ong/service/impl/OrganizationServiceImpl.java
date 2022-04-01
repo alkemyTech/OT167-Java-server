@@ -59,4 +59,12 @@ public class OrganizationServiceImpl implements OrganizationService {
         return organizationMapper.organizationToDto(organization);
     }
 
+    @Override
+    public OrganizationDto save(OrganizationCreationDto organizationCreationDto) {
+
+        Organization organization = organizationMapper.creationOrgFromOrganizationDto(organizationCreationDto);
+
+        return organizationMapper.organizationToDto(organizationRepository.save(organization));
+    }
+
 }

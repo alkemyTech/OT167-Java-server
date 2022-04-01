@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 public class CategoryDto {
 
     @NotBlank(message = "Name is mandatory")
-    //@Pattern("{\D}")
     private String name;
     private Long id;
     private String description;

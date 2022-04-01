@@ -9,4 +9,6 @@ public interface OrganizationService {
     Organization editOrganization(OrganizationCreationDto organizationCreationDto);
 
     OrganizationDto editOrganizationUrl(UrlOrganizationDto urlOrganizationDto, Long id);
+
+    OrganizationDto save(OrganizationCreationDto organizationCreationDto);
 }

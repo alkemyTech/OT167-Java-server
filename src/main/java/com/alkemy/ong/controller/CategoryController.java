@@ -47,9 +47,8 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryDto> addNewCategory(@Valid @RequestBody CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption {
-        Category category = categoryService.save(categoryMapper.categoryDto2Entity(categoryDto));
-        CategoryDto categoryDtoResponse = categoryMapper.categoryEntity2Dto(category);
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryDtoResponse);
+        //CategoryDto categoryDtoResponse = categoryMapper.categoryEntity2Dto(category);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.save(categoryDto));
 
     }
     @PutMapping(value = "/{id}")

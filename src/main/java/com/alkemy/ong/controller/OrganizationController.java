@@ -35,4 +35,9 @@ public class OrganizationController {
     public ResponseEntity<?> addUrlContact(@RequestBody UrlOrganizationDto urlOrganizationDto, @PathVariable Long id){
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(organizationService.editOrganizationUrl(urlOrganizationDto,id));
     }
+
+    @PostMapping
+    public ResponseEntity<OrganizationDto> save(@Valid @RequestBody OrganizationCreationDto organizationCreationDto){
+        return ResponseEntity.ok(organizationService.save(organizationCreationDto));
+    }
 }
