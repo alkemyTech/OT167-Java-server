@@ -6,4 +6,5 @@ public interface NewsService {
 
     NewsDto save(NewsDto newsDto);
 
+    void delete(Long id);
 }
