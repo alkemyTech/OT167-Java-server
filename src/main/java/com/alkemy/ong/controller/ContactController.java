@@ -40,7 +40,7 @@ public class ContactController {
                 ((ServletWebRequest)request).getRequest().getRequestURI()));
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping(value = "/")
+    @GetMapping
     public ResponseEntity<List<ContactDto>> getAllContacts(){
         return ResponseEntity.ok().body(contactService.getAllContacts());
     }
