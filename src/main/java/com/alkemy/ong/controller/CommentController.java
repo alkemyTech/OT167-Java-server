@@ -24,8 +24,12 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<?> addNewComment(@Valid @RequestBody CommentDto commentDto){
-       Comment commentSaved = commentService.save(commentMapper.commentDto2Entity(commentDto));
-       CommentDto commentDtoResponse = commentMapper.commentEntity2Dto(commentSaved);
-       return ResponseEntity.status(HttpStatus.CREATED).body(commentDtoResponse);
+        try{
+            Comment commentSaved = commentService.save(commentMapper.commentDto2Entity(commentDto));
+            CommentDto commentDtoResponse = commentMapper.commentEntity2Dto(commentSaved);
+            return ResponseEntity.status(HttpStatus.CREATED).body(commentDtoResponse);
+        }catch (NullPointerException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getCause().getMessage());
+        }
     }
 }

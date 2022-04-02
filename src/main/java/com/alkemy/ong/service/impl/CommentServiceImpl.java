@@ -1,9 +1,11 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.model.Comment;
+import com.alkemy.ong.model.News;
 import com.alkemy.ong.repository.CommentRepository;
 import com.alkemy.ong.repository.NewsRepository;
 import com.alkemy.ong.repository.UserRepository;
+import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -24,16 +26,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment save(Comment comment) {
-
         if (comment!=null){
-
-            if (comment.getNews_id()==null){
-                throw new NullPointerException(messageSource.getMessage("news.not.null", null, Locale.ENGLISH));
-            }
-
-            if(comment.getUser_id()==null){
-                throw new NullPointerException(messageSource.getMessage("user.not.found", null, Locale.ENGLISH));
-            }
 
             if(comment.getBody()==null){
                 throw new NullPointerException(messageSource.getMessage("comment.not.null", null, Locale.ENGLISH));

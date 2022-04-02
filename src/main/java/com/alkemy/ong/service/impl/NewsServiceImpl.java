@@ -1,13 +1,19 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.NewsDto;
+import com.alkemy.ong.exception.MessageInfo;
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.NewsMapper;
 import com.alkemy.ong.model.News;
 import com.alkemy.ong.repository.NewsRepository;
 import com.alkemy.ong.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+
+import java.util.Locale;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +25,9 @@ public class NewsServiceImpl implements NewsService {
     @Autowired
     private NewsRepository newsRepository;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @Override
     public NewsDto save(NewsDto newsDto) {
 
@@ -27,5 +36,10 @@ public class NewsServiceImpl implements NewsService {
         NewsDto result = newsMapper.newsEntity2Dto(newsSaved);
 
         return result;
+    }
+
+    @Override
+    public Optional<News> findById(Long news_id) {
+        return Optional.ofNullable(newsRepository.findById(news_id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("news.not.null",null, Locale.ENGLISH))));
     }
 }
