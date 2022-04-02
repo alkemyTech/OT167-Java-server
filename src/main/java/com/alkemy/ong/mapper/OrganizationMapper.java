@@ -14,6 +14,9 @@ public class OrganizationMapper {
         organizationDto.setImage(organization.getImage());
         organizationDto.setAddress(organization.getAddress());
         organizationDto.setPhone(organization.getPhone());
+        organizationDto.setFacebookUrl(organization.getFacebookUrl());
+        organizationDto.setInstagramUrl(organization.getInstagramUrl());
+        organizationDto.setLinkedinUrl(organization.getLinkedinUrl());
         return organizationDto;
     }
     public List<OrganizationDto> organizationListToDtoList (List<Organization> organization){
@@ -30,6 +33,9 @@ public class OrganizationMapper {
         organization.setPhone(dto.getPhone());
         organization.setWelcomeText(dto.getWelcomeText());
         organization.setAboutUsText(dto.getAboutUsText());
+        organization.setFacebookUrl(organization.getFacebookUrl());
+        organization.setInstagramUrl(organization.getInstagramUrl());
+        organization.setLinkedinUrl(organization.getLinkedinUrl());
         return organization;
     }
 }
