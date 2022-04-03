@@ -28,23 +28,18 @@ public class Organization {
     private Long id;
 
     @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "Name cannot be null")
     private String name;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "Image cannot be null")
+    @NotEmpty(message = "Image cannot be empty")
     private String image;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @Nullable
+    @NotEmpty(message = "Address cannot be empty")
     private String address;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @Nullable
-    private Integer phone;
+    @NotEmpty(message = "Phone cannot be empty")
+    private String phone;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "email cannot be null")
+    @NotEmpty(message = "Email cannot be empty")
     private String email;
 
     @NotNull(message = "Welcome text cannot be null")
@@ -69,12 +64,15 @@ public class Organization {
     private boolean softDeleted = Boolean.FALSE;
     
     @Column(name = "facebook_url")
+    @Nullable
     private String facebookUrl;
 
     @Column(name = "instagram_url")
+    @Nullable
     private String instagramUrl;
 
     @Column(name = "linkedin_url")
-    private String linkedinUrl;
+    @Nullable
+    private String linkedInUrl;
 
 }
