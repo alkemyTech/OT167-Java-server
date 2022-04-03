@@ -1,6 +1,7 @@
 package com.alkemy.ong.service.impl;
 import com.alkemy.ong.dto.MemberDto;
 import com.alkemy.ong.exception.BadRequestException;
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.MemberMapper;
 import com.alkemy.ong.model.Member;
 import com.alkemy.ong.repository.MemberRepository;
@@ -36,6 +37,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MemberDto> listAllMembers() {
         List<Member> memberList = memberRepository.findAll();
+        if(memberList.isEmpty()){
+            throw new NotFoundException(messageSource.getMessage("members.not.found",null, Locale.ENGLISH));
+        }
         return memberMapper.memberListToDtoList(memberList);
     }
 }
