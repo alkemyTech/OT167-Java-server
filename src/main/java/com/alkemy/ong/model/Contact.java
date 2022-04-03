@@ -14,9 +14,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import lombok.*;
 
 @Entity
 @Data
+@Getter
+@Setter
 @Table(name = "contacts")
 @AllArgsConstructor
 @NoArgsConstructor
