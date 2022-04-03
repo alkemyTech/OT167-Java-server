@@ -46,8 +46,8 @@ public class SlideServiceImpl implements SlideService {
         return slideMapper.slideToDto(slide);
     }
     @Override
-    public void setOrgInSlide(Long id, String nameOrg) {
-        Optional<Slide> slide = slideRepository.findById(id);
+    public void setOrgInSlide(Long idSlide, String nameOrg) {
+        Optional<Slide> slide = slideRepository.findById(idSlide);
         Organization organization = Optional.ofNullable(organizationRepository.findByName(nameOrg)).orElseThrow(() -> new NotFoundException(messageSource.getMessage("organization.name.not.found", new Object[]{nameOrg}, Locale.ENGLISH)));
         slide.get().setOrganization(organization);
     }
