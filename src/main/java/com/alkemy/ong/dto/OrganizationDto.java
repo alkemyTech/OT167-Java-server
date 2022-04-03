@@ -7,9 +7,9 @@ public class OrganizationDto{
     private String name;
     private String image;
     private String address;
-    private String instagramUrl;
+    private String phone;
     private String facebookUrl;
-    private String linkedInUrl;
-    private Integer phone;
+    private String instagramUrl;
+    private String linkedinUrl;
 
 }
