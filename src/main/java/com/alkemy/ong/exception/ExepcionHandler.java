@@ -35,12 +35,12 @@ public class ExepcionHandler {
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<MessageInfo> methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
-        BindingResult result = e.getBindingResult();
-        List<FieldError> fieldErrors = result.getFieldErrors();
+    public ResponseEntity<MessagesInfo> methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
+        Map<String, String> transformedError = new HashMap<>();
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         StringBuilder errorMessage = new StringBuilder();
-        fieldErrors.forEach(f -> errorMessage.append(f.getField()).append(" ").append(f.getDefaultMessage()).append(" "));
-        MessageInfo errorInfo = new MessageInfo(errorMessage.toString(), HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+        fieldErrors.forEach(f -> transformedError.put(f.getField(), f.getDefaultMessage()));
+        MessagesInfo errorInfo = new MessagesInfo(transformedError, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
