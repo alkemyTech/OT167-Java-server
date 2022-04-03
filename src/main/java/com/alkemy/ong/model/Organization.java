@@ -30,27 +30,30 @@ public class Organization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "Name cannot be null")
+    @Column(unique = true)
+    @NotEmpty(message = "cannot be empty")
+    @NotNull(message = "cannot be null")
     private String name;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "Image cannot be null")
+    @NotEmpty(message = "cannot be empty")
+    @NotNull(message = "cannot be null")
     private String image;
 
-    @NotEmpty(message = "Name cannot be empty")
+    @NotEmpty(message = "cannot be empty")
     @Nullable
     private String address;
 
+    @NotEmpty(message = "cannot be empty")
     @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$", message = "number no valid")
-    @NotNull(message = "Phone cannot be null")
+    @NotNull(message = "cannot be null")
     private String phone;
 
+    @NotEmpty(message = "cannot be empty")
     @Email(regexp = "^[\\w!#$%&'+/=?`{|}~^-]+(?:\\.[\\w!#$%&'+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", message="Email format error")
-    @NotNull(message = "Email cannot be null")
+    @NotNull(message = "cannot be null")
     private String email;
 
-    @NotNull(message = "Welcome text cannot be null")
+    @NotNull(message = "cannot be null")
     @Column(name = "welcome")
     private String welcomeText;
 
