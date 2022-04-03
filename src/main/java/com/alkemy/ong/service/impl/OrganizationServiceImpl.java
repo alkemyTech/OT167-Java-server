@@ -51,5 +51,4 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         return organizationMapper.organizationToDto(organizationRepository.save(organization));
     }
-
 }

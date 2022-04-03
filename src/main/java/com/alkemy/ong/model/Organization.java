@@ -37,7 +37,7 @@ public class Organization {
     private String address;
 
     @NotEmpty(message = "Phone cannot be empty")
-    private Integer phone;
+    private String phone;
 
     @NotEmpty(message = "Email cannot be empty")
     private String email;
