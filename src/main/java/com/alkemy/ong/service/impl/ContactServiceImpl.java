@@ -29,20 +29,22 @@ public class ContactServiceImpl implements ContactService {
 
     @Autowired
     private final MessageSource messageSource;
-
+    @Override
     public ContactDto save(ContactDto dto) {
         Contact contact = contactMapper.contactDto2Contact(dto);
         Contact contactSaved = contactRepository.save(contact);
         ContactDto result = contactMapper.contacto2ContactDto(contactSaved);
         return result;
     }
-
+    @Override
     public List<ContactDto> getAllContacts() {
-        List<Contact> contacts = contactRepository.findAll();
-        List<ContactDto> result = contactMapper.contactList2DtoList(contacts);
-        return result;
+        List<Contact> contactList = contactRepository.findAll();
+        if(contactList.isEmpty()) throw new NotFoundException(messageSource.getMessage
+                ("contacts.not.found", null, Locale.ENGLISH));
+        return contactMapper.contactList2DtoList(contactList);
     }
 
+    @Override
     public void delete(Long id) {
         Optional<Contact> contact = this.contactRepository.findById(id);
         if (!contact.isPresent()) {
