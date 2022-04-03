@@ -30,12 +30,6 @@ public class OrganizationController {
         return ResponseEntity.ok(organizationService.editOrganization(organizationCreationDto));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PutMapping("/url-config/{id}")
-    public ResponseEntity<?> addUrlContact(@RequestBody UrlOrganizationDto urlOrganizationDto, @PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(organizationService.editOrganizationUrl(urlOrganizationDto,id));
-    }
-
     @PostMapping
     public ResponseEntity<OrganizationDto> save(@Valid @RequestBody OrganizationCreationDto organizationCreationDto){
         return ResponseEntity.ok(organizationService.save(organizationCreationDto));

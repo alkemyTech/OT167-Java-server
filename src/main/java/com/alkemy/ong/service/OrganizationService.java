@@ -7,8 +7,5 @@ import com.alkemy.ong.model.Organization;
 public interface OrganizationService {
     OrganizationDto findById(Long id);
     OrganizationDto editOrganization(OrganizationCreationDto organizationCreationDto);
-
-    OrganizationDto editOrganizationUrl(UrlOrganizationDto urlOrganizationDto, Long id);
-
     OrganizationDto save(OrganizationCreationDto organizationCreationDto);
 }

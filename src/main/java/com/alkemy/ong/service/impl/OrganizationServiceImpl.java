@@ -44,20 +44,6 @@ public class OrganizationServiceImpl implements OrganizationService {
         return organizationMapper.organizationToDto(organization);
     }
 
-
-    //esperar a que turco consteste para eliminar esta parte
-    @Override
-    public OrganizationDto editOrganizationUrl(UrlOrganizationDto urlOrganizationDto, Long id) {
-        Organization organization = organizationRepository.findById(id).get();
-        organization.setLinkedInUrl(urlOrganizationDto.getLinkedInUrl());
-        organization.setFacebookUrl(urlOrganizationDto.getFacebookUrl());
-        organization.setInstagramUrl(urlOrganizationDto.getInstagramUrl());
-
-        organization = organizationRepository.save(organization);
-        return organizationMapper.organizationToDto(organization);
-    }
-    //posible eliminacion
-
     @Override
     public OrganizationDto save(OrganizationCreationDto organizationCreationDto) {
 
