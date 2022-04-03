@@ -37,7 +37,7 @@ public class SlideServiceImpl implements SlideService {
         slide.setOrder(slideDto.getOrder());
         slide.setImageUrl(slideDto.getImageUrl());
         slide.setText(slideDto.getText());
-        setOrgInSlide(id, slideDto.getOrgName());
+        if(slideDto.getOrgName() != null) setOrgInSlide(id, slideDto.getOrgName());
         return slideMapper.slideToDto(slideRepository.save(slide));
     }
     @Override
