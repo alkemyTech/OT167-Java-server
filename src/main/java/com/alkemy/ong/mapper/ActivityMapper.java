@@ -36,4 +36,11 @@ public class ActivityMapper {
                 .map(activity -> activityToDTO(activity))
                 .collect(Collectors.toList());
     }
+
+    public void activityRefreshValues(Activity activity, ActivityDto activityDto) {
+        activity.setName(activityDto.getName());
+        activity.setImage(activityDto.getImage());
+        activity.setContent(activityDto.getContent());
+
+    }
 }
