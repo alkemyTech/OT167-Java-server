@@ -5,6 +5,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -61,9 +62,16 @@ public class ExepcionHandler {
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({NumberFormatException.class})
-    public ResponseEntity<MessageInfo> notFoundExcept(HttpServletRequest request) {
+    public ResponseEntity<MessageInfo> numberFormatException(HttpServletRequest request) {
         String message = messageSource.getMessage
                 ("message.error.id.not.number", null, Locale.ENGLISH);
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.FORBIDDEN.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
+    }
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public ResponseEntity<MessageInfo> messageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException ex) {
+        String message = messageSource.getMessage
+                ("message.error.unexpected.character", null, Locale.ENGLISH);
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.FORBIDDEN.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
     }
