@@ -39,9 +39,7 @@ public class ContactController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addNewCategory(@Valid @RequestBody ContactDto contactDto){
-
+    public ResponseEntity<?> addContact(@Valid @RequestBody ContactDto contactDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(contactService.save(contactDto));
-
     }
 }
