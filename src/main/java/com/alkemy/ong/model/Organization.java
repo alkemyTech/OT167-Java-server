@@ -8,9 +8,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.lang.Nullable;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,12 +42,12 @@ public class Organization {
     @Nullable
     private String address;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @Nullable
-    private Integer phone;
+    @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$", message = "number no valid")
+    @NotNull(message = "Phone cannot be null")
+    private String phone;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "email cannot be null")
+    @Email(regexp = "^[\\w!#$%&'+/=?`{|}~^-]+(?:\\.[\\w!#$%&'+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", message="Email format error")
+    @NotNull(message = "Email cannot be null")
     private String email;
 
     @NotNull(message = "Welcome text cannot be null")
@@ -58,12 +61,12 @@ public class Organization {
     @CreationTimestamp
     @Column(name = "creation_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     @UpdateTimestamp
     @Column(name = "update_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
 
     @Column(name = "deleted")
     private boolean softDeleted = Boolean.FALSE;
