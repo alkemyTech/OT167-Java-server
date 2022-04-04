@@ -54,6 +54,5 @@ public class NewsServiceImpl implements NewsService {
             throw new NotFoundException(messageSource.getMessage("not.found.news", null, Locale.ENGLISH));          
         }
         return newsMapper.newsEntity2Dto(news.get());
-
     }
 }
