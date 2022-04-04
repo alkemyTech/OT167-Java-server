@@ -26,6 +26,7 @@ public class NewsServiceImpl implements NewsService {
     @Autowired
     private MessageSource messageSource;
 
+
     @Override
     public NewsDto save(NewsDto newsDto) {
 
@@ -35,6 +36,16 @@ public class NewsServiceImpl implements NewsService {
 
         return result;
     }
+
+
+    public void delete(Long id) {
+        Optional<News> news = this.newsRepository.findById(id);
+        if (!news.isPresent()) {
+            throw new NotFoundException(messageSource.getMessage
+                    ("news.not.found", null, Locale.ENGLISH));
+        }
+        newsRepository.deleteById(id);
+    }
     
     @Override
     public NewsDto findById(Long id){
@@ -43,5 +54,6 @@ public class NewsServiceImpl implements NewsService {
             throw new NotFoundException(messageSource.getMessage("not.found.news", null, Locale.ENGLISH));          
         }
         return newsMapper.newsEntity2Dto(news.get());
+
     }
 }

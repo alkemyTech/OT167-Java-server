@@ -1,7 +1,6 @@
 package com.alkemy.ong.service.impl;
 import com.alkemy.ong.dto.OrganizationCreationDto;
 import com.alkemy.ong.dto.OrganizationDto;
-import com.alkemy.ong.dto.UrlOrganizationDto;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.OrganizationMapper;
 import com.alkemy.ong.model.Organization;
@@ -32,23 +31,19 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public OrganizationDto editOrganization(OrganizationCreationDto organizationCreationDto) {
+    public Organization editOrganization(OrganizationCreationDto organizationCreationDto) {
 
         Organization organization = organizationRepository.findAll().get(0);
-        if(organization == null) {
-            throw new NotFoundException(messageSource.getMessage("organization.not.found", null, Locale.ENGLISH));
-        }
-        organization = organizationMapper.editInformationOrganization(organization,organizationCreationDto);
 
-        organization = organizationRepository.save(organization);
-        return organizationMapper.organizationToDto(organization);
+        organization.setName(organizationCreationDto.getName());
+        organization.setImage(organizationCreationDto.getImage());
+        organization.setAddress(organizationCreationDto.getAddress());
+        organization.setPhone(organizationCreationDto.getPhone());
+        organization.setEmail(organizationCreationDto.getEmail());
+        organization.setWelcomeText(organizationCreationDto.getWelcomeText());
+        organization.setAboutUsText(organizationCreationDto.getAboutUsText());
+
+        return organizationRepository.save(organization);
     }
 
-    @Override
-    public OrganizationDto save(OrganizationCreationDto organizationCreationDto) {
-
-        Organization organization = organizationMapper.creationOrgFromOrganizationDto(organizationCreationDto);
-
-        return organizationMapper.organizationToDto(organizationRepository.save(organization));
-    }
 }

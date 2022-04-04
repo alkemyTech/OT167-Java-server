@@ -47,10 +47,11 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryDto> addNewCategory(@Valid @RequestBody CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption {
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.save(categoryDto));
+        Category category = categoryService.save(categoryMapper.categoryDto2Entity(categoryDto));
+        CategoryDto categoryDtoResponse = categoryMapper.categoryEntity2Dto(category);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryDtoResponse);
 
     }
-
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id,@RequestBody Category category){
         try{
@@ -61,7 +62,6 @@ public class CategoryController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(category);
         }
     }
-
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<?> categoryDelete(@PathVariable String id){
         categoryService.deleteCategoryById(Long.valueOf(id));
