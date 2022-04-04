@@ -1,5 +1,7 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.dto.CategoryDto;
+import com.alkemy.ong.dto.SlideBasicDto;
 import com.alkemy.ong.dto.SlideDto;
 import com.alkemy.ong.dto.SlideUpdateDto;
 import com.alkemy.ong.exception.NotFoundException;
@@ -15,8 +17,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,10 +49,19 @@ public class SlideServiceImpl implements SlideService {
         Slide slide = slideRepository.save(slideMapper.creationSlide(slideDto));
         return slideMapper.slideToDto(slide);
     }
+
     @Override
     public void setOrgInSlide(Long idSlide, String nameOrg) {
         Optional<Slide> slide = slideRepository.findById(idSlide);
         Organization organization = Optional.ofNullable(organizationRepository.findByName(nameOrg)).orElseThrow(() -> new NotFoundException(messageSource.getMessage("organization.name.not.found", new Object[]{nameOrg}, Locale.ENGLISH)));
         slide.get().setOrganization(organization);
     }
+
+    @Override
+    public List<SlideBasicDto> getSlideBasic() {
+        List<Slide>listEntity = slideRepository.findAll();
+        List<SlideBasicDto>result = slideMapper.slideBasicEntityList2DtoList(listEntity);
+        return result;
+    }
+
 }

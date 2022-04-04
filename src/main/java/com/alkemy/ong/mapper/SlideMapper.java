@@ -1,4 +1,5 @@
 package com.alkemy.ong.mapper;
+import com.alkemy.ong.dto.SlideBasicDto;
 import com.alkemy.ong.dto.SlideDto;
 import com.alkemy.ong.dto.SlideUpdateDto;
 import com.alkemy.ong.model.Slide;
@@ -10,8 +11,10 @@ import java.util.List;
 
 @Component
 public class SlideMapper {
+
     @Autowired
     private SlideService slideService;
+
     public SlideDto slideToDto (Slide slide){
         SlideDto slideDto = new SlideDto();
         slideDto.setId(slide.getId());
@@ -21,11 +24,13 @@ public class SlideMapper {
         slideDto.setOrganization(slide.getOrganization());
         return slideDto;
     }
+
     public List<SlideDto> sliceListToDtoList (List<Slide> sliceList){
         List<SlideDto> sliceListDto = new ArrayList<>();
         sliceList.forEach(s -> sliceListDto.add(slideToDto(s)));
         return sliceListDto;
     }
+
     public Slide creationSlide(SlideDto slideDto) {
         Slide slide = new Slide();
         slide.setId(slideDto.getId());
@@ -35,6 +40,7 @@ public class SlideMapper {
         slide.setOrganization(slideDto.getOrganization());
         return slide;
     }
+
     public Slide updateSlade(Slide slide, SlideUpdateDto slideUpdate){
         slide.setOrder(slideUpdate.getOrder());
         slide.setImageUrl(slideUpdate.getImageUrl());
@@ -42,4 +48,20 @@ public class SlideMapper {
         slideService.setOrgInSlide(slide.getId(), slideUpdate.getOrgName());
         return slide;
     }
+
+    public List<SlideBasicDto> slideBasicEntityList2DtoList(List<Slide> listEntity) {
+        List<SlideBasicDto>dtoList = new ArrayList<>();
+        for(Slide ent : listEntity){
+            dtoList.add(this.slideBasicEntity2Dto(ent));
+        }
+        return dtoList;
+    }
+
+    private SlideBasicDto slideBasicEntity2Dto(Slide ent) {
+        SlideBasicDto dto = new SlideBasicDto();
+        dto.setImageUrl(ent.getImageUrl());
+        dto.setOrder(ent.getOrder());
+        return dto;
+    }
+
 }
