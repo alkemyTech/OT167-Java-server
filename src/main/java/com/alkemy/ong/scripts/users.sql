@@ -53,7 +53,6 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
-
 --
 -- AUTO_INCREMENT de la tabla `users`
 --

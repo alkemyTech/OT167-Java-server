@@ -48,7 +48,6 @@ ALTER TABLE `user_role`
 --
 -- Restricciones para tablas volcadas
 --
-
 --
 -- Filtros para la tabla `user_role`
 --
