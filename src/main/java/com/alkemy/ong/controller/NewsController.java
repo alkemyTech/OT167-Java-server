@@ -36,10 +36,19 @@ public class NewsController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>> delete(@PathVariable Long id){
+    public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         this.newsService.delete(id);
-        Map<String, String> message = new HashMap<>(){{put("message: ", messageSource
-                .getMessage("news.delete.ok", new Object[]{id}, Locale.ENGLISH));}};
+        Map<String, String> message = new HashMap<>() {{
+            put("message: ", messageSource
+                    .getMessage("news.delete.ok", new Object[]{id}, Locale.ENGLISH));
+        }};
         return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<NewsDto> findNewsById(@PathVariable Long id){
+        NewsDto newsDto = newsService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(newsDto);
+
     }
 }
