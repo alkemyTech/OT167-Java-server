@@ -65,14 +65,14 @@ public class ExepcionHandler {
     public ResponseEntity<MessageInfo> numberFormatException(HttpServletRequest request) {
         String message = messageSource.getMessage
                 ("message.error.id.not.number", null, Locale.ENGLISH);
-        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.FORBIDDEN.value(), request.getRequestURI());
-        return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({HttpMessageNotReadableException.class})
     public ResponseEntity<MessageInfo> messageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException ex) {
         String message = messageSource.getMessage
                 ("message.error.unexpected.character", null, Locale.ENGLISH);
-        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.FORBIDDEN.value(), request.getRequestURI());
-        return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 }
