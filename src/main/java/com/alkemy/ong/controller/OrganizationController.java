@@ -18,13 +18,17 @@ public class OrganizationController {
     private OrganizationService organizationService;
 
     @GetMapping(value = "/public/{id}")
-    public ResponseEntity<OrganizationDto> findOrganizationById(@Valid @PathVariable Long id){
-        return ResponseEntity.ok(organizationService.findById(id));
+    public ResponseEntity<OrganizationDto> findOrganizationById(@Valid @PathVariable String id){
+        return ResponseEntity.ok(organizationService.findById(Long.valueOf(id)));
     }
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/public")
     public ResponseEntity<?> editOrganization(@Valid @RequestBody OrganizationCreationDto organizationCreationDto){
         return ResponseEntity.ok(organizationService.editOrganization(organizationCreationDto));
+    }
+
+    @PostMapping
+    public ResponseEntity<OrganizationDto> save(@Valid @RequestBody OrganizationCreationDto organizationCreationDto){
+        return ResponseEntity.ok(organizationService.save(organizationCreationDto));
     }
 }

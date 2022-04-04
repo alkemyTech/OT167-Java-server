@@ -1,5 +1,4 @@
 package com.alkemy.ong.service.impl;
-
 import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.mapper.CategoryMapper;
@@ -23,7 +22,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
-
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
@@ -48,17 +46,19 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(categoryDto ->  categoryDto.getName())
                 .collect(Collectors.toList());
     }
-
-    public Category save(Category category) throws DataAlreadyExistException {
+    public CategoryDto save(CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption {
         Category categorySaved = null;
+        Category entity = categoryMapper.categoryDto2Entity(categoryDto);
+        CategoryDto categoryResponse;
         try{
-            if(categoryRepository.findByName(category.getName()) == null){
-                categorySaved = categoryRepository.save(category);
+            if(categoryRepository.findByName(entity.getName()) == null){
+                this.validate(entity.getName());
+                categorySaved = categoryRepository.save(entity);
             }
         }catch (Exception ex) {
             throw new DataAlreadyExistException(messageSource.getMessage("category.already.exist", null, Locale.ENGLISH));
         }
-        return categorySaved;
+        return categoryMapper.categoryEntity2Dto(categorySaved);
     }
     @Override
     public Optional<Category> findById(Long id) {
@@ -78,19 +78,18 @@ public class CategoryServiceImpl implements CategoryService {
             throw new NotFoundException(messageSource.getMessage("category.not.found", null,Locale.ENGLISH));
         }
     }
-
-    public String validate(String parameter) throws IncorrectPatternExeption {
-        boolean valid = parameter.matches("[A-Za-z]{1,4}");
-        if(!valid) {
-            throw new IncorrectPatternExeption(messageSource.getMessage("data.incorrect", null, Locale.ENGLISH));
-        }
-        return parameter;
-    }
-
     @Override
     public void deleteCategoryById(Long id) {
         Optional<Category> category = Optional.ofNullable(categoryRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource
                 .getMessage("category.not.found", new Object[]{id.toString()}, Locale.ENGLISH))));
         categoryRepository.delete(category.get());
+    }
+
+    public String validate(String parameter) throws IncorrectPatternExeption {
+        boolean valid = parameter.matches("^[a-zA-Z]+$");
+        if(!valid) {
+            throw new IncorrectPatternExeption(messageSource.getMessage("category.data.incorrect", new Object[]{parameter}, Locale.ENGLISH));
+        }
+        return parameter;
     }
 }
