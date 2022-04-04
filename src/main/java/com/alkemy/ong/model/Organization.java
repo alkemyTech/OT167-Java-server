@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "organizations")
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE organizations SET deleted = true WHERE id=?")
