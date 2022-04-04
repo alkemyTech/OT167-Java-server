@@ -2,7 +2,6 @@ package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.OrganizationCreationDto;
 import com.alkemy.ong.dto.OrganizationDto;
-import com.alkemy.ong.model.Organization;
 import com.alkemy.ong.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +25,10 @@ public class OrganizationController {
     @PutMapping("/public")
     public ResponseEntity<?> editOrganization(@Valid @RequestBody OrganizationCreationDto organizationCreationDto){
         return ResponseEntity.ok(organizationService.editOrganization(organizationCreationDto));
+    }
+
+    @PostMapping
+    public ResponseEntity<OrganizationDto> save(@Valid @RequestBody OrganizationCreationDto organizationCreationDto){
+        return ResponseEntity.ok(organizationService.save(organizationCreationDto));
     }
 }

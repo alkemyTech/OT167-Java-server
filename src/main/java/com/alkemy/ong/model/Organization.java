@@ -12,10 +12,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Table(name = "organizations")
@@ -75,12 +73,15 @@ public class Organization {
     private boolean softDeleted = Boolean.FALSE;
     
     @Column(name = "facebook_url")
+    @Nullable
     private String facebookUrl;
 
     @Column(name = "instagram_url")
+    @Nullable
     private String instagramUrl;
 
     @Column(name = "linkedin_url")
-    private String linkedinUrl;
+    @Nullable
+    private String linkedInUrl;
 
 }

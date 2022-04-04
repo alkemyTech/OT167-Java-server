@@ -44,4 +44,9 @@ public class ContactController {
     public ResponseEntity<List<ContactDto>> getAllContacts(){
         return ResponseEntity.ok().body(contactService.getAllContacts());
     }
+
+    @PostMapping
+    public ResponseEntity<?> addContact(@Valid @RequestBody ContactDto contactDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(contactService.save(contactDto));
+    }
 }
