@@ -88,7 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
     public String validate(String parameter) throws IncorrectPatternExeption {
         boolean valid = parameter.matches("^[a-zA-Z]+$");
         if(!valid) {
-            throw new IncorrectPatternExeption(messageSource.getMessage("data.incorrect", null, Locale.ENGLISH));
+            throw new IncorrectPatternExeption(messageSource.getMessage("category.data.incorrect", new Object[]{parameter}, Locale.ENGLISH));
         }
         return parameter;
     }

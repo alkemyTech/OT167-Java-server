@@ -5,6 +5,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -34,12 +35,12 @@ public class ExepcionHandler {
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<MessageInfo> methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
-        BindingResult result = e.getBindingResult();
-        List<FieldError> fieldErrors = result.getFieldErrors();
+    public ResponseEntity<MessagesInfo> methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
+        Map<String, String> transformedError = new HashMap<>();
+        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         StringBuilder errorMessage = new StringBuilder();
-        fieldErrors.forEach(f -> errorMessage.append(f.getField()).append(" ").append(f.getDefaultMessage()).append(" "));
-        MessageInfo errorInfo = new MessageInfo(errorMessage.toString(), HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+        fieldErrors.forEach(f -> transformedError.put(f.getField(), f.getDefaultMessage()));
+        MessagesInfo errorInfo = new MessagesInfo(transformedError, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
@@ -61,10 +62,17 @@ public class ExepcionHandler {
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({NumberFormatException.class})
-    public ResponseEntity<MessageInfo> notFoundExcept(HttpServletRequest request) {
+    public ResponseEntity<MessageInfo> numberFormatException(HttpServletRequest request) {
         String message = messageSource.getMessage
                 ("message.error.id.not.number", null, Locale.ENGLISH);
-        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.FORBIDDEN.value(), request.getRequestURI());
-        return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    public ResponseEntity<MessageInfo> messageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException ex) {
+        String message = messageSource.getMessage
+                ("message.error.unexpected.character", null, Locale.ENGLISH);
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
 }

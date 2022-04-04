@@ -2,11 +2,9 @@ package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.OrganizationCreationDto;
 import com.alkemy.ong.dto.OrganizationDto;
-import com.alkemy.ong.dto.UrlOrganizationDto;
 import com.alkemy.ong.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,10 +18,9 @@ public class OrganizationController {
     private OrganizationService organizationService;
 
     @GetMapping(value = "/public/{id}")
-    public ResponseEntity<OrganizationDto> findOrganizationById(@Valid @PathVariable Long id){
-        return ResponseEntity.ok(organizationService.findById(id));
+    public ResponseEntity<OrganizationDto> findOrganizationById(@Valid @PathVariable String id){
+        return ResponseEntity.ok(organizationService.findById(Long.valueOf(id)));
     }
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/public")
     public ResponseEntity<?> editOrganization(@Valid @RequestBody OrganizationCreationDto organizationCreationDto){
