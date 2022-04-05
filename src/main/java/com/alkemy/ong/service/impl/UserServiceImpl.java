@@ -82,6 +82,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity findById(Long id) {
+        return userRepository.findById(id).get();
+    }
+
+    @Override
     public Role getRole(String name) {
         return roleRepository.findByName(name);
     }

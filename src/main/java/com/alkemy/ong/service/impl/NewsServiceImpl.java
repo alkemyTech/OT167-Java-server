@@ -22,7 +22,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Autowired
     private NewsRepository newsRepository;
-    
+
     @Autowired
     private MessageSource messageSource;
 
@@ -35,13 +35,18 @@ public class NewsServiceImpl implements NewsService {
 
         return result;
     }
-    
+
     @Override
-    public NewsDto findById(Long id){
+    public NewsDto findById(Long id) {
         Optional<News> news = newsRepository.findById(id);
         if (!news.isPresent()) {
-            throw new NotFoundException(messageSource.getMessage("not.found.news", null, Locale.ENGLISH));          
+            throw new NotFoundException(messageSource.getMessage("not.found.news", null, Locale.ENGLISH));
         }
         return newsMapper.newsEntity2Dto(news.get());
+    }
+
+    @Override
+    public Optional<News> findNewById(Long news_id) {
+        return Optional.ofNullable(newsRepository.findById(news_id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("news.not.null", null, Locale.ENGLISH))));
     }
 }
