@@ -38,7 +38,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Map<String, String> deleteMemberById(Long id) {
-        Optional.ofNullable(memberRepository.findByIdMember(id)).orElseThrow(()->  new BadRequestException(messageSource.getMessage("member.not.found", null, Locale.ENGLISH))).setDeleted(true);
+        Optional.ofNullable(memberRepository.findByIdMember(id)).orElseThrow(()->  new NotFoundException(messageSource.getMessage("member.not.found", null, Locale.ENGLISH))).setDeleted(true);
         return new HashMap<>(){{put("message", messageSource.getMessage("member.delete.sucessfuly", new Object[]{id.toString()}, Locale.ENGLISH));}};
     }
 }
