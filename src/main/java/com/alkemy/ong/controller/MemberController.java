@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -32,5 +29,9 @@ public class MemberController {
         memberService.saveMember(memberDto);
         Map<String, String> message = new HashMap<>(){{put("message: ", messageSource.getMessage("member.created.successfully",new Object[]{memberDto.getName()}, Locale.ENGLISH));}};
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
+    }
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<Map<String,String>> memberDelete(@PathVariable String id){
+        return ResponseEntity.ok().body(memberService.deleteMemberById(Long.valueOf(id)));
     }
 }
