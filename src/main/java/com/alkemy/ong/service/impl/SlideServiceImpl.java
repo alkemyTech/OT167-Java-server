@@ -59,9 +59,13 @@ public class SlideServiceImpl implements SlideService {
 
     @Override
     public List<SlideBasicDto> getSlideBasic() {
-        List<Slide>listEntity = slideRepository.findAll();
-        List<SlideBasicDto>result = slideMapper.slideBasicEntityList2DtoList(listEntity);
-        return result;
+        if (slideRepository.count()==0) {
+            throw new NotFoundException(messageSource.getMessage
+                    ("slide.list.not.found", null, Locale.ENGLISH));
+        }
+            List<Slide>listEntity = slideRepository.findAll();
+            List<SlideBasicDto>result = slideMapper.slideBasicEntityList2DtoList(listEntity);
+            return result;
     }
 
 }

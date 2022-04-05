@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class SlideMapper {
@@ -50,11 +51,9 @@ public class SlideMapper {
     }
 
     public List<SlideBasicDto> slideBasicEntityList2DtoList(List<Slide> listEntity) {
-        List<SlideBasicDto>dtoList = new ArrayList<>();
-        for(Slide ent : listEntity){
-            dtoList.add(this.slideBasicEntity2Dto(ent));
-        }
-        return dtoList;
+            return listEntity.stream()
+                    .map(slide -> slideBasicEntity2Dto(slide))
+                    .collect(Collectors.toList());
     }
 
     private SlideBasicDto slideBasicEntity2Dto(Slide ent) {
@@ -65,3 +64,6 @@ public class SlideMapper {
     }
 
 }
+
+
+

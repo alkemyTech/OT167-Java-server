@@ -30,9 +30,8 @@ public class SlideController {
 
     @GetMapping
     public ResponseEntity<List<SlideBasicDto>> getSlideBasic(){
-        List<SlideBasicDto> ListSlideBasic = slideService.getSlideBasic();
-        return ResponseEntity.status(HttpStatus.OK).body(ListSlideBasic);
-
+        List<SlideBasicDto> listSlideBasic = slideService.getSlideBasic();
+        return ResponseEntity.status(HttpStatus.OK).body(listSlideBasic);
     }
 
 }
