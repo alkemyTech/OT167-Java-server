@@ -51,4 +51,10 @@ public class SlideServiceImpl implements SlideService {
         Organization organization = Optional.ofNullable(organizationRepository.findByName(nameOrg)).orElseThrow(() -> new NotFoundException(messageSource.getMessage("organization.name.not.found", new Object[]{nameOrg}, Locale.ENGLISH)));
         slide.get().setOrganization(organization);
     }
+
+    @Override
+    public SlideDto findById(Long id) {
+        if(slideRepository.findById(id).isEmpty()) throw new NotFoundException(messageSource.getMessage("slide.not.found", new Object[]{id.toString()}, Locale.ENGLISH));
+        return slideMapper.slideToDto(slideRepository.findById(id).get());
+    }
 }

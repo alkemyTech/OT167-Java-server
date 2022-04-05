@@ -6,4 +6,5 @@ public interface SlideService {
     SlideDto updateSlide(Long id, SlideUpdateDto sliceDto);
     SlideDto saveSlide(SlideDto slideDto);
     void setOrgInSlide(Long idSlide, String nameOrg);
+    SlideDto findById(Long id);
 }
