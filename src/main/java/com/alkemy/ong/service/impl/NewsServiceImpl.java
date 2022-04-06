@@ -49,4 +49,15 @@ public class NewsServiceImpl implements NewsService {
     public Optional<News> findNewById(Long news_id) {
         return Optional.ofNullable(newsRepository.findById(news_id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("news.not.null", null, Locale.ENGLISH))));
     }
+
+
+    public void delete(Long id) {
+        Optional<News> news = this.newsRepository.findById(id);
+        if (!news.isPresent()) {
+            throw new NotFoundException(messageSource.getMessage
+                    ("news.not.found", null, Locale.ENGLISH));
+        }
+        newsRepository.deleteById(id);
+    }
+
 }
