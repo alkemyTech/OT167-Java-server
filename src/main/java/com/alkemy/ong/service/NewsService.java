@@ -13,4 +13,6 @@ public interface NewsService {
     NewsDto findById(Long id);
 
     Optional<News> findNewById(Long id);
+
+    void delete(Long id);
 }
