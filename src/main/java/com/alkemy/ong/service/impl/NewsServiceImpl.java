@@ -22,7 +22,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Autowired
     private NewsRepository newsRepository;
-    
+
     @Autowired
     private MessageSource messageSource;
 
@@ -36,15 +36,6 @@ public class NewsServiceImpl implements NewsService {
         return result;
     }
 
-    public void delete(Long id) {
-        Optional<News> news = this.newsRepository.findById(id);
-        if (!news.isPresent()) {
-            throw new NotFoundException(messageSource.getMessage
-                    ("news.not.found", null, Locale.ENGLISH));
-        }
-        newsRepository.deleteById(id);
-    }
-    
     @Override
     public NewsDto findById(Long id) {
         Optional<News> news = newsRepository.findById(id);
@@ -56,6 +47,6 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public Optional<News> findNewById(Long news_id) {
-        return Optional.ofNullable(newsRepository.findById(news_id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("news.not.null",null, Locale.ENGLISH))));
+        return Optional.ofNullable(newsRepository.findById(news_id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("news.not.null", null, Locale.ENGLISH))));
     }
 }
