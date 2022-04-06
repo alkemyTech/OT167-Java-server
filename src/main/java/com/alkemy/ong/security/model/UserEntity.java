@@ -2,7 +2,6 @@ package com.alkemy.ong.security.model;
 
 import com.alkemy.ong.model.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sun.istack.Nullable;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -22,7 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
 @Where(clause = "deleted = false")
@@ -46,7 +44,6 @@ public class UserEntity implements UserDetails {
     @NotNull(message = "password cannot be null")
     private String password;
 
-    @Nullable
     private String photo;
 
     @CreationTimestamp
@@ -59,7 +56,13 @@ public class UserEntity implements UserDetails {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDate updateDate;
 
-    @ManyToMany
+    @ManyToMany(
+            cascade = {
+                    CascadeType.MERGE
+
+            },
+            fetch = FetchType.LAZY
+    )
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(
@@ -68,6 +71,18 @@ public class UserEntity implements UserDetails {
                     name = "role_id", referencedColumnName = "id")
     )
     private Collection<Role> roles;
+
+    public UserEntity() {
+    }
+
+    public UserEntity(String firstName, String lastName, String email, String password,String photo, Collection<Role> roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password =password;
+        this.roles =roles;
+        this.photo =photo;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
