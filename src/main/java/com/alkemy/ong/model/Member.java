@@ -9,7 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
-@SQLDelete(sql = "UPDATE members SET deleted = true WHERE id_member=?")
+@SQLDelete(sql = "UPDATE members SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Entity
 @Data
@@ -20,8 +20,7 @@ public class Member {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_member")
-    private Long idMember;
+    private Long id;
 
     @NotNull(message = "Name cannot be null")
     private String name;

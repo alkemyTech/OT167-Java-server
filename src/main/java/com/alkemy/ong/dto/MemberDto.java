@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Setter
 @RequiredArgsConstructor
 public class MemberDto {
-        private Long idMember;
+        private Long id;
         private String name;
         private String facebookUrl;
         private String instagramUrl;

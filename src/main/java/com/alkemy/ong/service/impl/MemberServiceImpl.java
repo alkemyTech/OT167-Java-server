@@ -46,6 +46,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void deleteMemberById(Long id) {
-        Optional.ofNullable(memberRepository.findByIdMember(id)).orElseThrow(()->  new NotFoundException(messageSource.getMessage("member.not.found", null, Locale.ENGLISH))).setDeleted(true);
+        Optional.ofNullable(memberRepository.findById(id)).get().orElseThrow(()->  new NotFoundException(messageSource.getMessage("member.not.found", null, Locale.ENGLISH))).setDeleted(true);
     }
 }
