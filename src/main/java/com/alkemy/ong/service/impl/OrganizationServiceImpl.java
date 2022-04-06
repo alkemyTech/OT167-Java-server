@@ -2,6 +2,7 @@ package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.OrganizationCreationDto;
 import com.alkemy.ong.dto.OrganizationDto;
+import com.alkemy.ong.dto.UrlOrganizationDto;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.OrganizationMapper;
 import com.alkemy.ong.model.Organization;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Locale;
 import java.util.Optional;
 
@@ -36,22 +36,16 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Organization editOrganization(OrganizationCreationDto organizationCreationDto) {
+    public OrganizationDto editOrganization(OrganizationCreationDto organizationCreationDto) {
 
         Organization organization = organizationRepository.findAll().get(0);
+        if(organization == null) {
+            throw new NotFoundException(messageSource.getMessage("organization.not.found", null, Locale.ENGLISH));
+        }
+        organization = organizationMapper.editInformationOrganization(organization,organizationCreationDto);
 
-        organization.setName(organizationCreationDto.getName());
-        organization.setImage(organizationCreationDto.getImage());
-        organization.setAddress(organizationCreationDto.getAddress());
-        organization.setPhone(organizationCreationDto.getPhone());
-        organization.setEmail(organizationCreationDto.getEmail());
-        organization.setWelcomeText(organizationCreationDto.getWelcomeText());
-        organization.setAboutUsText(organizationCreationDto.getAboutUsText());
-        organization.setFacebookUrl(organizationCreationDto.getFacebookUrl());
-        organization.setInstagramUrl(organizationCreationDto.getInstagramUrl());
-        organization.setLinkedinUrl(organizationCreationDto.getLinkedinUrl());
-
-        return organizationRepository.save(organization);
+        organization = organizationRepository.save(organization);
+        return organizationMapper.organizationToDto(organization);
     }
 
     @Override
@@ -61,5 +55,13 @@ public class OrganizationServiceImpl implements OrganizationService {
         Optional<Organization> result = findAll.stream().findFirst();
 
         return result.get();
+    }
+  
+    @Override
+    public OrganizationDto save(OrganizationCreationDto organizationCreationDto) {
+
+        Organization organization = organizationMapper.creationOrgFromOrganizationDto(organizationCreationDto);
+
+        return organizationMapper.organizationToDto(organizationRepository.save(organization));
     }
 }

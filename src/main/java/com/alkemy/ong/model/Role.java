@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "roles")
 @Data
@@ -45,5 +46,10 @@ public class Role {
     @UpdateTimestamp
     @Getter @Setter
     private LocalDateTime modifiedDate;
+
+    public Role(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
 }
