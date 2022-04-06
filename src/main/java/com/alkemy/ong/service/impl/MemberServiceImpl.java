@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,5 +42,10 @@ public class MemberServiceImpl implements MemberService {
             throw new NotFoundException(messageSource.getMessage("members.not.found",null, Locale.ENGLISH));
         }
         return memberMapper.memberListToDtoList(memberList);
+    }
+
+    @Override
+    public void deleteMemberById(Long id) {
+        Optional.ofNullable(memberRepository.findById(id)).get().orElseThrow(()->  new NotFoundException(messageSource.getMessage("member.not.found", null, Locale.ENGLISH))).setDeleted(true);
     }
 }

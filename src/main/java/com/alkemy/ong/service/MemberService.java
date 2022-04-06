@@ -8,4 +8,7 @@ public interface MemberService {
     MemberDto saveMember(MemberDto memberDto);
 
     List<MemberDto> listAllMembers();
+
+    void deleteMemberById(Long id);
+
 }
