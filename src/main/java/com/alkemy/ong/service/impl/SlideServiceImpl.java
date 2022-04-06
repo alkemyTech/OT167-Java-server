@@ -51,4 +51,11 @@ public class SlideServiceImpl implements SlideService {
         Organization organization = Optional.ofNullable(organizationRepository.findByName(nameOrg)).orElseThrow(() -> new NotFoundException(messageSource.getMessage("organization.name.not.found", new Object[]{nameOrg}, Locale.ENGLISH)));
         slide.get().setOrganization(organization);
     }
+
+    @Override
+    public void deleteSlide(Long id) {
+        Slide slide = slideRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("slide.not.found", new Object[]{id.toString()}, Locale.ENGLISH)));
+
+        slideRepository.deleteById(id);
+    }
 }

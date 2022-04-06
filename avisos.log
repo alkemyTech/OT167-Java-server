@@ -1,0 +1,3 @@
+[2022-04-04 17:42:37] [ INFO ] [EmailService:28] 401
+[2022-04-04 17:42:37] [ INFO ] [EmailService:28] {"errors":[{"message":"The provided authorization grant is invalid, expired, or revoked","field":null,"help":null}]}
+[2022-04-04 17:42:37] [ INFO ] [EmailService:28] {Strict-Transport-Security=max-age=600; includeSubDomains, Server=nginx, Access-Control-Allow-Origin=https://sendgrid.api-docs.io, Access-Control-Allow-Methods=POST, Connection=keep-alive, X-No-CORS-Reason=https://sendgrid.com/docs/Classroom/Basics/API/cors.html, Content-Length=116, Access-Control-Max-Age=600, Date=Mon, 04 Apr 2022 20:42:37 GMT, Access-Control-Allow-Headers=Authorization, Content-Type, On-behalf-of, x-sg-elas-acl, Content-Type=application/json}
