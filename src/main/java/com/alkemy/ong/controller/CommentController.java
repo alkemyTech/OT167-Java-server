@@ -1,16 +1,15 @@
 package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.CommentDto;
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.CommentMapper;
 import com.alkemy.ong.model.Comment;
 import com.alkemy.ong.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -30,6 +29,16 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.CREATED).body(commentDtoResponse);
         }catch (NullPointerException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getCause().getMessage());
+        }
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping(value = "/{id}")
+    public ResponseEntity<?> updateComment(@PathVariable Long id,@RequestBody CommentDto commentDto){
+        try{
+            return ResponseEntity.ok(commentService.updateComment(id,commentDto));
+        }catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }
