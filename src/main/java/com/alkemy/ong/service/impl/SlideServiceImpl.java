@@ -108,4 +108,10 @@ public class SlideServiceImpl implements SlideService {
         return result;
     }
 
+    @Override
+    public void deleteSlide(Long id) {
+        SlideDto slideDto = this.findById(id);
+
+        slideRepository.deleteById(slideDto.getId());
+    }
 }
