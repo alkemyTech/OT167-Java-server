@@ -1,5 +1,6 @@
 package com.alkemy.ong.mapper;
 
+import com.alkemy.ong.dto.SlideBasicDto;
 import com.alkemy.ong.dto.SlideDto;
 import com.alkemy.ong.dto.SlideUpdateDto;
 import com.alkemy.ong.model.Slide;
@@ -57,4 +58,18 @@ public class SlideMapper {
         return slide;
 
     }
+
+    public List<SlideBasicDto> slideBasicEntityList2DtoList(List<Slide> listEntity) {
+        return listEntity.stream()
+                .map(slide -> slideBasicEntity2Dto(slide))
+                .collect(Collectors.toList());
+    }
+
+    private SlideBasicDto slideBasicEntity2Dto(Slide ent) {
+        SlideBasicDto dto = new SlideBasicDto();
+        dto.setImageUrl(ent.getImageUrl());
+        dto.setOrder(ent.getOrder());
+        return dto;
+    }
+
 }

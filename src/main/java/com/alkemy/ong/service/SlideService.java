@@ -1,5 +1,6 @@
 package com.alkemy.ong.service;
 
+import com.alkemy.ong.dto.SlideBasicDto;
 import com.alkemy.ong.dto.SlideDto;
 import java.io.IOException;
 import java.util.List;
@@ -12,5 +13,5 @@ public interface SlideService {
     SlideDto updateSlide(Long id, SlideUpdateDto slideDto);
     void setOrgInSlide(Long idSlide, String nameOrg);
     SlideDto findById(Long id);
-
+    List<SlideBasicDto> getSlideBasic();
 }

@@ -1,16 +1,19 @@
 package com.alkemy.ong.controller;
 
+import com.alkemy.ong.dto.SlideBasicDto;
 import com.alkemy.ong.dto.SlideDto;
 import com.alkemy.ong.dto.SlideUpdateDto;
 import com.alkemy.ong.service.SlideService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,4 +41,9 @@ public class SlideController {
         return ResponseEntity.ok(slideService.findById(id));
     }
 
+    @GetMapping
+    public ResponseEntity<List<SlideBasicDto>> getSlideBasic(){
+        List<SlideBasicDto> listSlideBasic = slideService.getSlideBasic();
+        return ResponseEntity.status(HttpStatus.OK).body(listSlideBasic);
+    }
 }
