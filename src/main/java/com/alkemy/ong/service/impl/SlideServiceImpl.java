@@ -1,6 +1,8 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.dto.SlideBasicDto;
 import com.alkemy.ong.dto.SlideDto;
+import com.alkemy.ong.exception.NotFoundList;
 import com.alkemy.ong.service.OrganizationService;
 import com.alkemy.ong.service.PhotoService;
 import java.io.IOException;
@@ -94,4 +96,16 @@ public class SlideServiceImpl implements SlideService {
         }
         return slideMapper.slideToDTO(slideRepository.findById(id).get());
     }
+
+    @Override
+    public List<SlideBasicDto> getSlideBasic() {
+        if (slideRepository.count()==0) {
+            throw new NotFoundList(messageSource.getMessage
+                    ("slide.list.empty", null, Locale.ENGLISH));
+        }
+        List<Slide>listEntity = slideRepository.findAll();
+        List<SlideBasicDto>result = slideMapper.slideBasicEntityList2DtoList(listEntity);
+        return result;
+    }
+
 }

@@ -75,4 +75,11 @@ public class ExepcionHandler {
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler({NotFoundList.class})
+    public ResponseEntity<MessageInfo> notFoundList(HttpServletRequest request, NotFoundList exception) {
+        String message = exception.getMessage();
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.OK.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.OK);
+    }
 }
