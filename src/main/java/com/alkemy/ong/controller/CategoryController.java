@@ -69,5 +69,5 @@ public class CategoryController {
         Map<String, String> message = new HashMap<>(){{put("message: ", messageSource
                 .getMessage("category.delete.sucessfuly", new Object[]{id}, Locale.ENGLISH));}};
         return ResponseEntity.ok().body(message);
-        }
     }
+}

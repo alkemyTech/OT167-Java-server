@@ -8,15 +8,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 import org.springframework.lang.Nullable;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "organizations")
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE organizations SET deleted = true WHERE id=?")
@@ -27,27 +30,30 @@ public class Organization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "Name cannot be null")
+    @Column(unique = true)
+    @NotEmpty(message = "cannot be empty")
+    @NotNull(message = "cannot be null")
     private String name;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "Image cannot be null")
+    @NotEmpty(message = "cannot be empty")
+    @NotNull(message = "cannot be null")
     private String image;
 
-    @NotEmpty(message = "Name cannot be empty")
+    @NotEmpty(message = "cannot be empty")
     @Nullable
     private String address;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @Nullable
-    private Integer phone;
+    @NotEmpty(message = "cannot be empty")
+    @Pattern(regexp = "^(?:(?:00)?549?)?0?(?:11|[2368]\\d)(?:(?=\\d{0,2}15)\\d{2})??\\d{8}$", message = "number no valid")
+    @NotNull(message = "cannot be null")
+    private String phone;
 
-    @NotEmpty(message = "Name cannot be empty")
-    @NotNull(message = "email cannot be null")
+    @NotEmpty(message = "cannot be empty")
+    @Email(regexp = "^[\\w!#$%&'+/=?`{|}~^-]+(?:\\.[\\w!#$%&'+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", message="Email format error")
+    @NotNull(message = "cannot be null")
     private String email;
 
-    @NotNull(message = "Welcome text cannot be null")
+    @NotNull(message = "cannot be null")
     @Column(name = "welcome")
     private String welcomeText;
 
@@ -58,14 +64,26 @@ public class Organization {
     @CreationTimestamp
     @Column(name = "creation_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     @UpdateTimestamp
     @Column(name = "update_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
 
     @Column(name = "deleted")
     private boolean softDeleted = Boolean.FALSE;
+
+    @Column(name = "facebook_url")
+    @Nullable
+    private String facebookUrl;
+
+    @Column(name = "instagram_url")
+    @Nullable
+    private String instagramUrl;
+
+    @Column(name = "linkedin_url")
+    @Nullable
+    private String linkedInUrl;
 
 }

@@ -14,6 +14,9 @@ public class OrganizationMapper {
         organizationDto.setImage(organization.getImage());
         organizationDto.setAddress(organization.getAddress());
         organizationDto.setPhone(organization.getPhone());
+        organizationDto.setFacebookUrl(organization.getFacebookUrl());
+        organizationDto.setInstagramUrl(organization.getInstagramUrl());
+        organizationDto.setLinkedinUrl(organization.getLinkedInUrl());
         return organizationDto;
     }
     public List<OrganizationDto> organizationListToDtoList (List<Organization> organization){
@@ -30,6 +33,26 @@ public class OrganizationMapper {
         organization.setPhone(dto.getPhone());
         organization.setWelcomeText(dto.getWelcomeText());
         organization.setAboutUsText(dto.getAboutUsText());
+        organization.setFacebookUrl(dto.getFacebookUrl());
+        organization.setInstagramUrl(dto.getInstagramUrl());
+        organization.setLinkedInUrl(dto.getLinkedInUrl());
         return organization;
+    }
+
+    public Organization editInformationOrganization(Organization organization, OrganizationCreationDto organizationCreationDto) {
+
+        organization.setName(organizationCreationDto.getName());
+        organization.setImage(organizationCreationDto.getImage());
+        organization.setAddress(organizationCreationDto.getAddress());
+        organization.setPhone(organizationCreationDto.getPhone());
+        organization.setEmail(organizationCreationDto.getEmail());
+        organization.setWelcomeText(organizationCreationDto.getWelcomeText());
+        organization.setAboutUsText(organizationCreationDto.getAboutUsText());
+        organization.setFacebookUrl(organizationCreationDto.getFacebookUrl());
+        organization.setInstagramUrl(organizationCreationDto.getInstagramUrl());
+        organization.setLinkedInUrl(organizationCreationDto.getLinkedInUrl());
+
+        return organization;
+
     }
 }
