@@ -1,8 +1,9 @@
 package com.alkemy.ong.service;
 
 import com.alkemy.ong.dto.NewsDto;
+import com.alkemy.ong.exception.MessagePag;
 import com.alkemy.ong.model.News;
-import com.alkemy.ong.security.model.UserEntity;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.Optional;
 
@@ -13,4 +14,8 @@ public interface NewsService {
     NewsDto findById(Long id);
 
     Optional<News> findNewById(Long id);
+
+    void delete(Long id);
+
+    MessagePag findAllPag(int page, WebRequest request);
 }

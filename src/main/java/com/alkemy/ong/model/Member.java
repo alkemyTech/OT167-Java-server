@@ -1,17 +1,13 @@
 package com.alkemy.ong.model;
-
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @SQLDelete(sql = "UPDATE members SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
@@ -24,8 +20,7 @@ public class Member {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_member")
-    private Long idMember;
+    private Long id;
 
     @NotNull(message = "Name cannot be null")
     private String name;
@@ -47,12 +42,12 @@ public class Member {
     @CreationTimestamp
     @Column(name = "creation_date",updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     @UpdateTimestamp
     @Column(name = "update_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
 
     private Boolean deleted = Boolean.FALSE;
 

@@ -4,13 +4,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @RequiredArgsConstructor
-public class CommentDto {
+public class SlideBasicDto {
 
-    private Long id;
-    private String body;
-    private Long user_id;
-    private Long news_id;
+    private String imageUrl;
+
+    private Integer order;
+
 }

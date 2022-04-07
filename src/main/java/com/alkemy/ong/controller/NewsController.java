@@ -1,15 +1,19 @@
 package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.NewsDto;
+import com.alkemy.ong.exception.PaginationMessage;
+import com.alkemy.ong.model.News;
 import com.alkemy.ong.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -27,11 +31,19 @@ public class NewsController {
 
     @Autowired
     private MessageSource messageSource;
+    @Autowired
+    private PaginationMessage paginationMessage;
 
     @PostMapping
     public ResponseEntity<NewsDto> save(@Valid @RequestBody NewsDto newsDto){
         NewsDto newsSaved = newsService.save(newsDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(newsSaved);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<NewsDto> findNewsById(@PathVariable Long id){
+        NewsDto newsDto = newsService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(newsDto);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -44,11 +56,8 @@ public class NewsController {
         }};
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<NewsDto> findNewsById(@PathVariable Long id){
-        NewsDto newsDto = newsService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(newsDto);
-
+    @GetMapping("/query")
+    public ResponseEntity<?> findAllNewsPag(@RequestParam(value = "page", required = true) String page, WebRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(newsService.findAllPag(Integer.parseInt(page), request));
     }
 }
