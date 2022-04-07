@@ -28,7 +28,7 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Autowired
     private AmazonS3Configuration amazonS3Configuration;
-
+    
     @Override
     public String uploadImage(MultipartFile multipartFile) {
 
