@@ -6,6 +6,9 @@ import com.alkemy.ong.model.News;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 @RequiredArgsConstructor
 public class NewsMapper {
@@ -23,6 +26,9 @@ public class NewsMapper {
         return news;
 
     }
+    public List<NewsDto> listNewsDto(List<News> newsList){
+        return newsList.stream().map(news -> newsEntity2Dto(news)).collect(Collectors.toList());
+    }
 
     //=== Entity --> DTO
     public NewsDto newsEntity2Dto(News news){
@@ -32,7 +38,7 @@ public class NewsMapper {
         newsDto.setName(news.getName());
         newsDto.setImage(news.getImage());
         newsDto.setContent(news.getContent());
-        newsDto.setCategoryId(news.getCategoryId().getIdCategories());
+        if(news.getCategoryId() !=null) newsDto.setCategoryId(news.getCategoryId().getIdCategories());
         return newsDto;
     }
 
