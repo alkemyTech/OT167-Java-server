@@ -36,9 +36,7 @@ public class CommentController {
     @PostMapping(value = "/{id}")
     public ResponseEntity<?> updateComment(@PathVariable Long id,@RequestBody CommentDto commentDto){
         try{
-            Comment commentUpdated= commentService.updateComment(id,commentDto);
-            CommentDto commentDtoResponse = commentMapper.commentEntity2Dto(commentUpdated);
-            return ResponseEntity.ok(commentDtoResponse);
+            return ResponseEntity.ok(commentService.updateComment(id,commentDto));
         }catch (NotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }

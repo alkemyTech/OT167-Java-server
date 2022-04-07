@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment updateComment(Long id, CommentDto commentDto) {
+    public CommentDto updateComment(Long id, CommentDto commentDto) {
         try{
             Comment commentExists=commentRepository.findById(id).get();
 
@@ -47,7 +47,7 @@ public class CommentServiceImpl implements CommentService {
 
             commentSaved.setId(commentExists.getId());
 
-            return commentRepository.save(commentSaved);
+            return commentMapper.commentEntity2Dto(commentRepository.save(commentSaved));
         }catch (NoSuchElementException e){
             throw new NotFoundException(messageSource.getMessage("comment.not.found", null,Locale.ENGLISH));
         }

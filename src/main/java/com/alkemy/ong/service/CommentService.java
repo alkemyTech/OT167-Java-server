@@ -6,5 +6,5 @@ import com.alkemy.ong.model.Comment;
 public interface CommentService {
     Comment save(Comment comment);
 
-    Comment updateComment(Long id, CommentDto commentDto);
+    CommentDto updateComment(Long id, CommentDto commentDto);
 }
