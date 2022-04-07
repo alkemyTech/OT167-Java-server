@@ -1,11 +1,10 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.dto.CommentDto;
+import com.alkemy.ong.exception.NotFoundException;
+import com.alkemy.ong.mapper.CommentMapper;
 import com.alkemy.ong.model.Comment;
-import com.alkemy.ong.model.News;
 import com.alkemy.ong.repository.CommentRepository;
-import com.alkemy.ong.repository.NewsRepository;
-import com.alkemy.ong.repository.UserRepository;
-import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +20,7 @@ import java.util.Locale;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final NewsRepository newsRepository;
-    private final UserRepository userRepository;
+    private final CommentMapper commentMapper;
     private final MessageSource messageSource;
 
     @Override
@@ -36,6 +35,21 @@ public class CommentServiceImpl implements CommentService {
 
         }else{
             throw new NullPointerException(messageSource.getMessage("comment.not.null", null, Locale.ENGLISH));
+        }
+    }
+
+    @Override
+    public Comment updateComment(Long id, CommentDto commentDto) {
+        try{
+            Comment commentExists=commentRepository.findById(id).get();
+
+            Comment commentSaved= commentMapper.commentDto2Entity(commentDto);
+
+            commentSaved.setId(commentExists.getId());
+
+            return commentRepository.save(commentSaved);
+        }catch (NoSuchElementException e){
+            throw new NotFoundException(messageSource.getMessage("comment.not.found", null,Locale.ENGLISH));
         }
     }
 }
