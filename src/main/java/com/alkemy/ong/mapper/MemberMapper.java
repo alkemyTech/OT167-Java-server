@@ -25,6 +25,7 @@ public class MemberMapper {
         membersList.forEach(m -> membersToDtoList.add(memberToDto(m)));
         return membersToDtoList;
     }
+
     public Member creationMember(MemberDto memberDto) {
         Member member = new Member();
         member.setName(memberDto.getName());

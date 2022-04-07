@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -40,15 +41,9 @@ public class MemberController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
-    public ResponseEntity<List<MemberDto>> listMembers(@RequestParam Map<String ,Object> params){
+    public ResponseEntity<?> listMembers(@RequestParam(value = "page", required = true) String page, WebRequest request){
 
-        Integer page = params.get("page") != null ? (Integer.valueOf(params.get("page").toString()) -1) : 0;
-
-        PageRequest pageRequest= PageRequest.of(page,10);
-
-        Page<MemberDto> pageOfMembers= memberService.getAllMembers(pageRequest);
-
-        return ResponseEntity.ok(pageOfMembers.getContent());
+        return ResponseEntity.ok(memberService.getAllMembers(Integer.parseInt(page),request));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
