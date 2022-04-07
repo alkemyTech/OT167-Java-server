@@ -9,6 +9,9 @@ import com.alkemy.ong.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,12 +39,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<MemberDto> listAllMembers() {
-        List<Member> memberList = memberRepository.findAll();
+    public Page<MemberDto> getAllMembers(Pageable pageable) {
+        Page<Member> memberList = memberRepository.findAll(pageable);
         if(memberList.isEmpty()){
             throw new NotFoundException(messageSource.getMessage("members.not.found",null, Locale.ENGLISH));
         }
-        return memberMapper.memberListToDtoList(memberList);
+        return new PageImpl<>(memberMapper.memberListToDtoList(memberList.getContent()));
     }
 
     @Override
