@@ -6,7 +6,9 @@ import lombok.*;
 @Getter
 @Setter
 public class TestimonialDto {
-    
+
+    private Long id;
+
     @NotNull(message = "The name cannot be empty")
     private String name;
     

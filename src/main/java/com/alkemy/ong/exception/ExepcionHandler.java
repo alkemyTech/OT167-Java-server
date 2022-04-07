@@ -6,7 +6,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -69,10 +68,22 @@ public class ExepcionHandler {
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({HttpMessageNotReadableException.class})
-    public ResponseEntity<MessageInfo> messageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException ex) {
+    public ResponseEntity<MessageInfo> messageNotReadableException(HttpServletRequest request) {
         String message = messageSource.getMessage
                 ("message.error.unexpected.character", null, Locale.ENGLISH);
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<MessageInfo> illegalArgExcept(HttpServletRequest request, IllegalArgumentException ex) {
+        String message = ex.getMessage();
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler({NotFoundList.class})
+    public ResponseEntity<MessageInfo> notFoundList(HttpServletRequest request, NotFoundList exception) {
+        String message = exception.getMessage();
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.OK.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.OK);
     }
 }

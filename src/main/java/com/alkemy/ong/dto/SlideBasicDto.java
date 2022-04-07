@@ -1,14 +1,16 @@
 package com.alkemy.ong.dto;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @RequiredArgsConstructor
-public class SlideUpdateDto {
+public class SlideBasicDto {
+
     private String imageUrl;
-    private String text;
+
     private Integer order;
-    private String orgName;
+
 }

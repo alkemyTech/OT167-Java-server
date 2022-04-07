@@ -39,4 +39,10 @@ public class MemberController {
     public ResponseEntity<List<MemberDto>> listMembers(){
         return ResponseEntity.ok(memberService.listAllMembers());
     }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<Map<String,String>> memberDelete(@PathVariable String id){
+        memberService.deleteMemberById(Long.valueOf(id));
+        return ResponseEntity.ok().body(new HashMap<>(){{put("message", messageSource.getMessage("member.delete.successfully", new Object[]{id.toString()}, Locale.ENGLISH));}});
+    }
 }

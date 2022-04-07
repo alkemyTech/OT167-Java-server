@@ -46,6 +46,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(categoryDto ->  categoryDto.getName())
                 .collect(Collectors.toList());
     }
+
+    @Override
     public CategoryDto save(CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption {
         Category categorySaved = null;
         Category entity = categoryMapper.categoryDto2Entity(categoryDto);
@@ -60,6 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return categoryMapper.categoryEntity2Dto(categorySaved);
     }
+
     @Override
     public Optional<Category> findById(Long id) {
         if (categoryRepository.findById(id).isEmpty()) {
@@ -67,6 +70,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return categoryRepository.findById(id);
     }
+
     public Category updateCategory(Long id, Category category ){
         Category categoryExist=categoryRepository.findById(id).get();
 

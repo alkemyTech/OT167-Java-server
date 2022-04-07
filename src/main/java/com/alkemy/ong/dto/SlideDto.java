@@ -12,6 +12,7 @@ public class SlideDto {
     private String imageUrl;
     private String text;
     private Integer order;
+    private Long organization_id;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Organization organization;
 }

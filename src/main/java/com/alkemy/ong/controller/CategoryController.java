@@ -51,6 +51,7 @@ public class CategoryController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id,@RequestBody Category category){
         try{
@@ -68,5 +69,5 @@ public class CategoryController {
         Map<String, String> message = new HashMap<>(){{put("message: ", messageSource
                 .getMessage("category.delete.sucessfuly", new Object[]{id}, Locale.ENGLISH));}};
         return ResponseEntity.ok().body(message);
-        }
     }
+}

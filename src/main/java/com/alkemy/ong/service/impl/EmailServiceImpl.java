@@ -4,10 +4,10 @@ import com.alkemy.ong.enums.MailMessage;
 import static com.alkemy.ong.enums.TipLog.ERROR;
 import static com.alkemy.ong.enums.TipLog.INFO;
 import com.alkemy.ong.model.Organization;
-import com.alkemy.ong.repository.OrganizationRepository;
 import com.alkemy.ong.exception.BadRequestException;
 import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.service.EmailService;
+import com.alkemy.ong.service.OrganizationService;
 import com.alkemy.ong.utils.UtilsLog;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
@@ -17,8 +17,6 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +25,7 @@ import org.thymeleaf.context.Context;
 
 @Service
 public class EmailServiceImpl implements EmailService {
+
     @Autowired
     SendGrid sendGrid;
 
@@ -39,13 +38,14 @@ public class EmailServiceImpl implements EmailService {
     private TemplateEngine templateEngine;
 
     @Autowired
-    private OrganizationRepository organizationRepository;
+    private OrganizationService organizationService;
 
+    @Override
     public void sendWelcomeEmailTo(UserEntity user) {
         SendGrid sg = new SendGrid(api_key);
 
         try {
-            Organization org = this.findOrganization();
+            Organization org = organizationService.findOrganization();
             Request request = this.buildRequest(user, org);
             Response response = sg.api(request);
 
@@ -93,16 +93,8 @@ public class EmailServiceImpl implements EmailService {
         return request;
     }
 
-    public Organization findOrganization() {
-
-        List<Organization> findAll = organizationRepository.findAll();
-        Optional<Organization> result = findAll.stream().findFirst();
-        
-        return result.get();
-    }
-  
     @Override
-    public Response sendEmail(String subject,String recipentEmail, String message) {
+    public Response sendEmail(String subject, String recipentEmail, String message) {
         Mail mail = new Mail(new Email(emailSender),
                 subject,
                 new Email(recipentEmail),
@@ -116,8 +108,9 @@ public class EmailServiceImpl implements EmailService {
             request.setBody(mail.build());
             response = this.sendGrid.api(request);
 
-        }catch (IOException ex){
-            throw new BadRequestException(ex.getMessage());}
+        } catch (IOException ex) {
+            throw new BadRequestException(ex.getMessage());
+        }
         return response;
     }
 }

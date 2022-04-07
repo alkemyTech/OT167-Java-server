@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CategoryService {
     Optional<Category> findById(Long id);
-    CategoryDto save(CategoryDto category) throws DataAlreadyExistException, IncorrectPatternExeption;
+    CategoryDto save(CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption;
     void deleteCategoryById(Long id);
     Category updateCategory(Long id, Category category);
     List<String> getAllCategoriesByName();

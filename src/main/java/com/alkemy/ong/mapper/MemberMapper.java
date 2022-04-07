@@ -9,7 +9,7 @@ import java.util.List;
 public class MemberMapper {
     public MemberDto memberToDto (Member member){
         MemberDto memberDto = new MemberDto();
-        memberDto.setIdMember(member.getIdMember());
+        memberDto.setId(member.getId());
         memberDto.setName(member.getName());
         memberDto.setFacebookUrl(member.getFacebookUrl());
         memberDto.setInstagramUrl(member.getInstagramUrl());
