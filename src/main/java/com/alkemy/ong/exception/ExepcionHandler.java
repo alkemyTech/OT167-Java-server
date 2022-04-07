@@ -69,9 +69,15 @@ public class ExepcionHandler {
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler({HttpMessageNotReadableException.class})
-    public ResponseEntity<MessageInfo> messageNotReadableException(HttpServletRequest request, HttpMessageNotReadableException ex) {
+    public ResponseEntity<MessageInfo> messageNotReadableException(HttpServletRequest request) {
         String message = messageSource.getMessage
                 ("message.error.unexpected.character", null, Locale.ENGLISH);
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<MessageInfo> illegalArgExcept(HttpServletRequest request, IllegalArgumentException ex) {
+        String message = ex.getMessage();
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }

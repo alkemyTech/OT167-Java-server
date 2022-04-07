@@ -22,7 +22,7 @@ public class NewsMapper {
         news.setImage(dto.getImage());
         news.setContent(dto.getContent());
         news.setName(dto.getName());
-        news.setCategoryId(categoryEntity);
+        if(news.getCategoryId() !=null) news.setCategoryId(categoryEntity);
         return news;
 
     }
