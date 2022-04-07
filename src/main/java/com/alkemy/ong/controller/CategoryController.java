@@ -51,6 +51,7 @@ public class CategoryController {
 
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id,@RequestBody Category category){
         try{
