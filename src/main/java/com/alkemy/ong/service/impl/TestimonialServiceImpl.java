@@ -30,7 +30,7 @@ public class TestimonialServiceImpl implements TestimonialService {
         Testimonial testimonialSaved = testimonialRepository.save(testimonial);
     }
 
-        public TestimonialDto update(Long id, TestimonialDto testimonialDto) {
+    public TestimonialDto update(Long id, TestimonialDto testimonialDto) {
         Optional<Testimonial> testimonial = this.testimonialRepository.findById(id);
         if (!testimonial.isPresent()) {
             throw new NotFoundException(messageSource.getMessage("testimonial.not.found", null, Locale.ENGLISH));
@@ -39,5 +39,14 @@ public class TestimonialServiceImpl implements TestimonialService {
         Testimonial testimonialSaved = this.testimonialRepository.save(testimonial.get());
         TestimonialDto result = this.testimonialMapper.testimonial2DTO(testimonialSaved);
         return result;
+    }
+
+    public void delete(Long id) {
+        Optional<Testimonial> news = this.testimonialRepository.findById(id);
+        if (!news.isPresent()) {
+            throw new NotFoundException(messageSource.getMessage
+                    ("testimonial.not.found", null, Locale.ENGLISH));
+        }
+        testimonialRepository.deleteById(id);
     }
 }

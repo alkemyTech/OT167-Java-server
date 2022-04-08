@@ -1,12 +1,12 @@
 package com.alkemy.ong.service;
 import com.alkemy.ong.dto.MemberDto;
-
-import java.util.List;
+import com.alkemy.ong.exception.MessagePag;
+import org.springframework.web.context.request.WebRequest;
 
 public interface MemberService {
     MemberDto saveMember(MemberDto memberDto);
 
-    List<MemberDto> listAllMembers();
+    MessagePag getAllMembers(int page, WebRequest request);
 
     void deleteMemberById(Long id);
 

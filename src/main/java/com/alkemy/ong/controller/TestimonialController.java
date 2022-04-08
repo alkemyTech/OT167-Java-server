@@ -37,6 +37,18 @@ public class TestimonialController {
         TestimonialDto result = this.testimonialService.update(id,testimonialDto);
         return ResponseEntity.ok().body(result);
     }
+
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
+        this.testimonialService.delete(id);
+        Map<String, String> message = new HashMap<>() {{
+            put("message: ", messageSource
+                    .getMessage("testimonial.delete.ok", new Object[]{id}, Locale.ENGLISH));
+        }};
+        return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
 }
 
 
