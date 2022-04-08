@@ -1,6 +1,7 @@
 package com.alkemy.ong.mapper;
 import com.alkemy.ong.dto.OrganizationCreationDto;
 import com.alkemy.ong.dto.OrganizationDto;
+import com.alkemy.ong.dto.OrganizationSlideDto;
 import com.alkemy.ong.model.Organization;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
@@ -54,5 +55,19 @@ public class OrganizationMapper {
 
         return organization;
 
+    }
+    
+    public OrganizationSlideDto organizationSlideToDto (Organization organization){
+        
+        OrganizationSlideDto organizationSlideDto = new OrganizationSlideDto();
+        organizationSlideDto.setName(organization.getName());
+        organizationSlideDto.setImage(organization.getImage());
+        organizationSlideDto.setAddress(organization.getAddress());
+        organizationSlideDto.setPhone(organization.getPhone());
+        organizationSlideDto.setFacebookUrl(organization.getFacebookUrl());
+        organizationSlideDto.setInstagramUrl(organization.getInstagramUrl());
+        organizationSlideDto.setLinkedinUrl(organization.getLinkedInUrl());
+        
+        return organizationSlideDto;
     }
 }
