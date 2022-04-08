@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "news")
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE news SET deleted = true WHERE id=?")
