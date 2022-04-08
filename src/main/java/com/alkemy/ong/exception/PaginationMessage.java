@@ -15,9 +15,9 @@ import java.util.Locale;
 public class PaginationMessage {
     @Autowired
     private MessageSource messageSource;
-    public MessagePag messageInfo(Page page, List<Object> dto, WebRequest request){
+    public MessagePag messageInfo(Page page, List<Object> dtoList, WebRequest request){
         String path = ((ServletWebRequest)request).getRequest().getRequestURI();
-        List <Object> content = dto;
+        List <Object> content = dtoList;
         String nextPath = messageSource.getMessage("page.dont.have.next", null, Locale.ENGLISH);
         String prevPath = messageSource.getMessage("page.dont.have.prev", null, Locale.ENGLISH);
         if(!page.isLast()) nextPath= path+ "?page=" + (page.getNumber()+1);
