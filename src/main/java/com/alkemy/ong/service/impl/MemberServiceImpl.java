@@ -57,4 +57,18 @@ public class MemberServiceImpl implements MemberService {
     public void deleteMemberById(Long id) {
         Optional.ofNullable(memberRepository.findById(id)).get().orElseThrow(()->  new NotFoundException(messageSource.getMessage("member.not.found", null, Locale.ENGLISH))).setDeleted(true);
     }
+
+    @Override
+    public MemberDto updateMember(Long id, MemberDto memberDto) {
+        Optional<Member> member = Optional.ofNullable(memberRepository.findById(id).orElseThrow(()->  new NotFoundException(messageSource.getMessage("member.not.found", null, Locale.ENGLISH))));
+        member.stream().forEach((m) -> {
+                m.setName(memberDto.getName());
+                m.setFacebookUrl(memberDto.getFacebookUrl());
+                m.setInstagramUrl(memberDto.getInstagramUrl());
+                m.setLinkedinUrl(memberDto.getLinkedinUrl());
+                m.setImage(memberDto.getImage());
+                m.setDescription(memberDto.getDescription());
+        });
+        return memberMapper.memberToDto(member.get());
+    }
 }

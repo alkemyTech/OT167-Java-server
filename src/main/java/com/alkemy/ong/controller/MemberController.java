@@ -1,8 +1,6 @@
 package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.MemberDto;
-import com.alkemy.ong.model.Member;
-import com.alkemy.ong.service.EmailService;
 import com.alkemy.ong.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,5 +49,9 @@ public class MemberController {
     public ResponseEntity<Map<String,String>> memberDelete(@PathVariable String id){
         memberService.deleteMemberById(Long.valueOf(id));
         return ResponseEntity.ok().body(new HashMap<>(){{put("message", messageSource.getMessage("member.delete.successfully", new Object[]{id.toString()}, Locale.ENGLISH));}});
+    }
+    @PutMapping(value = "{id}")
+    public ResponseEntity<MemberDto> memberUpdate(@PathVariable String id, @RequestBody MemberDto memberDto){
+        return ResponseEntity.status(HttpStatus.OK).body(memberService.updateMember(Long.valueOf(id), memberDto));
     }
 }
