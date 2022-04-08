@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
     @Autowired
     private MessageSource messageSource;
-    private static final int SIZE_PAG_10 = 9;
+    private static final int SIZE_PAG_10 = 10;
     @Autowired
     private PaginationMessage paginationMessage;
     @Autowired
