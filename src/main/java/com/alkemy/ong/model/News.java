@@ -10,19 +10,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "news")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE news SET deleted = true WHERE id_news=?")
+@SQLDelete(sql = "UPDATE news SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 public class News {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_news")
     private Long id;
 
     @NotNull(message = "name cannot be null")
@@ -42,11 +42,11 @@ public class News {
     @CreationTimestamp
     @Column(name = "creation_date",updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     @UpdateTimestamp
     @Column(name = "update_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDate updateDate;
+    private LocalDateTime updateDate;
 
 }

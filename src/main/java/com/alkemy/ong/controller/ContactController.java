@@ -1,6 +1,6 @@
 package com.alkemy.ong.controller;
 import com.alkemy.ong.dto.ContactDto;
-import com.alkemy.ong.exception.MessageInfo;
+import com.alkemy.ong.exception.MessageResponse;
 import com.alkemy.ong.service.ContactService;
 import com.alkemy.ong.service.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
@@ -26,6 +25,8 @@ public class ContactController {
     private final MessageSource messageSource;
     @Autowired
     private ContactService contactService;
+    @Autowired
+    private MessageResponse messageResponse;
 
     @PostMapping("/register")
     public ResponseEntity<?> contact(@Valid @RequestBody ContactDto contactDto, WebRequest request) {
@@ -34,17 +35,13 @@ public class ContactController {
                 messageSource.getMessage("contact.email.subject", new Object[]{contactDto.getName()}, Locale.ENGLISH),
                 contactDto.getEmail(),
                 messageSource.getMessage("contact.email.message",null, Locale.ENGLISH));
-        return ResponseEntity.status(HttpStatus.CREATED).body(new MessageInfo(
-                messageSource.getMessage("contact.registered.successfully",null, Locale.ENGLISH),
-                HttpStatus.CREATED.value(),
-                ((ServletWebRequest)request).getRequest().getRequestURI()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(messageResponse.messageOk(messageSource.getMessage("contact.registered.successfully",null, Locale.ENGLISH), HttpStatus.CREATED.value(), request));
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<List<ContactDto>> getAllContacts(){
         return ResponseEntity.ok().body(contactService.getAllContacts());
     }
-
     @PostMapping
     public ResponseEntity<?> addContact(@Valid @RequestBody ContactDto contactDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(contactService.save(contactDto));

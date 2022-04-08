@@ -6,6 +6,8 @@ public interface TestimonialService {
 
     public void save(TestimonialDto testimonialDto);
 
-        TestimonialDto update(Long id, TestimonialDto testimonialDto);
+    TestimonialDto update(Long id, TestimonialDto testimonialDto);
+
+    void delete(Long id);
 
 }
