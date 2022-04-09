@@ -5,7 +5,9 @@ import com.alkemy.ong.exception.MessagePag;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.exception.PaginationMessage;
 import com.alkemy.ong.mapper.NewsMapper;
+import com.alkemy.ong.model.Category;
 import com.alkemy.ong.model.News;
+import com.alkemy.ong.repository.CategoryRepository;
 import com.alkemy.ong.repository.NewsRepository;
 import com.alkemy.ong.service.NewsService;
 
@@ -36,6 +38,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Autowired
     private MessageSource messageSource;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Override
     public NewsDto save(NewsDto newsDto) {
@@ -73,5 +78,21 @@ public class NewsServiceImpl implements NewsService {
     public MessagePag findAllPag(int page, WebRequest request) {
         Page newsPage = newsRepository.findAll(PageRequest.of(page, SIZE_PAG_10));
         return paginationMessage.messageInfo(newsPage, newsMapper.listNewsDto(newsPage.getContent()), request);
+    }
+
+    @Override
+    public News updateNews(Long id, NewsDto newsDto) {
+
+        News news = newsRepository.findById(id).orElseThrow(()->  new NotFoundException(messageSource.getMessage("not.found", null, Locale.ENGLISH)));
+        Category category = categoryRepository.findById(newsDto.getCategoryId()).orElseThrow(()->  new NotFoundException(messageSource.getMessage("not.found", null, Locale.ENGLISH)));
+
+        news.setName(newsDto.getName());
+        news.setContent(newsDto.getContent());
+        news.setImage(newsDto.getImage());
+        news.setCategoryId(category);
+
+        newsRepository.save(news);
+
+        return news;
     }
 }

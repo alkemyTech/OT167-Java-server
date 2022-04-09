@@ -2,12 +2,10 @@ package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.NewsDto;
 import com.alkemy.ong.exception.PaginationMessage;
-import com.alkemy.ong.model.News;
 import com.alkemy.ong.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,5 +57,11 @@ public class NewsController {
     @GetMapping("/query")
     public ResponseEntity<?> findAllNewsPag(@RequestParam(value = "page", required = true) String page, WebRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(newsService.findAllPag(Integer.parseInt(page), request));
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/news/{id}")
+    public ResponseEntity<?> editNews(@PathVariable Long id, @Valid @RequestBody NewsDto newsDto){
+       return ResponseEntity.ok(newsService.updateNews(id, newsDto));
     }
 }
