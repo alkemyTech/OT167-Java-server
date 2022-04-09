@@ -66,9 +66,16 @@ public class PhotoServiceImpl implements PhotoService {
         this.s3client = new AmazonS3Client(credentials);
     }
 
+    @Override
+    public void deleteObject(String imageUrl) {
+        s3client.deleteBucket(imageUrl);
+    }
+
     private void uploadFileTos3bucket(String fileName, File file) {
         s3client.putObject(new PutObjectRequest(amazonS3Configuration.getBucketName(), fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
+
+
 
 }

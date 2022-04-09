@@ -112,6 +112,8 @@ public class SlideServiceImpl implements SlideService {
     public void deleteSlide(Long id) {
         SlideDto slideDto = this.findById(id);
 
+        photoService.deleteObject(slideDto.getImageUrl());
+
         slideRepository.deleteById(slideDto.getId());
     }
 }
