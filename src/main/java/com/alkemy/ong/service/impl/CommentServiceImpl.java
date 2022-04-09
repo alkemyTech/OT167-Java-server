@@ -13,6 +13,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
@@ -64,5 +65,14 @@ public class CommentServiceImpl implements CommentService {
 
         return commentRepository.findAll().stream().filter(comment -> comment.getNews_id().getId().equals(id)).collect(Collectors.toList())
                                           .stream().map(commentMapper::commentEntity2Dto).collect(Collectors.toList());
+    }
+
+    @Override
+    public ArrayList<String> getAllComments() {
+
+        ArrayList<String> commentsList = commentRepository.getCommentsByCreationDate();
+
+        return commentsList;
+
     }
 }

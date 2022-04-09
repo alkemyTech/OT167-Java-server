@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import java.util.ArrayList;
+
+import static com.amazonaws.services.elasticbeanstalk.model.ConfigurationOptionValueType.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comments")
@@ -48,5 +52,12 @@ public class CommentController {
         }
     }
 
+    @GetMapping("/comments")
+    public ResponseEntity<?> getAllComments(){
 
+        ArrayList<String> commentsList = commentService.getAllComments();
+
+        return ResponseEntity.ok().body(commentsList);
+
+    }
 }
