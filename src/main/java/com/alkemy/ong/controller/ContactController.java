@@ -35,7 +35,7 @@ public class ContactController {
                 messageSource.getMessage("contact.email.subject", new Object[]{contactDto.getName()}, Locale.ENGLISH),
                 contactDto.getEmail(),
                 messageSource.getMessage("contact.email.message",null, Locale.ENGLISH));
-        return ResponseEntity.status(HttpStatus.CREATED).body(messageResponse.messageOk(messageSource.getMessage("contact.registered.successfully",null, Locale.ENGLISH), request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(messageResponse.messageOk(messageSource.getMessage("contact.registered.successfully",null, Locale.ENGLISH), HttpStatus.CREATED.value(), request));
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping

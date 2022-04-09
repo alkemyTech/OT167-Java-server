@@ -23,7 +23,7 @@ import org.springframework.web.context.request.WebRequest;
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
 
-    private static final int SIZE_PAG_10 = 9;
+    private static final int SIZE_PAG_10 = 10;
     @Autowired
     private PaginationMessage paginationMessage;
     private WebRequest request;
