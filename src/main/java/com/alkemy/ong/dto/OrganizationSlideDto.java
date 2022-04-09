@@ -1,9 +1,12 @@
 package com.alkemy.ong.dto;
+
+import java.util.List;
 import lombok.*;
 
+@Getter
+@Setter
 @RequiredArgsConstructor
-@Getter @Setter
-public class OrganizationDto{
+public class OrganizationSlideDto {
     
     private String name;
     private String image;
@@ -12,4 +15,6 @@ public class OrganizationDto{
     private String facebookUrl;
     private String instagramUrl;
     private String linkedinUrl;
+    private List<SlideDto> listSlide;
+    
 }

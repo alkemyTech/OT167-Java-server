@@ -87,8 +87,8 @@ public class UserSeeder implements CommandLineRunner {
                 lastName,
                 firstName,
                 email,
-                photo,
                 passwordEncoder.encode(password),
+                photo,
                 roles
         );
         userRepository.save(user);

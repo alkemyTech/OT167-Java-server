@@ -2,6 +2,7 @@ package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.OrganizationCreationDto;
 import com.alkemy.ong.dto.OrganizationDto;
+import com.alkemy.ong.dto.OrganizationSlideDto;
 import com.alkemy.ong.service.OrganizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,19 @@ import javax.validation.Valid;
 public class OrganizationController {
     @Autowired
     private OrganizationService organizationService;
-
-    @GetMapping(value = "/public/{id}")
-    public ResponseEntity<OrganizationDto> findOrganizationById(@Valid @PathVariable Long id){
-        return ResponseEntity.ok(organizationService.findById(id));
+    
+    @GetMapping(value = "/public")
+    public ResponseEntity<OrganizationSlideDto> findOrganization(){
+        return ResponseEntity.ok(organizationService.organizationSlide());
     }
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/public")
     public ResponseEntity<?> editOrganization(@Valid @RequestBody OrganizationCreationDto organizationCreationDto){
         return ResponseEntity.ok(organizationService.editOrganization(organizationCreationDto));
+    }
+
+    @PostMapping
+    public ResponseEntity<OrganizationDto> save(@Valid @RequestBody OrganizationCreationDto organizationCreationDto){
+        return ResponseEntity.ok(organizationService.save(organizationCreationDto));
     }
 }
