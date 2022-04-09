@@ -89,7 +89,7 @@ public class MemberController {
                     )}) })})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
-    public ResponseEntity<MessagePag> listMembers(@Parameter(description = "Page number to list members", name = "Number Page", example = "1") @RequestParam(value = "page", required = true) String page, WebRequest request){
+    public ResponseEntity<MessagePag> listMembers(@Parameter(description = "Page number to list members", example = "1") @RequestParam(value = "page", required = true) String page, WebRequest request){
         return ResponseEntity.ok(memberService.getAllMembers(Integer.parseInt(page),request));
     }
 
@@ -111,7 +111,7 @@ public class MemberController {
     )}) })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<MessageInfo> memberDelete(@Parameter(description = "Id of the memeber to be delete", name = "Id", example = "1") @PathVariable String id, WebRequest request){
+    public ResponseEntity<MessageInfo> memberDelete(@Parameter(description = "Id of the memeber to be delete", example = "1") @PathVariable String id, WebRequest request){
         memberService.deleteMemberById(Long.valueOf(id));
         return ResponseEntity.ok().body(messageResponse.messageOk(messageSource.getMessage("member.delete.successfully",new Object[]{id}, Locale.ENGLISH), HttpStatus.OK.value(), request));
     }
@@ -137,7 +137,7 @@ public class MemberController {
                     )}) })})
     @PutMapping(value = "{id}", produces = { "application/json" })
     public ResponseEntity<MemberDto> memberUpdate(
-            @Parameter(description = "Id of the memeber to be update", name = "Id", example = "1") @PathVariable String id, @RequestBody MemberDto memberDto){
+            @Parameter(description = "Id of the memeber to be update", example = "1") @PathVariable String id, @RequestBody MemberDto memberDto){
         return ResponseEntity.status(HttpStatus.OK).body(memberService.updateMember(Long.valueOf(id), memberDto));
     }
 }
