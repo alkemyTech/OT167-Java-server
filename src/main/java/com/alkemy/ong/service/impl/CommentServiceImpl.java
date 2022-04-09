@@ -4,15 +4,19 @@ import com.alkemy.ong.dto.CommentDto;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.CommentMapper;
 import com.alkemy.ong.model.Comment;
+import com.alkemy.ong.model.News;
 import com.alkemy.ong.repository.CommentRepository;
+import com.alkemy.ong.repository.NewsRepository;
 import com.alkemy.ong.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +26,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
     private final MessageSource messageSource;
+    private final NewsRepository newsRepository;
 
     @Override
     public Comment save(Comment comment) {
@@ -51,5 +56,13 @@ public class CommentServiceImpl implements CommentService {
         }catch (NoSuchElementException e){
             throw new NotFoundException(messageSource.getMessage("comment.not.found", null,Locale.ENGLISH));
         }
+    }
+
+    @Override
+    public List<CommentDto> getAllCommentsByIdNews(Long id) {
+        News news = newsRepository.findById(id).orElseThrow(()->  new NotFoundException(messageSource.getMessage("not.found", null, Locale.ENGLISH)));
+
+        return commentRepository.findAll().stream().filter(comment -> comment.getNews_id().getId().equals(id)).collect(Collectors.toList())
+                                          .stream().map(commentMapper::commentEntity2Dto).collect(Collectors.toList());
     }
 }
