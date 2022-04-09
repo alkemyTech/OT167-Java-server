@@ -49,20 +49,21 @@ public class MemberController {
     private MemberService memberService;
 
 
-    @Operation(summary = "create a new member", description = "Create a member with filling the params of the body and return a success or error message")
+    @Operation(summary = "create a new member", description = "Create a member with filling the params of the body and return a success or error message. \n" +
+            "The required fields are: name and image. The name field can only be filled with non-numeric characters.")
     @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Member was created",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
                     array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {
-                            @ExampleObject(name = "Example 1", summary = "Member created", description = "member created", value = MODEL_MEMBER_CREATED),
+                            @ExampleObject(name = "Example 1", summary = "Member created", description = "when the required fields are filled in, send a member message successfully created", value = MODEL_MEMBER_CREATED),
                     }) }),
     @ApiResponse(responseCode = "400", description = "A param error",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessagesInfo.class),
                     examples = {
-                            @ExampleObject(name = "Example 1", summary = "Member param Error", description = "Member param Error", value = MODEL_MEMBER_PARAM_ERROR),
+                            @ExampleObject(name = "Example 1", summary = "Member param Error", description = "when required fields are not filled in, send a 400 (Bad Request) error message", value = MODEL_MEMBER_PARAM_ERROR),
                     })})})
     @PostMapping
     public ResponseEntity<MessageInfo> memberCreate(@Parameter(description = "Fill all the parrameters not null to create a member") @Valid @RequestBody MemberDto memberDto, WebRequest request) {
@@ -77,15 +78,14 @@ public class MemberController {
                     schema = @Schema(implementation = MessagePag.class),
                     array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {
-                            @ExampleObject(name = "Example success", summary = "Member list", description = "Member list", value =
-                                    MODEL_MESSAGE_PAGE),
-                            @ExampleObject(name = "Example not found", summary = "Empty list", description = "Empty list", value = MODEL_MESSAGE_ERROR_EMPTY)
+                            @ExampleObject(name = "Example success", summary = "Member list", description = "when a page number is entered, a list of 10 members of the requested page is displayed", value = MODEL_MESSAGE_PAGE),
+                            @ExampleObject(name = "Example not found", summary = "Empty list", description = "If the page is empty an empty list message is displayed", value = MODEL_MESSAGE_ERROR_EMPTY)
                     }
             ) }),
     @ApiResponse(responseCode = "400", description = "Error for the character entered",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
-                    examples = {@ExampleObject(name = "Example error 400", summary = "Error character", description = "Enter character not valid", value = MODEL_ERROR_400
+                    examples = {@ExampleObject(name = "Example error 400", summary = "Error character", description = "When I enter an invalid character in the path it sends an error message 400 (Bad Request).", value = MODEL_ERROR_400
                     )}) })})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
@@ -97,17 +97,17 @@ public class MemberController {
     @ApiResponse(responseCode = "200", description = "Member was deleted",
             content = { @Content(mediaType = "application/json",
             schema = @Schema(implementation = MessageInfo.class),
-                    examples = {@ExampleObject(name = "Member deleted", summary = "Member deleted", description = "Member was deleted", value = MODEL_DELETE
+                    examples = {@ExampleObject(name = "Member deleted", summary = "Member deleted", description = "The member is successfully removed when found by id, then a success message is sent.", value = MODEL_DELETE
                     )}) })
     @ApiResponse(responseCode = "400", description = "Error for the character entered",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
-                    examples = {@ExampleObject(name = "Example error 400", summary = "Error character", description = "Enter character not valid", value = MODEL_ERROR_400
+                    examples = {@ExampleObject(name = "Example error 400", summary = "Error character", description = "When I enter an invalid character in the path it sends an error message 400 (Bad Request).", value = MODEL_ERROR_400
                     )}) })
     @ApiResponse(responseCode = "404", description = "Member not found",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
-                    examples = {@ExampleObject(name = "Example error 404", summary = "Member not found", description = "Not member was found", value = MODEL_ERROR_404
+                    examples = {@ExampleObject(name = "Example error 404", summary = "Member not found", description = "When you enter the id of a nonexistent member in the route, it sends a message error 400 (Not Found).", value = MODEL_ERROR_404
     )}) })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "{id}")
@@ -117,23 +117,24 @@ public class MemberController {
     }
 
 
-    @Operation(summary = "Update a member with the id", description = "Find a member with the id, fill the params of the body and return a member update or error message")
+    @Operation(summary = "Update a member with the id", description = "Find a member with the id, fill the params of the body and return a member update or error message. \n" +
+            "The required fields are: name and image. The name field can only be filled with non-numeric characters.")
     @ApiResponses(value = {
     @ApiResponse(responseCode = "200", description = "Member was modifed",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MemberDto.class),
-                    examples = {@ExampleObject(name = "Member was update", summary = "Member update", description = "Member was update", value = MODEL_MEMBER
+                    examples = {@ExampleObject(name = "Member was update", summary = "Member update", description = "when the required fields are completed, the user is updated and the entity update is sent.", value = MODEL_MEMBER
     )})}),
     @ApiResponse(responseCode = "400", description = "A param cannot be null",
             content = { @Content(mediaType = "application/json",
             schema = @Schema(implementation = MessagesInfo.class),
             examples = {
-                    @ExampleObject(name = "Example 1", summary = "Member param Error", description = "Member param Error", value = MODEL_MEMBER_PARAM_ERROR),
+                    @ExampleObject(name = "Example 1", summary = "Member param Error", description = "when required fields are not filled in, send a 400 (Bad Request) error message", value = MODEL_MEMBER_PARAM_ERROR),
             })}),
     @ApiResponse(responseCode = "404", description = "Member not found",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
-                    examples = {@ExampleObject(name = "Example error 404", summary = "Member not found", description = "Not member was found", value = MODEL_ERROR_404
+                    examples = {@ExampleObject(name = "Example error 404", summary = "Member not found", description = "When you enter the id of a nonexistent member in the route, it sends a message error 400 (Not Found).", value = MODEL_ERROR_404
                     )}) })})
     @PutMapping(value = "{id}", produces = { "application/json" })
     public ResponseEntity<MemberDto> memberUpdate(
