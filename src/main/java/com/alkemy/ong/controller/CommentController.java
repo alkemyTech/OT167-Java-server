@@ -1,6 +1,7 @@
 package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.CommentDto;
+import com.alkemy.ong.dto.NewsDto;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.CommentMapper;
 import com.alkemy.ong.model.Comment;
@@ -20,6 +21,11 @@ public class CommentController {
 
     private final CommentMapper commentMapper;
     private final CommentService commentService;
+
+    @GetMapping("/posts/{id}/comments")
+    public ResponseEntity<?> getCommentsByIdNews(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.getAllCommentsByIdNews(id));
+    }
 
     @PostMapping
     public ResponseEntity<?> addNewComment(@Valid @RequestBody CommentDto commentDto){
@@ -41,4 +47,6 @@ public class CommentController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+
+
 }
