@@ -25,7 +25,7 @@ public class SlideMapper {
         slideDto.setId(slide.getId());
         slideDto.setImageUrl(slide.getImageUrl());
         slideDto.setOrder(slide.getOrder());
-        slideDto.setOrganization_id(slide.getOrganization().getId());
+        //slideDto.setOrganization_id(slide.getOrganization().getId());
         slideDto.setText(slide.getText());
 
         return slideDto;

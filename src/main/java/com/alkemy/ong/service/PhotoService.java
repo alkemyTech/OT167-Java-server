@@ -15,5 +15,5 @@ public interface PhotoService {
 
     void initializeAmazon();
 
-    void deleteObject(String imageUrl);
+    void deleteObject(MultipartFile multipartFile);
 }

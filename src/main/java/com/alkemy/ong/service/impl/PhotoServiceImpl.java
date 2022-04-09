@@ -1,15 +1,18 @@
 package com.alkemy.ong.service.impl;
 
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.service.PhotoService;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import com.alkemy.ong.config.AmazonS3Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +21,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +32,9 @@ public class PhotoServiceImpl implements PhotoService {
 
     @Autowired
     private AmazonS3Configuration amazonS3Configuration;
+
+    @Autowired
+    private MessageSource messageSource;
     
     @Override
     public String uploadImage(MultipartFile multipartFile) {
@@ -67,15 +74,19 @@ public class PhotoServiceImpl implements PhotoService {
     }
 
     @Override
-    public void deleteObject(String imageUrl) {
-        s3client.deleteBucket(imageUrl);
+    public void deleteObject(MultipartFile multipartFile) {
+        String fileName = generateFileName(multipartFile);
+        try {
+            if(!(s3client.getObject(amazonS3Configuration.getBucketName(),fileName) == null)){
+                s3client.deleteObject(new DeleteObjectRequest(amazonS3Configuration.getBucketName(),fileName));
+            }
+        } catch (Exception e) {
+            throw new NotFoundException(messageSource.getMessage("slide.not.found", new Object[]{fileName.toString()}, Locale.ENGLISH));
+        }
     }
 
     private void uploadFileTos3bucket(String fileName, File file) {
         s3client.putObject(new PutObjectRequest(amazonS3Configuration.getBucketName(), fileName, file)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
     }
-
-
-
 }

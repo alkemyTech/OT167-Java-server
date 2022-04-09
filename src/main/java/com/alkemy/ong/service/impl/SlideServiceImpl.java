@@ -94,7 +94,7 @@ public class SlideServiceImpl implements SlideService {
         if (slideRepository.findById(id).isEmpty()) {
             throw new NotFoundException(messageSource.getMessage("slide.not.found", new Object[]{id.toString()}, Locale.ENGLISH));
         }
-        return slideMapper.slideToDTO(slideRepository.findById(id).get());
+        return slideMapper.slideToDTO(slideRepository.getById(id));
     }
 
     @Override
@@ -112,7 +112,9 @@ public class SlideServiceImpl implements SlideService {
     public void deleteSlide(Long id) {
         SlideDto slideDto = this.findById(id);
 
-        photoService.deleteObject(slideDto.getImageUrl());
+        BASE64DecodedMultipartFile image = new BASE64DecodedMultipartFile(Base64.decodeBase64(slideDto.getImageUrl()));
+
+        photoService.deleteObject(image);
 
         slideRepository.deleteById(slideDto.getId());
     }
