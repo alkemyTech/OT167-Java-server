@@ -18,4 +18,6 @@ public interface NewsService {
     void delete(Long id);
 
     MessagePag findAllPag(int page, WebRequest request);
+
+    News updateNews(Long id, NewsDto newsDto);
 }
