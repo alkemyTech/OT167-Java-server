@@ -35,11 +35,11 @@ public class MemberController {
     private final String MODEL_MEMBER = "{\"id\" : \"1\", \"name\" : \"Andres Rodriguez\", \"facebookUrl\" : \"FacebookAndres\", \"instagramUrl\" : \"Inta_Andres\", \"linkedinUrl\" : \"Linkedin\", \"image\" : \"imageUrl\", \"description\" : \"description of Andres\" ,\n" + "  \"creationDate\": \"2022-04-09T15:13:18.617Z\",\n" + "  \"updateDate\": \"2022-04-09T15:13:18.618Z\"}\n";
     private final String MODEL_MESSAGE_PAGE = "{\n" + "  \"content\": [\n" + MODEL_MEMBER + "  ],\n" + "  \"status_code\": 200,\n" + "  \"nextPath\": \"/members?page=2\",\n" + "  \"prevPath\": \"/members?page=0\"\n" + "}";
     private final String MODEL_MEMBER_PARAM_ERROR = "{\n" + "  \"message\": {\n" + " \"image\": \"Image cannot be null\"" + "  },\n" + "  \"status_code\": 400,\n" + "  \"path\": \"/members\"\n" + "}";
-    private final String MODEL_MESSAGE_ERROR_EMPTY = "{\n" + "  \"content\": [\n" + " \"There is a empty page.\"" +"  ],\n" + "  \"status_code\": 200,\n" + "  \"nextPath\": \"there's not page next.\",\n" + "  \"prevPath\": \"there's not page prev.\"\n" + "}";
-    private final String MODEL_ERROR_400 = "{\n" + "  \"message\": \"The character entered on the path is not a number\",\n" + "  \"status_code\": 400,\n" + "  \"path\": \"/members\"\n" + "}";
-    private final String MODEL_ERROR_404 = "{\n" + "  \"message\": \"The member is not found.\",\n" + "  \"status_code\": 404,\n" + "  \"path\": \"/members\"\n" + "}";
+    private final String MODEL_MEMBER_EMPTY_ERROR= "{\n" + "  \"content\": [\n" + " \"There is a empty page.\"" +"  ],\n" + "  \"status_code\": 200,\n" + "  \"nextPath\": \"there's not page next.\",\n" + "  \"prevPath\": \"there's not page prev.\"\n" + "}";
+    private final String MODEL_MEMBER_ERROR_400 = "{\n" + "  \"message\": \"The character entered on the path is not a number\",\n" + "  \"status_code\": 400,\n" + "  \"path\": \"/members\"\n" + "}";
+    private final String MODEL_MEMBER_ERROR_404 = "{\n" + "  \"message\": \"The member is not found.\",\n" + "  \"status_code\": 404,\n" + "  \"path\": \"/members\"\n" + "}";
     private final String MODEL_MEMBER_CREATED = "{\n" + "  \"message\": \"The member was created successfully.\",\n" + "  \"status_code\": 401,\n" + "  \"path\": \"/members\"\n" + "}";
-    private final String MODEL_DELETE = "{\n" + "  \"message\": \"The member was deleted.\",\n" + "  \"status_code\": 200,\n" + "  \"path\": \"/members\"\n" + "}";
+    private final String MODEL_MEMBER_DELETE = "{\n" + "  \"message\": \"The member was deleted.\",\n" + "  \"status_code\": 200,\n" + "  \"path\": \"/members\"\n" + "}";
 
     private final MessageSource messageSource;
 
@@ -79,13 +79,13 @@ public class MemberController {
                     array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {
                             @ExampleObject(name = "Example success", summary = "Member list", description = "when a page number is entered, a list of 10 members of the requested page is displayed", value = MODEL_MESSAGE_PAGE),
-                            @ExampleObject(name = "Example not found", summary = "Empty list", description = "If the page is empty an empty list message is displayed", value = MODEL_MESSAGE_ERROR_EMPTY)
+                            @ExampleObject(name = "Example not found", summary = "Empty list", description = "If the page is empty an empty list message is displayed", value = MODEL_MEMBER_EMPTY_ERROR)
                     }
             ) }),
     @ApiResponse(responseCode = "400", description = "Error for the character entered",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
-                    examples = {@ExampleObject(name = "Example error 400", summary = "Error character", description = "When I enter an invalid character in the path it sends an error message 400 (Bad Request).", value = MODEL_ERROR_400
+                    examples = {@ExampleObject(name = "Example error 400", summary = "Error character", description = "When I enter an invalid character in the path it sends an error message 400 (Bad Request).", value = MODEL_MEMBER_ERROR_400
                     )}) })})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()
@@ -97,17 +97,17 @@ public class MemberController {
     @ApiResponse(responseCode = "200", description = "Member was deleted",
             content = { @Content(mediaType = "application/json",
             schema = @Schema(implementation = MessageInfo.class),
-                    examples = {@ExampleObject(name = "Member deleted", summary = "Member deleted", description = "The member is successfully removed when found by id, then a success message is sent.", value = MODEL_DELETE
+                    examples = {@ExampleObject(name = "Member deleted", summary = "Member deleted", description = "The member is successfully removed when found by id, then a success message is sent.", value = MODEL_MEMBER_DELETE
                     )}) })
     @ApiResponse(responseCode = "400", description = "Error for the character entered",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
-                    examples = {@ExampleObject(name = "Example error 400", summary = "Error character", description = "When I enter an invalid character in the path it sends an error message 400 (Bad Request).", value = MODEL_ERROR_400
+                    examples = {@ExampleObject(name = "Example error 400", summary = "Error character", description = "When I enter an invalid character in the path it sends an error message 400 (Bad Request).", value = MODEL_MEMBER_ERROR_400
                     )}) })
     @ApiResponse(responseCode = "404", description = "Member not found",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
-                    examples = {@ExampleObject(name = "Example error 404", summary = "Member not found", description = "When you enter the id of a nonexistent member in the route, it sends a message error 400 (Not Found).", value = MODEL_ERROR_404
+                    examples = {@ExampleObject(name = "Example error 404", summary = "Member not found", description = "When you enter the id of a nonexistent member in the route, it sends a message error 400 (Not Found).", value = MODEL_MEMBER_ERROR_404
     )}) })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value = "{id}")
@@ -134,7 +134,7 @@ public class MemberController {
     @ApiResponse(responseCode = "404", description = "Member not found",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
-                    examples = {@ExampleObject(name = "Example error 404", summary = "Member not found", description = "When you enter the id of a nonexistent member in the route, it sends a message error 400 (Not Found).", value = MODEL_ERROR_404
+                    examples = {@ExampleObject(name = "Example error 404", summary = "Member not found", description = "When you enter the id of a nonexistent member in the route, it sends a message error 400 (Not Found).", value = MODEL_MEMBER_ERROR_404
                     )}) })})
     @PutMapping(value = "{id}", produces = { "application/json" })
     public ResponseEntity<MemberDto> memberUpdate(
