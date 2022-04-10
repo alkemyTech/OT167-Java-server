@@ -7,6 +7,4 @@ import java.util.ArrayList;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-
-    ArrayList<String> getCommentsByCreationDate();
 }
