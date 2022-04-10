@@ -54,7 +54,7 @@ public class CommentController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/query")
     public ResponseEntity<?> getAllComments(@RequestParam(value = "page", required = true) String page, WebRequest request){
 
         MessagePag commentsList = commentService.getAllComments(Integer.parseInt(page),request);
