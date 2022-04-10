@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,6 +31,13 @@ public class ActivityController {
         ActivityDto activityCreated = activityService.createActivity(activityDto, image);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(activityCreated);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/{id}")
+    public ResponseEntity<ActivityDto> update(@PathVariable Long id, @Validated @RequestBody ActivityDto activityDto){
+        ActivityDto result = this.activityService.update(id,activityDto);
+        return ResponseEntity.ok().body(result);
     }
     
 }

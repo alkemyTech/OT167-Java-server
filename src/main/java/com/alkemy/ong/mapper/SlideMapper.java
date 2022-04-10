@@ -25,7 +25,7 @@ public class SlideMapper {
         slideDto.setId(slide.getId());
         slideDto.setImageUrl(slide.getImageUrl());
         slideDto.setOrder(slide.getOrder());
-        //slideDto.setOrganization_id(slide.getOrganization().getId());
+        slideDto.setOrganization_id(slide.getOrganization().getId());
         slideDto.setText(slide.getText());
 
         return slideDto;
@@ -42,20 +42,19 @@ public class SlideMapper {
         return slide;
     }
 
-    public List<SlideDto> listActivityDto(List<Slide> listSlide) {
+    public List<SlideDto> listSlideDto(List<Slide> listSlide) {
 
         return listSlide.stream()
                 .map(slide -> slideToDTO(slide))
                 .collect(Collectors.toList());
     }
 
-    public Slide updateSlade(Slide slide, SlideUpdateDto slideUpdate) {
+    public Slide updateSlide(Slide slide, SlideUpdateDto slideUpdate) {
         slide.setOrder(slideUpdate.getOrder());
         slide.setImageUrl(slideUpdate.getImageUrl());
         slide.setText(slideUpdate.getText());
         slideService.setOrgInSlide(slide.getId(), slideUpdate.getOrgName());
         return slide;
-
     }
 
     public List<SlideBasicDto> slideBasicEntityList2DtoList(List<Slide> listEntity) {

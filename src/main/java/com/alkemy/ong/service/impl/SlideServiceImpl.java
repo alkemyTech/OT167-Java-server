@@ -67,7 +67,7 @@ public class SlideServiceImpl implements SlideService {
 
     @Override
     public List<SlideDto> findAllSlide() {
-        return slideMapper.listActivityDto(slideRepository.findAll());
+        return slideMapper.listSlideDto(slideRepository.findAll());
     }
 
     @Override

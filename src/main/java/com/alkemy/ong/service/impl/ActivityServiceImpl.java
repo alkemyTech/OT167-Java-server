@@ -15,6 +15,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,18 @@ public class ActivityServiceImpl implements ActivityService{
         
         return activityMapper.activityToDTO(activityCreated);
     }
-    
+    @Override
+    public ActivityDto update(Long id, ActivityDto activityDto) {
+        Optional<Activity> activity = this.activityRepository.findById(id);
+        if (!activity.isPresent()) {
+            throw new NotFoundException(messageSource.getMessage("id.not.found", null, Locale.ENGLISH));
+        }
+        this.activityMapper.activityRefreshValues(activity.get(), activityDto);
+        Activity activitySaved = this.activityRepository.save(activity.get());
+        ActivityDto result = this.activityMapper.activityToDTO(activitySaved);
+        return result;
+    }
+
     public Activity controlChanges(ActivityDto activityDto)throws NotFoundException{
         
         if (activityDto.getName().isBlank()) {
