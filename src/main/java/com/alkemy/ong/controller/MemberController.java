@@ -66,7 +66,7 @@ public class MemberController {
                             @ExampleObject(name = "Example 1", summary = "Member param Error", description = "when required fields are not filled in, send a 400 (Bad Request) error message", value = MODEL_MEMBER_PARAM_ERROR),
                     })})})
     @PostMapping
-    public ResponseEntity<MessageInfo> memberCreate(@Parameter(description = "Fill all the parrameters not null to create a member") @Valid @RequestBody MemberDto memberDto, WebRequest request) {
+    public ResponseEntity<MessageInfo> memberCreate(@Parameter(description = "Fill all the parrameters cannot be null to create or update a member") @Valid @RequestBody MemberDto memberDto, WebRequest request) {
         memberService.saveMember(memberDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(messageResponse.messageOk(messageSource.getMessage("member.created.successfully",new Object[]{memberDto.getName()}, Locale.ENGLISH), HttpStatus.CREATED.value(), request));
     }
@@ -138,7 +138,7 @@ public class MemberController {
                     )}) })})
     @PutMapping(value = "{id}", produces = { "application/json" })
     public ResponseEntity<MemberDto> memberUpdate(
-            @Parameter(description = "Id of the memeber to be update", example = "1") @PathVariable String id, @RequestBody MemberDto memberDto){
+            @Parameter(description = "Id of the memeber to be update", example = "1") @PathVariable String id, @Parameter(description = "Fill all the parrameters cannot be null to create or update a member")  @RequestBody MemberDto memberDto){
         return ResponseEntity.status(HttpStatus.OK).body(memberService.updateMember(Long.valueOf(id), memberDto));
     }
 }
