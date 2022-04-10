@@ -57,13 +57,13 @@ public class MemberController {
                     schema = @Schema(implementation = MessageInfo.class),
                     array = @ArraySchema(schema = @Schema(implementation = String.class)),
                     examples = {
-                            @ExampleObject(name = "Example 1", summary = "Member created", description = "when the required fields are filled in, send a member message successfully created", value = MODEL_MEMBER_CREATED),
+                            @ExampleObject(name = "Example 1", summary = "Member created", description = "when the required fields are filled in, sends a member message successfully created", value = MODEL_MEMBER_CREATED),
                     }) }),
     @ApiResponse(responseCode = "400", description = "A param error",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessagesInfo.class),
                     examples = {
-                            @ExampleObject(name = "Example 1", summary = "Member param Error", description = "when required fields are not filled in, send a 400 (Bad Request) error message", value = MODEL_MEMBER_PARAM_ERROR),
+                            @ExampleObject(name = "Example 1", summary = "Member param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = MODEL_MEMBER_PARAM_ERROR),
                     })})})
     @PostMapping
     public ResponseEntity<MessageInfo> memberCreate(@Parameter(description = "Fill all the parrameters cannot be null to create or update a member") @Valid @RequestBody MemberDto memberDto, WebRequest request) {
@@ -129,7 +129,7 @@ public class MemberController {
             content = { @Content(mediaType = "application/json",
             schema = @Schema(implementation = MessagesInfo.class),
             examples = {
-                    @ExampleObject(name = "Example 1", summary = "Member param Error", description = "when required fields are not filled in, send a 400 (Bad Request) error message", value = MODEL_MEMBER_PARAM_ERROR),
+                    @ExampleObject(name = "Example 1", summary = "Member param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = MODEL_MEMBER_PARAM_ERROR),
             })}),
     @ApiResponse(responseCode = "404", description = "Member not found",
             content = { @Content(mediaType = "application/json",
