@@ -1,5 +1,6 @@
 package com.alkemy.ong.mapper;
 
+import com.alkemy.ong.dto.CommentBasicDto;
 import com.alkemy.ong.dto.CommentDto;
 import com.alkemy.ong.dto.MemberDto;
 import com.alkemy.ong.dto.NewsDto;
@@ -80,13 +81,22 @@ public class CommentMapper {
 
         CommentDto commentDto = new CommentDto();
         commentDto.setId(comment.getId());
-        //commentDto.setNews_id(comment.getNews_id().getId());
-        //commentDto.setUser_id(comment.getUser_id().getId());
+        commentDto.setNews_id(comment.getNews_id().getId());
+        commentDto.setUser_id(comment.getUser_id().getId());
         commentDto.setBody(comment.getBody());
         return commentDto;
     }
 
-    public List<CommentDto> listCommentsDto(List<Comment> commentsList){
-        return commentsList.stream().map(comments -> commentEntity2Dto(comments)).collect(Collectors.toList());
+    public CommentBasicDto commentEntity2BasicDto(Comment comment){
+        CommentBasicDto commentDto = new CommentBasicDto();
+        commentDto.setId(comment.getId());
+        commentDto.setCreationDate(comment.getCreationDate());
+        commentDto.setBody(comment.getBody());
+        return commentDto;
+    }
+
+
+    public List<CommentBasicDto> listCommentsDto(List<Comment> commentsList){
+        return commentsList.stream().map(comments -> commentEntity2BasicDto(comments)).collect(Collectors.toList());
     }
 }
