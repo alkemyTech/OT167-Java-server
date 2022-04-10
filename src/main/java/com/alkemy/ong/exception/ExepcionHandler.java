@@ -37,7 +37,6 @@ public class ExepcionHandler {
     public ResponseEntity<MessagesInfo> methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
         Map<String, String> transformedError = new HashMap<>();
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-        StringBuilder errorMessage = new StringBuilder();
         fieldErrors.forEach(f -> transformedError.put(f.getField(), f.getDefaultMessage()));
         MessagesInfo errorInfo = new MessagesInfo(transformedError, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
