@@ -1,6 +1,8 @@
 package com.alkemy.ong.security.service;
+import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.exception.DataAlreadyExistException;
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.security.dto.UserRegisterRequest;
 import com.alkemy.ong.security.dto.UserRegisterResponse;
@@ -17,6 +19,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserDetailsCustomService implements UserDetailsService {
@@ -50,6 +54,18 @@ public class UserDetailsCustomService implements UserDetailsService {
         String jwt = jwtUtils.generateJwt(userSaved);
         return userMapper.user2UserRegisterResponseDto(userSaved, jwt);
              
+    }
+    
+    public UserDto logIn(UserEntity user) throws NotFoundException {
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        UserEntity userFound = userService.findByEmail(user.getEmail());
+
+        if(!(passwordEncoder.matches(user.getPassword(),userFound.getPassword()))){
+            throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
+        }
+        return userMapper.convertUserToDto(userFound);
     }
 
     @Override
