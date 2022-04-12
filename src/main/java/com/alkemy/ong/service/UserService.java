@@ -3,20 +3,14 @@ package com.alkemy.ong.service;
 import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Role;
-import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.model.UserEntity;
-
-
-
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
 
 
-    UserRegisterResponse findByEmail(UserEntity user) throws NotFoundException;
-
-    UserEntity findByEmail(String username);
+    UserEntity findByEmail(String username) throws NotFoundException ;
 
     List<UserEntity> getUsers();
 
