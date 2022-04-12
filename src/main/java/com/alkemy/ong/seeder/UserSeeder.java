@@ -56,36 +56,36 @@ public class UserSeeder implements CommandLineRunner {
             users.add(role);
         }
 
-        createUser("Victor","Salvatierra","victor@mail.com","12345","/img", admins);
-        createUser("Facundo","Villalba","facundo@mail.com","12345","/img", admins);
-        createUser("Andres","Rodirguez","andres@mail.com","12345","/img", admins);
-        createUser("Pablo","Ibañez","pablo@mail.com","12345","/img", admins);
-        createUser("Mickaela","Tarazaga","mickaela@mail.com","12345","/img", admins);
-        createUser("Agustin","Garcia","agustin@mail.com","12345","/img", admins);
-        createUser("Luz","Brito","luz@mail.com","12345","/img", admins);
-        createUser("Luciano","Lattante","luciano@mail.com","12345","/img", admins);
-        createUser("Gabriel","Rosa","gabriel@mail.com","12345","/img", admins);
-        createUser("Horacio","Cruz","horacio@mail.com","12345","/img", admins);
+        createUser("Victor","Salvatierra","victor@mail.com","12345678","/img", admins);
+        createUser("Facundo","Villalba","facundo@mail.com","12345678","/img", admins);
+        createUser("Andres","Rodirguez","andres@mail.com","12345678","/img", admins);
+        createUser("Pablo","Ibañez","pablo@mail.com","12345678","/img", admins);
+        createUser("Mickaela","Tarazaga","mickaela@mail.com","12345678","/img", admins);
+        createUser("Agustin","Garcia","agustin@mail.com","12345678","/img", admins);
+        createUser("Luz","Brito","luz@mail.com","12345678","/img", admins);
+        createUser("Luciano","Lattante","luciano@mail.com","12345678","/img", admins);
+        createUser("Gabriel","Rosa","gabriel@mail.com","12345678","/img", admins);
+        createUser("Horacio","Cruz","horacio@mail.com","12345678","/img", admins);
 
 
-        createUser("Diego","Padilla","diego@mail.com","12345","/img", users);
-        createUser("Carlos","Rodriguez","carlos@mail.com","12345","/img", users);
-        createUser("Juan","Morata","juan@mail.com","12345","/img", users);
-        createUser("Valeria","Villalba","valeria@mail.com","12345","/img", users);
-        createUser("Nicole","Lopez","nicole@mail.com","12345","/img", users);
-        createUser("Norma","Gomez","norma@mail.com","12345","/img", users);
-        createUser("Raquel","Diaz","raquel@mail.com","12345","/img", users);
-        createUser("Romina","Perez","romina@mail.com","12345","/img", users);
-        createUser("Horacio","Martin","horacio@mail.com","12345","/img", users);
-        createUser("Abel","Ojeda","abel@mail.com","12345","/img", users);
+        createUser("Diego","Padilla","diego@mail.com","12345678","/img", users);
+        createUser("Carlos","Rodriguez","carlos@mail.com","12345678","/img", users);
+        createUser("Juan","Morata","juan@mail.com","12345678","/img", users);
+        createUser("Valeria","Villalba","valeria@mail.com","12345678","/img", users);
+        createUser("Nicole","Lopez","nicole@mail.com","12345678","/img", users);
+        createUser("Norma","Gomez","norma@mail.com","12345678","/img", users);
+        createUser("Raquel","Diaz","raquel@mail.com","12345678","/img", users);
+        createUser("Romina","Perez","romina@mail.com","12345678","/img", users);
+        createUser("Horacio","Martin","horacio@mail.com","12345678","/img", users);
+        createUser("Abel","Ojeda","abel@mail.com","12345678","/img", users);
 
     }
 
     private void createUser(String firstName, String lastName, String email, String password,String photo, Collection<Role> roles) {
 
         UserEntity user = new UserEntity(
-                lastName,
                 firstName,
+                lastName,
                 email,
                 passwordEncoder.encode(password),
                 photo,
