@@ -34,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment save(Comment comment) {
         if (comment != null) {
 
-            if (comment.getBody() == null) {
+            if (!comment.getBody().isBlank()) {
                 throw new NullPointerException(messageSource.getMessage("comment.not.null", null, Locale.ENGLISH));
             }
 
@@ -70,11 +70,15 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void delete(Authentication aut, Long id) {
-        if (checkId(aut, id)) {
-            Comment entity = commentRepository.getById(id);
-            entity.setDeleted(true);
-            commentRepository.save(entity);
-        }
+       try {
+           if (checkId(aut, id)) {
+               Comment entity = commentRepository.getById(id);
+               entity.setDeleted(true);
+               commentRepository.save(entity);
+           }
+       }catch (Exception e){
+           throw new NullPointerException(messageSource.getMessage("comment.not.null", null, Locale.ENGLISH));
+       }
     }
 
     private boolean checkId(Authentication aut, Long id) {
@@ -84,12 +88,7 @@ public class CommentServiceImpl implements CommentService {
             Comment comment = commentEntityOptional.get();
             String emailUserCreator = comment.getUser_id().getEmail();
             String authorityUser = String.valueOf(aut.getAuthorities().stream().count());
-            if (username.equals(emailUserCreator) || authorityUser.equals("ROLE_ADMIN")) {
-                return true;
-            }
-            else {
-               return false;
-            }
+            return (username.equals(emailUserCreator) || authorityUser.equals("ROLE_ADMIN"));
         } else {
             return false;
           }
