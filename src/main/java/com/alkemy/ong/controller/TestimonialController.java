@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 @RestController
 @RequestMapping("/testimonial")
@@ -48,6 +49,11 @@ public class TestimonialController {
                     .getMessage("testimonial.delete.ok", new Object[]{id}, Locale.ENGLISH));
         }};
         return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+    
+    @GetMapping("/query")
+    public ResponseEntity<?> findAllNewsPag(@RequestParam(value = "page", required = true) String page, WebRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(testimonialService.findAllPag(Integer.parseInt(page), request));
     }
 }
 
