@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserService {
 
 
-    UserEntity findByEmail(String username) throws NotFoundException ;
+    UserEntity findByEmail(String username);
 
     List<UserEntity> getUsers();
 

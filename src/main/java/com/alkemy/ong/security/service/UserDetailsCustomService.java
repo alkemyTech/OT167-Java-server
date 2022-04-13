@@ -57,11 +57,12 @@ public class UserDetailsCustomService implements UserDetailsService {
     }
     
     public UserDto logIn(UserEntity user) throws NotFoundException {
-
+         
+        if (userService.findByEmail(user.getEmail()) == null) {
+            throw new NotFoundException(messageSource.getMessage("email.not.found",null, Locale.ENGLISH));
+        }
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         UserEntity userFound = userService.findByEmail(user.getEmail());
-
         if(!(passwordEncoder.matches(user.getPassword(),userFound.getPassword()))){
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
         }

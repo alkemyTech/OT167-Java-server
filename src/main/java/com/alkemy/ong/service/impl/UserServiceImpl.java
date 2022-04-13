@@ -58,10 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity findByEmail(String email) throws NotFoundException {
-       if (userRepository.findByEmail(email) == null) {
-            throw new NotFoundException(messageSource.getMessage("email.not.found",null, Locale.ENGLISH));
-        }
+    public UserEntity findByEmail(String email){
         return userRepository.findByEmail(email);
     }
 
