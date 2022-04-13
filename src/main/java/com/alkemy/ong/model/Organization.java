@@ -73,7 +73,7 @@ public class Organization {
 
     @Column(name = "deleted")
     private boolean softDeleted = Boolean.FALSE;
-    
+
     @Column(name = "facebook_url")
     @Nullable
     private String facebookUrl;
