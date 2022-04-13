@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.WebRequest;
@@ -76,7 +77,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public MessagePag getAllComments(int page, WebRequest request) {
-        Page commentPage = commentRepository.findAll(PageRequest.of(page, SIZE_PAG_10));
+        Sort sort = Sort.by(Sort.Direction.DESC,"creationDate");
+        Page commentPage = commentRepository.findAll(PageRequest.of(page, SIZE_PAG_10,sort));
         return paginationMessage.messageInfo(commentPage, commentMapper.listCommentsDto(commentPage.getContent()), request);
     }
 }
