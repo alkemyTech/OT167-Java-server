@@ -2,6 +2,7 @@ package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.CommentDto;
 import com.alkemy.ong.dto.NewsDto;
+import com.alkemy.ong.exception.MessagePag;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.CommentMapper;
 import com.alkemy.ong.model.Comment;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
 
@@ -48,5 +50,11 @@ public class CommentController {
         }
     }
 
+    @GetMapping("/query")
+    public ResponseEntity<?> getAllComments(@RequestParam(value = "page", required = true) String page, WebRequest request){
+
+        MessagePag commentsList = commentService.getAllComments(Integer.parseInt(page),request);
+        return ResponseEntity.ok().body(commentsList);
+    }
 
 }
