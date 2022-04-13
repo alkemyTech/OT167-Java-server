@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -58,7 +59,7 @@ public class TestimonialController {
                     content = @Content) })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<TestimonialDto> update(@PathVariable Long id, @Validated @RequestBody TestimonialDto testimonialDto){
+    public ResponseEntity<TestimonialDto> update(@Parameter(description = "id of testimonial to be searched") @PathVariable Long id, @Validated @RequestBody TestimonialDto testimonialDto){
         TestimonialDto result = this.testimonialService.update(id,testimonialDto);
         return ResponseEntity.ok().body(result);
     }
@@ -74,7 +75,7 @@ public class TestimonialController {
                     content = @Content) })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
+    public ResponseEntity<Map<String, String>> delete(@Parameter(description = "id of testimonial to be searched") @PathVariable Long id) {
         this.testimonialService.delete(id);
         Map<String, String> message = new HashMap<>() {{
             put("message: ", messageSource
