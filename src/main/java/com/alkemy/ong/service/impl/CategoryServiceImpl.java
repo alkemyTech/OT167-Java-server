@@ -3,7 +3,9 @@ import com.alkemy.ong.dto.CategoryDto;
 import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.mapper.CategoryMapper;
 import com.alkemy.ong.exception.DataAlreadyExistException;
+import com.alkemy.ong.exception.MessagePag;
 import com.alkemy.ong.exception.NotFoundException;
+import com.alkemy.ong.exception.PaginationMessage;
 import com.alkemy.ong.model.Category;
 import com.alkemy.ong.repository.CategoryRepository;
 import com.alkemy.ong.service.CategoryService;
@@ -17,6 +19,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Locale;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.context.request.WebRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +33,11 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
     @Autowired
     private MessageSource messageSource;
+    private static final int SIZE_PAG_10 = 10;
+    @Autowired
+    private PaginationMessage paginationMessage;
+    @Autowired
+    private WebRequest request;
 
     private List<Category> getALLCategories(){
         return categoryRepository.findAll();
@@ -46,8 +56,6 @@ public class CategoryServiceImpl implements CategoryService {
                 .map(categoryDto ->  categoryDto.getName())
                 .collect(Collectors.toList());
     }
-
-    @Override
     public CategoryDto save(CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption {
         Category categorySaved = null;
         Category entity = categoryMapper.categoryDto2Entity(categoryDto);
@@ -62,7 +70,6 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return categoryMapper.categoryEntity2Dto(categorySaved);
     }
-
     @Override
     public Optional<Category> findById(Long id) {
         if (categoryRepository.findById(id).isEmpty()) {
@@ -70,7 +77,6 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return categoryRepository.findById(id);
     }
-
     public Category updateCategory(Long id, Category category ){
         Category categoryExist=categoryRepository.findById(id).get();
 
@@ -95,5 +101,11 @@ public class CategoryServiceImpl implements CategoryService {
             throw new IncorrectPatternExeption(messageSource.getMessage("category.data.incorrect", new Object[]{parameter}, Locale.ENGLISH));
         }
         return parameter;
+    }
+
+    @Override
+    public MessagePag findAllPag(int page, WebRequest request) {
+         Page categoryPage = categoryRepository.findAll(PageRequest.of(page, SIZE_PAG_10));
+        return paginationMessage.messageInfo(categoryPage, categoryMapper.categoryList2CategoryDTOList(categoryPage.getContent()), request);
     }
 }

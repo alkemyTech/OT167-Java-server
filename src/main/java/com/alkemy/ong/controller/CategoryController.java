@@ -11,6 +11,7 @@ import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.model.Category;
 import com.alkemy.ong.exception.NotFoundException;
+import com.alkemy.ong.exception.PaginationMessage;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.springframework.web.context.request.WebRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,6 +35,8 @@ public class CategoryController {
     private CategoryService categoryService;
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private PaginationMessage paginationMessage;
 
     @GetMapping
     public ResponseEntity<List<String>> listCategoriesByName(){
@@ -69,5 +73,10 @@ public class CategoryController {
         Map<String, String> message = new HashMap<>(){{put("message: ", messageSource
                 .getMessage("category.delete.sucessfuly", new Object[]{id}, Locale.ENGLISH));}};
         return ResponseEntity.ok().body(message);
+        }
+    
+    @GetMapping("/query")
+    public ResponseEntity<?> findAllCategoryPag(@RequestParam(value = "page", required = true) String page, WebRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAllPag(Integer.parseInt(page), request));
     }
-}
+    }
