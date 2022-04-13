@@ -1,7 +1,9 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.TestimonialDto;
+import com.alkemy.ong.exception.MessagePag;
 import com.alkemy.ong.exception.NotFoundException;
+import com.alkemy.ong.exception.PaginationMessage;
 import com.alkemy.ong.mapper.TestimonialMapper;
 import com.alkemy.ong.model.Testimonial;
 import com.alkemy.ong.repository.TestimonialRepository;
@@ -12,9 +14,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.Locale;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.context.request.WebRequest;
 
 @Service
 public class TestimonialServiceImpl implements TestimonialService {
+    
+    private static final int SIZE_PAG_10 = 10;
+    @Autowired
+    private PaginationMessage paginationMessage;
+    private WebRequest request;
+    
     @Autowired
     private TestimonialMapper testimonialMapper;
     
@@ -48,5 +59,11 @@ public class TestimonialServiceImpl implements TestimonialService {
                     ("testimonial.not.found", null, Locale.ENGLISH));
         }
         testimonialRepository.deleteById(id);
+    }
+
+    @Override
+    public MessagePag findAllPag(int page, WebRequest request) {
+        Page testimonialPage = testimonialRepository.findAll(PageRequest.of(page, SIZE_PAG_10));
+        return paginationMessage.messageInfo(testimonialPage, testimonialMapper.listNewsDto(testimonialPage.getContent()), request);
     }
 }
