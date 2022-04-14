@@ -14,4 +14,5 @@ public interface SlideService {
     void setOrgInSlide(Long idSlide, String nameOrg);
     SlideDto findById(Long id);
     List<SlideBasicDto> getSlideBasic();
+    void deleteSlide(Long id);
 }

@@ -108,4 +108,16 @@ public class SlideServiceImpl implements SlideService {
         return result;
     }
 
+    @Override
+    public void deleteSlide(Long id) {
+        SlideDto slideDto = this.findById(id);
+
+        BASE64DecodedMultipartFile image = new BASE64DecodedMultipartFile(Base64.decodeBase64(slideDto.getImageUrl()));
+
+        photoService.deleteObject(image);
+
+        slideRepository.deleteById(slideDto.getId());
+    }
+
+
 }
