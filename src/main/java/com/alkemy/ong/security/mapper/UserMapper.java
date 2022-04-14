@@ -3,6 +3,7 @@ package com.alkemy.ong.security.mapper;
 import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.dto.UserDtoCreator;
 import com.alkemy.ong.model.Role;
+import com.alkemy.ong.security.dto.UserLoginRequest;
 import com.alkemy.ong.security.dto.UserRegisterRequest;
 import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.enums.RoleEnum;
@@ -26,6 +27,7 @@ public class UserMapper {
     
     public UserDto convertUserToDto (UserEntity user){
         UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
@@ -33,16 +35,13 @@ public class UserMapper {
         return userDto;
     }
 
-    public UserEntity UserDtoToEntity(UserDtoCreator dto) {
+    public UserEntity UserDtoToEntity(UserLoginRequest dto) {
         UserEntity user= new UserEntity();
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
         user.setEmail(dto.getEmail());
-        user.setPhoto(dto.getPhoto());
         user.setPassword(dto.getPassword());
         return user;
     }
-    
+       
     
     public UserEntity userRegisterRequestDto2User(UserRegisterRequest userDto) {
        
@@ -50,7 +49,7 @@ public class UserMapper {
             return null;
         }
         List<Role> roleList = new ArrayList<>();
-        roleList.add(roleService.findByName(RoleEnum.USER.getName()));
+        roleList.add(roleService.findByName(RoleEnum.USER.getRoleName()));
                      
         UserEntity user = new UserEntity();
         user.setFirstName(userDto.getFirstName());

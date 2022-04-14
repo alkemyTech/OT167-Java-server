@@ -1,6 +1,7 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.UserDto;
+import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Role;
 import com.alkemy.ong.repository.RoleRepository;
@@ -57,22 +58,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRegisterResponse findByEmail(UserEntity user) throws NotFoundException {
-
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-        UserEntity userFound = this.findByEmail(user.getEmail());
-
-        if(!(passwordEncoder.matches(user.getPassword(),userFound.getPassword()))){
-            throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
-        }
-        return userMapper.user2UserRegisterResponseDto(userFound, jwtUtils.generateJwt(userFound));
-    }
-
-    public UserEntity findByEmail(String email) {
+    public UserEntity findByEmail(String email){
         return userRepository.findByEmail(email);
     }
 
+    @Override
     public Optional<UserEntity> findUserById(Long id) {
         return Optional.ofNullable(userRepository.findById(id).orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
     }
