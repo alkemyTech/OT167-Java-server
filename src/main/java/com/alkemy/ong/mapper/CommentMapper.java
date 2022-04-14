@@ -1,5 +1,6 @@
 package com.alkemy.ong.mapper;
 
+import com.alkemy.ong.dto.CommentBasicDto;
 import com.alkemy.ong.dto.CommentDto;
 import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.exception.NotFoundException;
@@ -13,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Component
 public class CommentMapper {
@@ -79,5 +82,18 @@ public class CommentMapper {
         commentDto.setUser_id(comment.getUser_id().getId());
         commentDto.setBody(comment.getBody());
         return commentDto;
+    }
+
+    public CommentBasicDto commentEntity2BasicDto(Comment comment){
+        CommentBasicDto commentDto = new CommentBasicDto();
+        commentDto.setId(comment.getId());
+        commentDto.setCreationDate(comment.getCreationDate());
+        commentDto.setBody(comment.getBody());
+        return commentDto;
+    }
+
+
+    public List<CommentBasicDto> listCommentsDto(List<Comment> commentsList) {
+        return commentsList.stream().map(comments -> commentEntity2BasicDto(comments)).collect(Collectors.toList());
     }
 }

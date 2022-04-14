@@ -1,5 +1,4 @@
 package com.alkemy.ong.mapper;
-
 import com.alkemy.ong.dto.SlideBasicDto;
 import com.alkemy.ong.dto.SlideDto;
 import com.alkemy.ong.dto.SlideUpdateDto;
@@ -8,15 +7,15 @@ import com.alkemy.ong.service.OrganizationService;
 import com.alkemy.ong.service.SlideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class SlideMapper {
-
     @Autowired
     private SlideService slideService;
-    
+
     @Autowired
     private OrganizationService organizationService;
 
@@ -71,5 +70,4 @@ public class SlideMapper {
         dto.setOrder(ent.getOrder());
         return dto;
     }
-
 }

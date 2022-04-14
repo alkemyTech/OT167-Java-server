@@ -3,6 +3,8 @@ package com.alkemy.ong.mapper;
 import com.alkemy.ong.dto.TestimonialDto;
 import com.alkemy.ong.model.Testimonial;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -32,5 +34,9 @@ public class TestimonialMapper {
         testimonial.setName(testimonialDto.getName());
         testimonial.setImage(testimonialDto.getImage());
         testimonial.setContent(testimonialDto.getContent());
+    }
+    
+    public List<TestimonialDto> listNewsDto(List<Testimonial> testimonialList){
+        return testimonialList.stream().map(testimonial -> testimonial2DTO(testimonial)).collect(Collectors.toList());
     }
 }
