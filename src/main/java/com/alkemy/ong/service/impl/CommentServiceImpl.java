@@ -1,18 +1,24 @@
 package com.alkemy.ong.service.impl;
 
 import com.alkemy.ong.dto.CommentDto;
+import com.alkemy.ong.exception.MessagePag;
 import com.alkemy.ong.exception.NotFoundException;
+import com.alkemy.ong.exception.PaginationMessage;
 import com.alkemy.ong.mapper.CommentMapper;
 import com.alkemy.ong.model.Comment;
 import com.alkemy.ong.model.News;
 import com.alkemy.ong.repository.CommentRepository;
 import com.alkemy.ong.repository.NewsRepository;
 import com.alkemy.ong.service.CommentService;
+import org.springframework.data.domain.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.Authentication;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 import java.util.Locale;
@@ -24,10 +30,13 @@ import java.util.stream.Collectors;
 @Transactional
 public class CommentServiceImpl implements CommentService {
 
+    private static final int SIZE_PAG_10 = 10;
+
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
     private final MessageSource messageSource;
     private final NewsRepository newsRepository;
+    private final PaginationMessage paginationMessage;
 
 
     @Override
@@ -100,6 +109,13 @@ public class CommentServiceImpl implements CommentService {
         if (!commentRepository.existsById(id)) {
                 throw new NotFoundException(messageSource.getMessage("comment.not.found", null, Locale.ENGLISH));
         }
+    }
+
+
+    public MessagePag getAllComments(int page, WebRequest request) {
+        Sort sort = Sort.by(Sort.Direction.DESC,"creationDate");
+        Page commentPage = commentRepository.findAll(PageRequest.of(page, SIZE_PAG_10,sort));
+        return paginationMessage.messageInfo(commentPage, commentMapper.listCommentsDto(commentPage.getContent()), request);
     }
 
 }

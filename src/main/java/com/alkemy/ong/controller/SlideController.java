@@ -46,4 +46,10 @@ public class SlideController {
         List<SlideBasicDto> listSlideBasic = slideService.getSlideBasic();
         return ResponseEntity.status(HttpStatus.OK).body(listSlideBasic);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSlide(@PathVariable Long id){
+        slideService.deleteSlide(id);
+        return ResponseEntity.status(HttpStatus.GONE).build();
+    }
 }

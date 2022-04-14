@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE news SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE news SET deleted = true WHERE id_news=?")
 @Where(clause = "deleted=false")
 public class News {
 
