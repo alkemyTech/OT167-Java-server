@@ -1,7 +1,6 @@
 package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.CommentDto;
-import com.alkemy.ong.dto.NewsDto;
 import com.alkemy.ong.exception.MessagePag;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.CommentMapper;
@@ -55,23 +54,22 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?>delete(Authentication aut, @PathVariable Long id){
+    public ResponseEntity<?>delete(Authentication aut, @PathVariable Long id) {
         commentService.existId(id);
         try {
             commentService.delete(aut, id);
-            return  ResponseEntity.ok(messageSource.getMessage("comment.delete.successfully", null, Locale.ENGLISH));
+            return ResponseEntity.ok(messageSource.getMessage("comment.delete.successfully", null, Locale.ENGLISH));
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
-    @GetMapping("/query")
-    public ResponseEntity<?> getAllComments(@RequestParam(value = "page", required = true) String page, WebRequest request){
-
-        MessagePag commentsList = commentService.getAllComments(Integer.parseInt(page),request);
-        return ResponseEntity.ok().body(commentsList);
-
     }
+        @GetMapping("/query")
+        public ResponseEntity<?> getAllComments(@RequestParam(value = "page", required = true) String page, WebRequest request){
 
+            MessagePag commentsList = commentService.getAllComments(Integer.parseInt(page),request);
+            return ResponseEntity.ok().body(commentsList);
+
+        }
 }
 
 
