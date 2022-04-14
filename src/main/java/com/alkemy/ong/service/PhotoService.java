@@ -14,4 +14,6 @@ public interface PhotoService {
     String generateFileName(MultipartFile multiPart);
 
     void initializeAmazon();
+
+    void deleteObject(MultipartFile multipartFile);
 }
