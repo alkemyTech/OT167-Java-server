@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.userdetails.User;
 
@@ -18,6 +20,8 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE comments SET deleted = true WHERE id=?")
+@Where(clause = "deleted = false")
 public class Comment {
 
     @Id
@@ -34,6 +38,8 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private News news_id;
+
+    private Boolean deleted = Boolean.FALSE;
 
     @CreationTimestamp
     @Column(name = "creation_date")
