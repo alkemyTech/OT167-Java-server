@@ -32,15 +32,12 @@ public class TestimonialController {
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TestimonialDto> update(@PathVariable Long id, @Validated @RequestBody TestimonialDto testimonialDto){
         TestimonialDto result = this.testimonialService.update(id,testimonialDto);
         return ResponseEntity.ok().body(result);
     }
 
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         this.testimonialService.delete(id);

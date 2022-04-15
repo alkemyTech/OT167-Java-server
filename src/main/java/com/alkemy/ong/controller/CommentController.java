@@ -25,8 +25,8 @@ public class CommentController {
 
     private final CommentMapper commentMapper;
     private final CommentService commentService;
-
     private final MessageSource messageSource;
+
     @GetMapping("/posts/{id}/comments")
     public ResponseEntity<?> getCommentsByIdNews(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(commentService.getAllCommentsByIdNews(id));

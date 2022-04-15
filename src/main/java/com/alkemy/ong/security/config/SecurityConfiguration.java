@@ -4,12 +4,12 @@ import com.alkemy.ong.security.filter.JwtRequestFilter;
 import com.alkemy.ong.security.service.UserDetailsCustomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -46,9 +46,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws  Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/*").permitAll()
+                .antMatchers("/auth/**").permitAll()
                 .antMatchers("/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**","/swagger-ui/**").permitAll()
-                .antMatchers("/categories/*").permitAll()
+                .antMatchers(HttpMethod.POST, " /activities").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /categories/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /categories/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /contacts/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /members").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, " /members/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, " /news/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /members/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /organization/public").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/slides/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/testimonial/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/testimonial/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/auth/users").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(STATELESS);
