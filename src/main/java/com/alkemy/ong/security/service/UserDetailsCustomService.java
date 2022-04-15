@@ -1,5 +1,4 @@
 package com.alkemy.ong.security.service;
-import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.NotFoundException;
@@ -50,9 +49,9 @@ public class UserDetailsCustomService implements UserDetailsService {
         return userMapper.user2UserRegisterResponseDto(userSaved, jwt);
              
     }
-    
-    public UserDto logIn(UserEntity user) throws NotFoundException {
-         
+
+    public UserRegisterResponse logIn(UserEntity user) throws NotFoundException {
+
         if (userService.findByEmail(user.getEmail()) == null) {
             throw new NotFoundException(messageSource.getMessage("email.not.found",null, Locale.ENGLISH));
         }
@@ -61,7 +60,7 @@ public class UserDetailsCustomService implements UserDetailsService {
         if(!(passwordEncoder.matches(user.getPassword(),userFound.getPassword()))){
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
         }
-        return userMapper.convertUserToDto(userFound);
+        return userMapper.user2UserRegisterResponseDto(userFound, jwtUtils.generateJwt(userFound));
     }
 
     @Override
