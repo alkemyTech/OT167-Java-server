@@ -67,10 +67,9 @@ public class UserAuthController {
             @ApiResponse(responseCode = "403", description = "Unsuccesfull login", content = @Content)
     })
     @PostMapping("/login")
-    public ResponseEntity<UserDto> logIn(@Valid @RequestBody UserLoginRequest userDto){
+    public ResponseEntity<UserRegisterResponse> logIn(@Valid @RequestBody UserLoginRequest userDto){
 
         UserEntity user = userMapper.UserDtoToEntity(userDto);
-
         return new ResponseEntity<>(userDetailsCustomService.logIn(user), HttpStatus.ACCEPTED);
     }
 
