@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 @RestController
-@RequestMapping("/testimonial")
+@RequestMapping("/testimonials")
 public class TestimonialController {
 
     @Autowired
