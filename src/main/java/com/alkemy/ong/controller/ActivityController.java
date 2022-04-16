@@ -23,7 +23,7 @@ public class ActivityController {
     private ActivityService activityService;
     
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/activities")
+    @PostMapping()
     public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto, @RequestBody MultipartFile image) throws IOException{
         
         ActivityDto activityCreated = activityService.createActivity(activityDto, image);
