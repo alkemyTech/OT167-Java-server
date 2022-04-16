@@ -56,10 +56,6 @@ public class OrganizationControllerTest {
     private OrganizationDto organizationDto;
     private OrganizationSlideDto organizationSlideDto;
 
-    List<Organization> organizationsEntityList = new ArrayList<>();
-    List<OrganizationCreationDto> organizationCreationDtoList = new ArrayList<>();
-    List<OrganizationDto> organizationDtoList= new ArrayList<>();
-
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
@@ -92,10 +88,6 @@ public class OrganizationControllerTest {
         organizationDto= organizationMapper.organizationToDto(organizationMapper.creationOrgFromOrganizationDto(organizationCreationDto));
 
         organizationSlideDto= organizationService.organizationSlide();
-
-        organizationDtoList.add(organizationDto);
-        organizationCreationDtoList.add(organizationCreationDto);
-        organizationsEntityList.add(organization);
 
     }
 
