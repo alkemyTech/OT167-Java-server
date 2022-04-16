@@ -6,7 +6,6 @@ import com.alkemy.ong.service.UserService;
 import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import java.util.List;
 import javax.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
