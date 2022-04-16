@@ -11,20 +11,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import org.springframework.security.access.prepost.PreAuthorize;
 import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/slide")
+@RequestMapping("/slides")
 public class SlideController {
     
     private final MessageSource messageSource;
     @Autowired
     private SlideService slideService;
     
-    @PostMapping("/slides")
+    @PostMapping("/slide")
     public ResponseEntity<SlideDto> createSlide(@RequestBody SlideDto slideDto) throws IOException{
         SlideDto result = slideService.createSlide(slideDto);
         return ResponseEntity.ok().body(result);
@@ -34,8 +33,7 @@ public class SlideController {
     public ResponseEntity<SlideDto> updateSlide(@PathVariable(value = "id") String id, @Valid @RequestBody SlideUpdateDto slideUpdateDto) {
         return ResponseEntity.ok(slideService.updateSlide(Long.valueOf(id), slideUpdateDto));
     }
-  
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @GetMapping("/{id}")
     public ResponseEntity<SlideDto> getSlide(@Valid @PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(slideService.findById(id));
@@ -45,5 +43,11 @@ public class SlideController {
     public ResponseEntity<List<SlideBasicDto>> getSlideBasic(){
         List<SlideBasicDto> listSlideBasic = slideService.getSlideBasic();
         return ResponseEntity.status(HttpStatus.OK).body(listSlideBasic);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSlide(@PathVariable Long id){
+        slideService.deleteSlide(id);
+        return ResponseEntity.status(HttpStatus.GONE).build();
     }
 }

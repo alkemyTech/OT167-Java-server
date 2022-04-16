@@ -9,8 +9,6 @@ import com.alkemy.ong.service.ActivityService;
 import com.alkemy.ong.service.PhotoService;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Optional;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -56,16 +54,4 @@ public class ActivityServiceImpl implements ActivityService{
         
         return activityMapper.activityDtoToModel(activityDto);
     }
-
-    public ActivityDto update(Long id, ActivityDto activityDto) {
-        Optional<Activity> activity = this.activityRepository.findById(id);
-        if (!activity.isPresent()) {
-            throw new NotFoundException(messageSource.getMessage("id.not.found", null, Locale.ENGLISH));
-        }
-        this.activityMapper.activityRefreshValues(activity.get(), activityDto);
-        Activity activitySaved = this.activityRepository.save(activity.get());
-        ActivityDto result = this.activityMapper.activityToDTO(activitySaved);
-        return result;
-    }
-
 }

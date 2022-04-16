@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 @Tag(name = "Testimonial", description = "What people say about us")
 @RestController
@@ -73,6 +74,7 @@ public class TestimonialController {
         return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
+
     @Operation(summary = "Update a testimonial by its id", description = "Find a testimonial with the id, fill the params of the body and return a member update or error message. \n" +
             "The required fields are: name and image. The name field can only be filled with non-numeric characters.")
     @ApiResponses(value = {
@@ -99,6 +101,7 @@ public class TestimonialController {
         return ResponseEntity.ok().body(result);
     }
 
+
     @Operation(summary = "Delete a testimonial by its id", description = "Find a testimonial with the id and try delete it and return a success or error message")
     @ApiResponse(responseCode = "200", description = "Testimonial was deleted",
             content = { @Content(mediaType = "application/json",
@@ -124,6 +127,11 @@ public class TestimonialController {
                     .getMessage("testimonial.delete.ok", new Object[]{id}, Locale.ENGLISH));
         }};
         return ResponseEntity.status(HttpStatus.OK).body(message);
+    }
+    
+    @GetMapping("/query")
+    public ResponseEntity<?> findAllNewsPag(@RequestParam(value = "page", required = true) String page, WebRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(testimonialService.findAllPag(Integer.parseInt(page), request));
     }
 }
 

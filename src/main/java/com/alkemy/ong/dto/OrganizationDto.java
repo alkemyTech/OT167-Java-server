@@ -12,5 +12,4 @@ public class OrganizationDto{
     private String facebookUrl;
     private String instagramUrl;
     private String linkedinUrl;
-
 }
