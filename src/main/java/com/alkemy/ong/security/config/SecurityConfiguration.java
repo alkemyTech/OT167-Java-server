@@ -44,38 +44,39 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/login","/auth/register" ).permitAll() // Any user can access /auth/login and /auth/register
-                .antMatchers("/auth/me").hasAuthority("ROLE_ADMIN") // Only Admins can access other locations in /auth/**
-                .antMatchers(HttpMethod.GET,
-                        "/activities",
-                        "/organizations",
-                        "/categories",
-                        "/news",
-                        "/news/{id}").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER") // Only authenticated roles can access GET methods
-                .antMatchers(HttpMethod.PUT,
-                        "/members" + "/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
-                .antMatchers(HttpMethod.POST, "/organizations/public/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.DELETE).hasAuthority("ROLE_ADMIN")
-                .antMatchers("/api/docs/**", "swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api/swagger-ui/**").permitAll()
-                .antMatchers("/activities", "/activities/{id}",
-                        "/organizations",
-                        "/categories", "/categories/{id}",
-                        "/members", "/members/{id}",
-                        "/news", "/news/{id}",
-                        "/slides", "/slides/{id}",
-                        "/testimonials", "/testimonials/{id}",
-                        "/contacts", "/contacts/{id}",
-                        "/users").hasAuthority("ROLE_ADMIN")
-                // Only admins can access other methods
-                .antMatchers("/public/**").permitAll() // All users can access endpoints in /public/**
-                .anyRequest().authenticated() // Only authenticated users can access the rest of endpoints
-                .and()
-                .exceptionHandling()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .antMatchers("/auth/login", "/auth/register").permitAll()
+                .antMatchers("/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**","/swagger-ui/**").permitAll()
+                .antMatchers(HttpMethod.POST, " /activities").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, " /categories").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, " /news").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, " /slides").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, " /testimonials").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /activities").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /categories/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /news/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /organization/public").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /slides/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/testimonials/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /users/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /categories").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /categories/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /comments").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /contacts").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /members").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /slides").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /slides/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/categories/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, " /members/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, " /news/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/slides/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/testimonials/{id}").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and().sessionManagement()
+                .sessionCreationPolicy(STATELESS);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
 
 }
