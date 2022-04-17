@@ -17,17 +17,16 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/activities")
 public class ActivityController {
-    
+
     @Autowired
     private ActivityService activityService;
-    
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @PostMapping()
-    public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto, @RequestBody MultipartFile image) throws IOException{
-        
+    public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto, @RequestBody MultipartFile image) throws IOException {
+
         ActivityDto activityCreated = activityService.createActivity(activityDto, image);
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body(activityCreated);
     }
-    
+
 }
