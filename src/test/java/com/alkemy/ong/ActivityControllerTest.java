@@ -6,9 +6,12 @@ import com.alkemy.ong.model.Activity;
 import com.alkemy.ong.service.ActivityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
@@ -17,7 +20,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import static org.mockito.Mockito.when;
@@ -32,6 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestPropertySource(locations = "")
 public class ActivityControllerTest {
 
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private WebApplicationContext context;
@@ -40,13 +47,12 @@ public class ActivityControllerTest {
     @MockBean
     private ActivityService activityService;
 
-    @MockBean
+    @Autowired
     private ActivityMapper activityMapper;
 
     private ArrayList<Activity> activities = new ArrayList<>();
 
     private ActivityDto activityDto;
-    private ActivityDto activityDto2;
     private Activity activity;
     private ActivityDto activityDtoResponse;
 
@@ -55,20 +61,15 @@ public class ActivityControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
-        Activity activity = new Activity(Long.valueOf(1),"name1","content1",null,null,null);
-        activities.add(activity);
+        activity = new Activity(1L,"name1","content1","image1",null,null);
+        //activities.add(activity);
 
-        ActivityDto activityDtoResponse = new ActivityDto();
+        activityDtoResponse = activityMapper.activityToDTO(activity);
 
-        ActivityDto activityDto = new ActivityDto();
+        activityDto = new ActivityDto();
         activityDto.setName("name2");
         activityDto.setContent("content2");
-
-        ActivityDto activityDto2 = new ActivityDto();
-        activityDto2.setId(1L);
-        activityDto2.setName("name2");
-        activityDto2.setContent("content2");
-        activityDto2.setImage("image");
+        activityDto.setImage("imag2");
 
 
     }
@@ -77,25 +78,47 @@ public class ActivityControllerTest {
     @WithMockUser(roles = "ADMIN")
     void createAnActivity() throws Exception{
 
-        activityDtoResponse = activityMapper.activityToDTO(activity);
+        MockMultipartFile image =
+                new MockMultipartFile(
+                        "image",
+                        "image.jpeg",
+                        MediaType.IMAGE_JPEG_VALUE,
+                        "<<jpeg data>>".getBytes(StandardCharsets.UTF_8));
 
-        when(activityService.createActivity(activityDto, null)).thenReturn(activityDtoResponse);
+        when(activityService.createActivity(activityDto, image)).thenReturn(activityDto);
+
+        mockMvc.perform(post("/activity/activities")
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(activityDto))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void createActivityBadRequest() throws Exception{
+        activityDtoResponse = null;
 
         mockMvc.perform(post("/activity/activities")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDtoResponse))
                         .with(user("admin").roles("ADMIN"))
                         .with(csrf()))
-                .andExpect(status().isOk());
+                .andExpect(status().isBadRequest());
     }
 
+
+    //consultar porque no lo toma
     @Test
     @WithMockUser(roles = "ADMIN")
     void anActivityInformationIsUpdatedCorrectly() throws Exception {
         Long id = 1L;
-        when(activityService.update(id,activityDto2)).thenReturn(activityDto);
 
-        this.mockMvc.perform(put("/activity/{id}",id))
+        when(activityService.update(id,activityDto)).thenReturn(activityDtoResponse);
+
+        this.mockMvc.perform(put("/activity/{id}",id)
+                .contentType(APPLICATION_JSON)
+                .with(csrf()))
                 .andExpect(status().is(200));
     }
 
@@ -104,10 +127,9 @@ public class ActivityControllerTest {
     void anActivityInformationIsUpadatedButThereIsNoInfoInDataBase() throws Exception{
 
         Long id = 100L;
+        activityDto = null;
 
         when(activityService.update(id,activityDto)).thenReturn(activityDto);
-
-        /*given(activityService.update(id,activity2)).willReturn(activityResponse);*/
 
         this.mockMvc.perform(put("/activity/{id}",id))
                 .andExpect(status().is(400));
