@@ -15,18 +15,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/activity")
+@RequestMapping("/activities")
 public class ActivityController {
-    
+
     @Autowired
     private ActivityService activityService;
 
-    @PostMapping("/activities")
-    public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto, @RequestBody MultipartFile image) throws IOException{
-        
+    @PostMapping()
+    public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto, @RequestBody MultipartFile image) throws IOException {
+
         ActivityDto activityCreated = activityService.createActivity(activityDto, image);
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body(activityCreated);
     }
-    
+
 }
