@@ -21,10 +21,8 @@ import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.IncorrectPatternExeption;
 import com.alkemy.ong.model.Category;
 import com.alkemy.ong.exception.NotFoundException;
-import com.alkemy.ong.exception.PaginationMessage;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,7 +67,6 @@ public class CategoryController {
     }
 
     @Tag(name = "Categories")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Get a category by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Found category",
@@ -83,7 +80,7 @@ public class CategoryController {
                     content = {@Content(schema = @Schema(implementation = MessageInfo.class),
                             examples = @ExampleObject(name = "Message of error", summary = "404 from the server.", value = SwaggerConstants.MODEL_ERROR_404))})
     })
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getCategory(@Valid @PathVariable Long id) {
         return ResponseEntity.ok(categoryMapper.categoryEntity2Dto(categoryService.findById(id).get()));
     }
@@ -105,7 +102,6 @@ public class CategoryController {
     }
 
     @Tag(name = "Categories")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(summary = "Update category by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Category update",

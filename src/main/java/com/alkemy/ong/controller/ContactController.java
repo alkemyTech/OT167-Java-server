@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -37,17 +36,10 @@ public class ContactController {
                 messageSource.getMessage("contact.email.message",null, Locale.ENGLISH));
         return ResponseEntity.status(HttpStatus.CREATED).body(messageResponse.messageOk(messageSource.getMessage("contact.registered.successfully",null, Locale.ENGLISH), HttpStatus.CREATED.value(), request));
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @GetMapping
     public ResponseEntity<List<ContactDto>> getAllContacts(){
         return ResponseEntity.ok().body(contactService.getAllContacts());
     }
-
-    //Raro - Consultar
-    /*@PostMapping
-    public ResponseEntity<?> addContact(@Valid @RequestBody ContactDto contactDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(contactService.save(contactDto));
-    }
-     */
 
 }

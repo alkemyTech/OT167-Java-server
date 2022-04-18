@@ -67,10 +67,9 @@ public class UserAuthController {
             @ApiResponse(responseCode = "403", description = "Unsuccesfull login", content = @Content)
     })
     @PostMapping("/login")
-    public ResponseEntity<UserDto> logIn(@Valid @RequestBody UserLoginRequest userDto){
+    public ResponseEntity<UserRegisterResponse> logIn(@Valid @RequestBody UserLoginRequest userDto){
 
         UserEntity user = userMapper.UserDtoToEntity(userDto);
-
         return new ResponseEntity<>(userDetailsCustomService.logIn(user), HttpStatus.ACCEPTED);
     }
 
@@ -84,15 +83,6 @@ public class UserAuthController {
         return new ResponseEntity<>(userDetailsCustomService.register(userReq), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getAllUsersD() {
-        return new ResponseEntity<List<UserDto>>(userService.getAllUsers(), HttpStatus.OK);
-    }
-
-    @GetMapping("/users/{id}")
-    public ResponseEntity<UserDto> findUserById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
-    }
+    
 
 }

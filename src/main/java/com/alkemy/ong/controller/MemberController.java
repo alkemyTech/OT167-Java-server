@@ -32,6 +32,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 @RequestMapping("/members")
 public class MemberController {
+    
     private final String MODEL_MEMBER = "{\"id\" : \"1\", \"name\" : \"Andres Rodriguez\", \"facebookUrl\" : \"FacebookAndres\", \"instagramUrl\" : \"Inta_Andres\", \"linkedinUrl\" : \"Linkedin\", \"image\" : \"imageUrl\", \"description\" : \"description of Andres\" ,\n" + "  \"creationDate\": \"2022-04-09T15:13:18.617Z\",\n" + "  \"updateDate\": \"2022-04-09T15:13:18.618Z\"}\n";
     private final String MODEL_MESSAGE_PAGE = "{\n" + "  \"content\": [\n" + MODEL_MEMBER + "  ],\n" + "  \"status_code\": 200,\n" + "  \"nextPath\": \"/members?page=2\",\n" + "  \"prevPath\": \"/members?page=0\"\n" + "}";
     private final String MODEL_MEMBER_PARAM_ERROR = "{\n" + "  \"message\": {\n" + " \"image\": \"Image cannot be null\"" + "  },\n" + "  \"status_code\": 400,\n" + "  \"path\": \"/members\"\n" + "}";
@@ -87,7 +88,8 @@ public class MemberController {
                     schema = @Schema(implementation = MessageInfo.class),
                     examples = {@ExampleObject(name = "Example error 400", summary = "Error character", description = "When I enter an invalid character in the path it sends an error message 400 (Bad Request).", value = MODEL_MEMBER_ERROR_400
                     )}) })})
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
+
     @GetMapping()
     public ResponseEntity<MessagePag> listMembers(@Parameter(description = "Page number to list members", example = "1") @RequestParam(value = "page", required = true) String page, WebRequest request){
         return ResponseEntity.ok(memberService.getAllMembers(Integer.parseInt(page),request));
@@ -109,8 +111,9 @@ public class MemberController {
                     schema = @Schema(implementation = MessageInfo.class),
                     examples = {@ExampleObject(name = "Example error 404", summary = "Member not found", description = "When you enter the id of a nonexistent member in the route, it sends a message error 400 (Not Found).", value = MODEL_MEMBER_ERROR_404
     )}) })
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping(value = "{id}")
+
+
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<MessageInfo> memberDelete(@Parameter(description = "Id of the memeber to be delete", example = "1") @PathVariable String id, WebRequest request){
         memberService.deleteMemberById(Long.valueOf(id));
         return ResponseEntity.ok().body(messageResponse.messageOk(messageSource.getMessage("member.delete.successfully",new Object[]{id}, Locale.ENGLISH), HttpStatus.OK.value(), request));
