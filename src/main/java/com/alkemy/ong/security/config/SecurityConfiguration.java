@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -49,19 +50,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/login", "/auth/register").permitAll()
                 .antMatchers("/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**","/swagger-ui/**").permitAll()
                 .antMatchers(HttpMethod.POST, " /activities").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT," /activity/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, " /categories/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, " /categories").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, " /news").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, " /slides").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, " /testimonials").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /activities").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, " /categories/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /news/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /organization/public").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /slides/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, "/testimonials/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /users/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /categories").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /categories/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /comments").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /contacts").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /members").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /slides").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, " /slides/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/categories/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, " /members/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, " /news/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, " /members/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, " /organization/public").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/slides/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/testimonial/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/testimonial/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/auth/users").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/slides/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/testimonials/{id}").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().sessionManagement()
                 .sessionCreationPolicy(STATELESS);

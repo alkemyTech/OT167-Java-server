@@ -83,15 +83,6 @@ public class UserAuthController {
         return new ResponseEntity<>(userDetailsCustomService.register(userReq), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> getAllUsersD() {
-        return new ResponseEntity<List<UserDto>>(userService.getAllUsers(), HttpStatus.OK);
-    }
-
-    @GetMapping("/users/{id}")
-    public ResponseEntity<UserDto> findUserById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
-    }
+    
 
 }
