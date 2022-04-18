@@ -77,7 +77,6 @@ public class CommentMapper {
     public CommentDto commentEntity2Dto(Comment comment){
 
         CommentDto commentDto = new CommentDto();
-        commentDto.setId(comment.getId());
         commentDto.setNews_id(comment.getNews_id().getId());
         commentDto.setUser_id(comment.getUser_id().getId());
         commentDto.setBody(comment.getBody());

@@ -84,12 +84,22 @@ public class UserAuthController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Operation(description = "Get User")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Succesfull login",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))}),
+            @ApiResponse(responseCode = "403", description = "Unsuccesfull login", content = @Content)
+    })
     @GetMapping("/users")
     public ResponseEntity<List<UserDto>> getAllUsersD() {
         return new ResponseEntity<List<UserDto>>(userService.getAllUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/users/{id}")
+    @Operation(description = "Get User ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Succesfull login",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))}),
+            @ApiResponse(responseCode = "403", description = "Unsuccesfull login", content = @Content)
+    })
     public ResponseEntity<UserDto> findUserById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
     }

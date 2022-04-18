@@ -59,10 +59,10 @@ public class CategoryController {
                             })}),
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = {@Content(schema = @Schema(implementation = MessageInfo.class),
-                            examples = @ExampleObject(name = "Message of error", summary = "400 from the server.", description = "Invalid character in request", value =SwaggerConstants.MODEL_ERROR_400))})
+                            examples = @ExampleObject(name = "Message of error", summary = "400 from the server.", description = "Invalid character in request", value = SwaggerConstants.MODEL_ERROR_400))})
     })
     @GetMapping
-    public ResponseEntity<List<String>> listCategoriesByName(){
+    public ResponseEntity<List<String>> listCategoriesByName() {
         return ResponseEntity.ok().body(categoryService.getAllCategoriesByName());
     }
 
@@ -118,12 +118,12 @@ public class CategoryController {
                             examples = @ExampleObject(name = "Message of error 404", summary = "404 from the server, Category not found.", description = "The ID doesn't exist.", value = SwaggerConstants.MODEL_ERROR_404))})
     })
     @PutMapping(value = "/{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable Long id,@RequestBody Category category){
-        try{
-            Category categoryUpdated= categoryService.updateCategory(id,category);
+    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody Category category) {
+        try {
+            Category categoryUpdated = categoryService.updateCategory(id, category);
             CategoryDto categoryDtoResponse = categoryMapper.categoryEntity2Dto(categoryUpdated);
             return ResponseEntity.ok(categoryDtoResponse);
-        }catch (NotFoundException e){
+        } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(category);
         }
     }
@@ -145,11 +145,12 @@ public class CategoryController {
                             examples = @ExampleObject(name = "Message of error 404", summary = "404 from the server, Category not found.", description = "The ID doesn't exist.", value = SwaggerConstants.MODEL_ERROR_404))})
     })
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<?> categoryDelete(@PathVariable String id){
+    public ResponseEntity<?> categoryDelete(@PathVariable String id) {
         categoryService.deleteCategoryById(Long.valueOf(id));
-        Map<String, String> message = new HashMap<>(){{put("message: ", messageSource
-                .getMessage("category.delete.successfully", new Object[]{id}, Locale.ENGLISH));}};
+        Map<String, String> message = new HashMap<>() {{
+            put("message: ", messageSource
+                    .getMessage("category.delete.successfully", new Object[]{id}, Locale.ENGLISH));
+        }};
         return ResponseEntity.ok().body(message);
     }
-
 }

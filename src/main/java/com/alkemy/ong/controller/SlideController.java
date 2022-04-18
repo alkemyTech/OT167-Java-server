@@ -30,7 +30,7 @@ public class SlideController {
     }
         
     @PutMapping(value = "{id}")
-    public ResponseEntity<SlideDto> updateSlide(@PathVariable(value = "id") String id, @Valid @RequestBody SlideUpdateDto slideUpdateDto) {
+    public ResponseEntity<SlideDto> updateSlide(@PathVariable Long id, @Valid @RequestBody SlideUpdateDto slideUpdateDto) {
         return ResponseEntity.ok(slideService.updateSlide(Long.valueOf(id), slideUpdateDto));
     }
 

@@ -28,33 +28,33 @@ public class CommentController {
     private final MessageSource messageSource;
 
     @GetMapping("/posts/{id}/comments")
-    public ResponseEntity<?> getCommentsByIdNews(@PathVariable Long id){
+    public ResponseEntity<?> getCommentsByIdNews(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(commentService.getAllCommentsByIdNews(id));
     }
 
     @PostMapping
-    public ResponseEntity<?> addNewComment(@Valid @RequestBody CommentDto commentDto){
-        try{
+    public ResponseEntity<?> addNewComment(@Valid @RequestBody CommentDto commentDto) {
+        try {
             Comment commentSaved = commentService.save(commentMapper.commentDto2Entity(commentDto));
             CommentDto commentDtoResponse = commentMapper.commentEntity2Dto(commentSaved);
             return ResponseEntity.status(HttpStatus.CREATED).body(commentDtoResponse);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getCause().getMessage());
         }
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping(value = "/{id}")
-    public ResponseEntity<?> updateComment(@PathVariable Long id,@RequestBody CommentDto commentDto){
-        try{
-            return ResponseEntity.ok(commentService.updateComment(id,commentDto));
-        }catch (NotFoundException e){
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> updateComment(@PathVariable Long id, @RequestBody CommentDto commentDto) {
+        try {
+            return ResponseEntity.ok(commentService.updateComment(id, commentDto));
+        } catch (NotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?>delete(Authentication aut, @PathVariable Long id) {
+    public ResponseEntity<?> delete(Authentication aut, @PathVariable Long id) {
         commentService.existId(id);
         try {
             commentService.delete(aut, id);
@@ -63,13 +63,13 @@ public class CommentController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
-        @GetMapping("/query")
-        public ResponseEntity<?> getAllComments(@RequestParam(value = "page", required = true) String page, WebRequest request){
 
-            MessagePag commentsList = commentService.getAllComments(Integer.parseInt(page),request);
-            return ResponseEntity.ok().body(commentsList);
+    @GetMapping("/query")
+    public ResponseEntity<?> getAllComments(@RequestParam(value = "page", required = true) String page, WebRequest request){
 
-        }
+        MessagePag commentsList = commentService.getAllComments(Integer.parseInt(page),request);
+        return ResponseEntity.ok().body(commentsList);
+    }
 }
 
 

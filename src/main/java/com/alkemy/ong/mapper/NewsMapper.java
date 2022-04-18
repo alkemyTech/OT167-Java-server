@@ -22,7 +22,8 @@ public class NewsMapper {
         news.setImage(dto.getImage());
         news.setContent(dto.getContent());
         news.setName(dto.getName());
-        if(news.getCategoryId() !=null) news.setCategoryId(categoryEntity);
+        news.setCategoryId(categoryEntity);
+        //if(news.getCategoryId() !=null) news.setCategoryId(categoryEntity);
         return news;
 
     }
@@ -38,7 +39,7 @@ public class NewsMapper {
         newsDto.setName(news.getName());
         newsDto.setImage(news.getImage());
         newsDto.setContent(news.getContent());
-        if(news.getCategoryId() !=null) newsDto.setCategoryId(news.getCategoryId().getIdCategories());
+        newsDto.setCategoryId(news.getCategoryId().getIdCategories());
         return newsDto;
     }
 

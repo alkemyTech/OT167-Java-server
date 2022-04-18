@@ -9,7 +9,6 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class CommentDto {
 
-    private Long id;
     private String body;
     private Long user_id;
     private Long news_id;
