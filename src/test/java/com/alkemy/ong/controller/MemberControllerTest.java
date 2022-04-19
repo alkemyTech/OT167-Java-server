@@ -15,9 +15,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
@@ -25,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -130,8 +130,7 @@ public class MemberControllerTest {
                       .contentType(APPLICATION_JSON)
                       .content(objectMapper.writeValueAsString(memberDtoResponse)))
               .andExpect(status().isBadRequest());
-       }
-
+    }
 
     @Test
     void createMemberForbidden() throws Exception {
@@ -141,19 +140,18 @@ public class MemberControllerTest {
                    .andExpect(status().isForbidden());
     }
 
-    @WithMockUser(roles = "ADMIN")
     @Test
+    @WithMockUser(roles = "ADMIN")
     void listMembers() throws Exception {
-
-        WebRequest webRequest = mock(WebRequest.class);
+        MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+        servletRequest.setRequestURI("/members");
+        WebRequest webRequest = new ServletWebRequest(servletRequest);
         int page = 0;
-        memberRepository.saveAll(memberList);
-        Page membersPage = memberRepository.findAll(PageRequest.of(page, 10));
         when(memberService.getAllMembers(page, webRequest)).thenReturn(messagePag);
-        mockMvc.perform(get("/members")
+        mockMvc.perform(get("/members?page=0")
                         .contentType(APPLICATION_JSON)
                         .with(csrf()))
-                .andExpect(status().is(400));
+                .andExpect(status().isOk());
     }
 
     @Test
