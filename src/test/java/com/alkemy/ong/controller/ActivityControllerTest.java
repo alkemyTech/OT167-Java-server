@@ -50,12 +50,9 @@ public class ActivityControllerTest {
     @Autowired
     private ActivityMapper activityMapper;
 
-    private ArrayList<Activity> activities = new ArrayList<>();
-
     private ActivityDto activityDto;
     private Activity activity;
     private ActivityDto activityDtoResponse;
-    private MultipartFile image;
 
     @BeforeEach
     void setUp() {
@@ -70,27 +67,21 @@ public class ActivityControllerTest {
         activityDto = new ActivityDto();
         activityDto.setName("name1");
         activityDto.setContent("content");
-        activityDto.setImage("imag");
-
-        image = new MockMultipartFile(
-                "image",
-                "image.jpeg",
-                MediaType.IMAGE_JPEG_VALUE,
-                "<<jpeg data>>".getBytes(StandardCharsets.UTF_8));
-
+        activityDto.setImage("image");
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
     void createAnActivity() throws Exception{
 
-        when(activityService.createActivity(activityDto, image)).thenReturn(activityDto);
+        when(activityService.createActivity(activityDto)).thenReturn(activityDto);
 
-        mockMvc.perform(post("/activity")
+        mockMvc.perform(post("/activities")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDto))
+                        .with(user("admin").roles("ADMIN"))
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -98,7 +89,7 @@ public class ActivityControllerTest {
     void createActivityButIsNull() throws Exception{
         activityDtoResponse = null;
 
-        mockMvc.perform(post("/activity")
+        mockMvc.perform(post("/activities")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDtoResponse))
                         .with(user("admin").roles("ADMIN"))
@@ -113,7 +104,7 @@ public class ActivityControllerTest {
 
         when(activityService.update(id,activityDto)).thenReturn(activityDtoResponse);
 
-        this.mockMvc.perform(put("/activity/{id}",activity.getId())
+        this.mockMvc.perform(put("/activities/{id}",activity.getId())
                 .contentType(APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(activity)))
                 .andExpect(status().isOk());
@@ -128,16 +119,16 @@ public class ActivityControllerTest {
 
         when(activityService.update(id,activityDto)).thenReturn(activityDtoResponse);
 
-        this.mockMvc.perform(put("/activity/{id}",activity.getId()))
+        this.mockMvc.perform(put("/activities/{id}",activity.getId()))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void tryToCreateAnActivityButNotHaveAuthorization() throws Exception {
 
-        when(activityService.createActivity(activityDto, image)).thenReturn(activityDto);
+        when(activityService.createActivity(activityDto)).thenReturn(activityDto);
 
-        mockMvc.perform(post("/activity")
+        mockMvc.perform(post("/activities")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDto))
                         .accept(MediaType.APPLICATION_JSON))
@@ -148,7 +139,7 @@ public class ActivityControllerTest {
     void tryToUpdateAnActivityButNoHaveAuthorization() throws Exception {
         when(activityService.update(1L,activityDto)).thenReturn(activityDto);
 
-        mockMvc.perform(post("/activity")
+        mockMvc.perform(post("/activities")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(activityDto))
                         .accept(MediaType.APPLICATION_JSON))
