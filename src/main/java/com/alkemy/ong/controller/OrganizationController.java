@@ -18,7 +18,7 @@ public class OrganizationController {
     @Autowired
     private OrganizationService organizationService;
     
-    @GetMapping(value = "/public")
+    @GetMapping("/public")
     public ResponseEntity<OrganizationSlideDto> findOrganization(){
         return ResponseEntity.ok(organizationService.organizationSlide());
     }

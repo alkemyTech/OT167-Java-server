@@ -127,7 +127,7 @@ public class NewsController {
                     )
             })
     })
-    @GetMapping("/query")
+    @GetMapping
     public ResponseEntity<?> findAllNewsPag(@RequestParam(value = "page", required = true) String page, WebRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(newsService.findAllPag(Integer.parseInt(page), request));
     }

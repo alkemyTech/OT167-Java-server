@@ -3,7 +3,6 @@ package com.alkemy.ong.controller;
 import com.alkemy.ong.dto.TestimonialDto;
 import com.alkemy.ong.exception.MessageInfo;
 import com.alkemy.ong.exception.MessagesInfo;
-import com.alkemy.ong.model.Testimonial;
 import com.alkemy.ong.service.TestimonialService;
 import java.util.HashMap;
 import java.util.Locale;
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -64,7 +62,7 @@ public class TestimonialController {
                             schema = @Schema(implementation = MessagesInfo.class),
                             examples = {
                                 @ExampleObject(name = "Example 1", summary = "Member param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = MODEL_TESTIMONIAL_PARAM_ERROR),})})})
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Map<String, String>> saveTestimonial(@Valid @RequestBody TestimonialDto testimonialDto) {
         testimonialService.save(testimonialDto);
         Map<String, String> message = new HashMap<>() {
@@ -138,7 +136,7 @@ public class TestimonialController {
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
-    @GetMapping("/query")
+    @GetMapping
     public ResponseEntity<?> findAllNewsPag(@RequestParam(value = "page", required = true) String page, WebRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(testimonialService.findAllPag(Integer.parseInt(page), request));
     }

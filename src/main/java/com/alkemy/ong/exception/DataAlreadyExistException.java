@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class DataAlreadyExistException extends Exception {
 
     public DataAlreadyExistException (String message) {
-
         super(message);
     }
 }

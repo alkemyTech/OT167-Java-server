@@ -13,9 +13,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NewsMapper {
 
-    //=== DTO --> Entity
     public News newsDTO2Entity(NewsDto dto){
-
         Category categoryEntity = new Category();
         categoryEntity.setIdCategories(dto.getCategoryId());
         News news = new News();
@@ -26,11 +24,11 @@ public class NewsMapper {
         return news;
 
     }
+
     public List<NewsDto> listNewsDto(List<News> newsList){
         return newsList.stream().map(news -> newsEntity2Dto(news)).collect(Collectors.toList());
     }
 
-    //=== Entity --> DTO
     public NewsDto newsEntity2Dto(News news){
 
         NewsDto newsDto = new NewsDto();
@@ -41,5 +39,4 @@ public class NewsMapper {
         if(news.getCategoryId() !=null) newsDto.setCategoryId(news.getCategoryId().getIdCategories());
         return newsDto;
     }
-
 }

@@ -13,9 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -32,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -43,17 +41,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws  Exception {
+    protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/login", "/auth/register").permitAll()
                 .antMatchers("/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**","/swagger-ui/**").permitAll()
-                .antMatchers(HttpMethod.POST, " /activity").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, " /activities").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /activities/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /categories").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /news").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /slides").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /testimonials").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, " /activity/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /activities").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, " /categories/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, " /news/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, " /organization/public").hasRole("ADMIN")
@@ -63,6 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, " /categories").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /categories/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /comments").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /comments/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /contacts").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /members").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /slides").hasRole("ADMIN")
@@ -77,7 +77,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+
 }
-
-
-

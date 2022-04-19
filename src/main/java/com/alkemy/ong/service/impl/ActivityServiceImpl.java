@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -34,16 +35,29 @@ public class ActivityServiceImpl implements ActivityService{
     
     @Autowired
     private PhotoService photoService;
-    
+
+    private BASE64DecodedMultipartFile base64DecodedMultipartFile;
     @Override
-    public ActivityDto createActivity(ActivityDto activityDto, MultipartFile image)throws IOException{
-        
+    public ActivityDto createActivity(ActivityDto activityDto)throws IOException{
+        BASE64DecodedMultipartFile image = new BASE64DecodedMultipartFile(Base64.decodeBase64(activityDto.getImage()));
         String urlImage = photoService.uploadImage(image);
         activityDto.setImage(urlImage);
         Activity activity = controlChanges(activityDto);
         Activity activityCreated = activityRepository.save(activity);
         
         return activityMapper.activityToDTO(activityCreated);
+    }
+
+    @Override
+    public ActivityDto update(Long id, ActivityDto activityDto) {
+        Optional<Activity> activity = this.activityRepository.findById(id);
+        if (!activity.isPresent()) {
+            throw new NotFoundException(messageSource.getMessage("id.not.found", null, Locale.ENGLISH));
+        }
+        this.activityMapper.activityRefreshValues(activity.get(), activityDto);
+        Activity activitySaved = this.activityRepository.save(activity.get());
+        ActivityDto result = this.activityMapper.activityToDTO(activitySaved);
+        return result;
     }
 
     public Activity controlChanges(ActivityDto activityDto)throws NotFoundException{
@@ -55,16 +69,5 @@ public class ActivityServiceImpl implements ActivityService{
         } 
         
         return activityMapper.activityDtoToModel(activityDto);
-    }
-
-    public ActivityDto update(Long id, ActivityDto activityDto) {
-        Optional<Activity> activity = this.activityRepository.findById(id);
-        if (!activity.isPresent()) {
-            throw new NotFoundException(messageSource.getMessage("id.not.found", null, Locale.ENGLISH));
-        }
-        this.activityMapper.activityRefreshValues(activity.get(), activityDto);
-        Activity activitySaved = this.activityRepository.save(activity.get());
-        ActivityDto result = this.activityMapper.activityToDTO(activitySaved);
-        return result;
     }
 }

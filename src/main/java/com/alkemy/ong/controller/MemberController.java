@@ -17,11 +17,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
@@ -113,7 +111,7 @@ public class MemberController {
     )}) })
 
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<MessageInfo> memberDelete(@Parameter(description = "Id of the memeber to be delete", example = "1") @PathVariable String id, WebRequest request){
         memberService.deleteMemberById(Long.valueOf(id));
         return ResponseEntity.ok().body(messageResponse.messageOk(messageSource.getMessage("member.delete.successfully",new Object[]{id}, Locale.ENGLISH), HttpStatus.OK.value(), request));
@@ -141,7 +139,7 @@ public class MemberController {
                     )}) })})
     @PutMapping(value = "{id}", produces = { "application/json" })
     public ResponseEntity<MemberDto> memberUpdate(
-            @Parameter(description = "Id of the memeber to be update", example = "1") @PathVariable String id, @Parameter(description = "Fill all the parrameters cannot be null to create or update a member")  @RequestBody MemberDto memberDto){
+            @Parameter(description = "Id of the member to be update", example = "1") @PathVariable String id, @Parameter(description = "Fill all the parrameters cannot be null to create or update a member")  @RequestBody MemberDto memberDto){
         return ResponseEntity.status(HttpStatus.OK).body(memberService.updateMember(Long.valueOf(id), memberDto));
     }
 }

@@ -12,12 +12,12 @@ import javax.validation.constraints.Size;
 @Setter
 public class UserLoginRequest {
 
-    @Schema(example = "tarazaga.mickaela@gmail.com", required = true)
+    @Schema(example = "gabriel@mail.com", required = true)
     @NotBlank(message = "Email can't be blank")
     @Email(message = "Email should be valid.", regexp = "[A-Za-z0-9._%-+]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")
     private String email;
 
-    @Schema(name = "password", example = "password123", type = "String", required = true)
+    @Schema(name = "password", example = "12345678", type = "String", required = true)
     @NotBlank(message = "Password is mandatory.")
     @Size(min = 6, message = "The password must be at least 6 characters")
     private String password;
