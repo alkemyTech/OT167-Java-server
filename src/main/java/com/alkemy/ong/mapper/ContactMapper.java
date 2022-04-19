@@ -44,5 +44,4 @@ public class ContactMapper {
         }
         return contacts;
     }
-
 }

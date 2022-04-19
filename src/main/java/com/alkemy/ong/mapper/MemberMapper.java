@@ -7,6 +7,7 @@ import java.util.List;
 
 @Component
 public class MemberMapper {
+
     public MemberDto memberToDto (Member member){
         MemberDto memberDto = new MemberDto();
         memberDto.setId(member.getId());
@@ -16,10 +17,9 @@ public class MemberMapper {
         memberDto.setLinkedinUrl(member.getLinkedinUrl());
         memberDto.setImage(member.getImage());
         memberDto.setDescription(member.getDescription());
-        memberDto.setUpdateDate(member.getUpdateDate());
-        memberDto.setCreationDate(member.getCreationDate());
         return memberDto;
     }
+
     public List<MemberDto> memberListToDtoList (List<Member> membersList){
         List<MemberDto> membersToDtoList = new ArrayList<>();
         membersList.forEach(m -> membersToDtoList.add(memberToDto(m)));

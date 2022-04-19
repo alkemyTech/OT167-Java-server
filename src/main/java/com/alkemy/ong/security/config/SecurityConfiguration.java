@@ -13,8 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.http.HttpMethod;
-
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @EnableWebSecurity
@@ -49,6 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/login", "/auth/register").permitAll()
                 .antMatchers("/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**","/swagger-ui/**").permitAll()
                 .antMatchers(HttpMethod.POST, " /activities").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /activities/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /categories").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /news").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /slides").hasRole("ADMIN")
@@ -63,6 +62,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, " /categories").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /categories/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /comments").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /comments/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /contacts").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /members").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, " /slides").hasRole("ADMIN")
@@ -77,6 +77,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
-
 }

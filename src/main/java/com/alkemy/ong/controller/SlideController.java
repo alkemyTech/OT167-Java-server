@@ -23,13 +23,13 @@ public class SlideController {
     @Autowired
     private SlideService slideService;
     
-    @PostMapping("/slide")
+    @PostMapping
     public ResponseEntity<SlideDto> createSlide(@RequestBody SlideDto slideDto) throws IOException{
         SlideDto result = slideService.createSlide(slideDto);
         return ResponseEntity.ok().body(result);
     }
         
-    @PutMapping(value = "{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<SlideDto> updateSlide(@PathVariable(value = "id") String id, @Valid @RequestBody SlideUpdateDto slideUpdateDto) {
         return ResponseEntity.ok(slideService.updateSlide(Long.valueOf(id), slideUpdateDto));
     }

@@ -5,13 +5,9 @@ import com.alkemy.ong.service.ActivityService;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,12 +17,16 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
-    @PostMapping()
-    public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto, @RequestBody MultipartFile image) throws IOException {
+    @PostMapping
+    public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto) throws IOException{
+        ActivityDto result = activityService.createActivity(activityDto);
+        return ResponseEntity.ok().body(result);
+    }
 
-        ActivityDto activityCreated = activityService.createActivity(activityDto, image);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(activityCreated);
+    @PutMapping("/{id}")
+    public ResponseEntity<ActivityDto> update(@PathVariable Long id, @Validated @RequestBody ActivityDto activityDto){
+        ActivityDto result = this.activityService.update(id,activityDto);
+        return ResponseEntity.ok().body(result);
     }
 
 }

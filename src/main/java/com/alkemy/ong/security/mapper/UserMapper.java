@@ -1,7 +1,6 @@
 package com.alkemy.ong.security.mapper;
 
 import com.alkemy.ong.dto.UserDto;
-import com.alkemy.ong.dto.UserDtoCreator;
 import com.alkemy.ong.model.Role;
 import com.alkemy.ong.security.dto.UserLoginRequest;
 import com.alkemy.ong.security.dto.UserRegisterRequest;
@@ -41,8 +40,7 @@ public class UserMapper {
         user.setPassword(dto.getPassword());
         return user;
     }
-       
-    
+
     public UserEntity userRegisterRequestDto2User(UserRegisterRequest userDto) {
        
         if ( userDto == null ) {
@@ -74,9 +72,5 @@ public class UserMapper {
         user1.setEmail(user.getEmail());
         user1.setJwt(jwt);
         return user1;
-
-
     }
-
-
 }

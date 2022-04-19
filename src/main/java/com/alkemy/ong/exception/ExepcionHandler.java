@@ -85,4 +85,11 @@ public class ExepcionHandler {
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.OK.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.OK);
     }
+
+    @ExceptionHandler({NullPointerException.class})
+    public ResponseEntity<MessageInfo> nullPointerException(HttpServletRequest request, NullPointerException exception) {
+        String message = exception.getMessage();
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
+    }
 }

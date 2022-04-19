@@ -19,7 +19,6 @@ public class TestimonialMapper {
         return testimonial;
     }
 
-
     public TestimonialDto testimonial2DTO (Testimonial testimonial){
         TestimonialDto testimonialDto = new TestimonialDto();
         testimonialDto.setId(testimonial.getId());
