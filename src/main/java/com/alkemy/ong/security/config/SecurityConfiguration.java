@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.http.HttpMethod;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -49,12 +48,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/login", "/auth/register").permitAll()
                 .antMatchers("/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**","/swagger-ui/**").permitAll()
-                .antMatchers(HttpMethod.POST, " /activities").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, " /activity").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /categories").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /news").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /slides").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, " /testimonials").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, " /activities").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT, " /activity/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, " /categories/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, " /news/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, " /organization/public").hasRole("ADMIN")

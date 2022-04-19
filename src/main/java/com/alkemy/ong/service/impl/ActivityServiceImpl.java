@@ -45,7 +45,7 @@ public class ActivityServiceImpl implements ActivityService{
         
         return activityMapper.activityToDTO(activityCreated);
     }
-    
+
     public Activity controlChanges(ActivityDto activityDto)throws NotFoundException{
         
         if (activityDto.getName().isBlank()) {

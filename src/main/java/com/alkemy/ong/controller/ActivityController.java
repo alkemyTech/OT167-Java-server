@@ -20,7 +20,7 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
-    @PostMapping("/activities")
+    @PostMapping
     public ResponseEntity<ActivityDto> createActivity(@RequestBody ActivityDto activityDto, @RequestBody MultipartFile image) throws IOException{
         
         ActivityDto activityCreated = activityService.createActivity(activityDto, image);
