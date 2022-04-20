@@ -60,7 +60,6 @@ public class ActivityControllerTest {
                 .apply(springSecurity())
                 .build();
         activity = new Activity(1L,"name","content","image",null,null);
-        //activities.add(activity);
 
         activityDtoResponse = activityMapper.activityToDTO(activity);
 
