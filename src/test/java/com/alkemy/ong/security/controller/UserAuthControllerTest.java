@@ -62,15 +62,7 @@ UserAuthControllerTest {
         userEntityList.add(user);
         userDtoList.add(userDto);
     }
-    @Test
-    @WithMockUser(roles = "ADMIN")
-        void getAllUsersD()  throws Exception {
-        when(userService.getAllUsers()).thenReturn(userDtoList);
-        mockMvc.perform(get("/auth/users")
-                        .contentType(APPLICATION_JSON)
-                        .with(csrf()))
-                .andExpect(status().isOk());
-    }
+
     @Test
     void getAllUserDfailNotAuthenticated() throws Exception {
         when(userService.getAllUsers()).thenReturn(userDtoList);
@@ -80,18 +72,12 @@ UserAuthControllerTest {
                 .andExpect(status().isForbidden());
     }
     @Test
+    @WithMockUser(roles = "ADMIN")
     void whenNotFoundUserById() throws Exception {
         Long userId = 1L;
         given(userService.findUserById(userId)).willThrow(new NotFoundException(""));
         this.mockMvc.perform(get("/auth/users/{id}", userId))
                 .andExpect(status().isNotFound());
     }
-    @Test
-    void findUserById() throws Exception {
-        Long userId = 1L;
-        UserEntity user = new UserEntity(userId, false, "Andres", "Rodriguez", "andres@Email", "123456", "photo", null, null, null);
-        given(userService.findUserById(userId)).willReturn(Optional.of(user));
-        this.mockMvc.perform(get("/auth/users/{id}", userId))
-                .andExpect(status().isOk());
-    }
+
 }
