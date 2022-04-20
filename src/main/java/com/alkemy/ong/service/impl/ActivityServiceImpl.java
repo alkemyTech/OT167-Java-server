@@ -39,6 +39,7 @@ public class ActivityServiceImpl implements ActivityService{
     private BASE64DecodedMultipartFile base64DecodedMultipartFile;
     @Override
     public ActivityDto createActivity(ActivityDto activityDto)throws IOException{
+
         BASE64DecodedMultipartFile image = new BASE64DecodedMultipartFile(Base64.decodeBase64(activityDto.getImage()));
         String urlImage = photoService.uploadImage(image);
         activityDto.setImage(urlImage);
