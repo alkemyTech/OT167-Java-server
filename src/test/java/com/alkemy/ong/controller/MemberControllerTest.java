@@ -142,7 +142,7 @@ public class MemberControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void listMembers() throws Exception {
+    void getMemberListPage() throws Exception {
         MockHttpServletRequest servletRequest = new MockHttpServletRequest();
         servletRequest.setRequestURI("/members");
         WebRequest webRequest = new ServletWebRequest(servletRequest);
