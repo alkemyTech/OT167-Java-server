@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CommentService {
 
-    Comment save(Comment comment);
+    CommentDto save(CommentDto commentDto);
 
     CommentDto updateComment(Long id, CommentDto commentDto);
 
@@ -21,5 +21,4 @@ public interface CommentService {
     void existId(Long id);
 
     MessagePag getAllComments(int page, WebRequest request);
-  
 }

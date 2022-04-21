@@ -9,6 +9,7 @@ import java.util.List;
 
 @Component
 public class OrganizationMapper {
+
     public OrganizationDto organizationToDto (Organization organization){
         OrganizationDto organizationDto = new OrganizationDto();
         organizationDto.setName(organization.getName());
@@ -20,11 +21,13 @@ public class OrganizationMapper {
         organizationDto.setLinkedinUrl(organization.getLinkedInUrl());
         return organizationDto;
     }
+
     public List<OrganizationDto> organizationListToDtoList (List<Organization> organization){
         List<OrganizationDto> orgDtoList = new ArrayList<>();
         organization.forEach(org -> orgDtoList.add(organizationToDto(org)));
         return orgDtoList;
     }
+
     public Organization creationOrgFromOrganizationDto(OrganizationCreationDto dto) {
         Organization organization = new Organization();
         organization.setName(dto.getName());
@@ -41,7 +44,6 @@ public class OrganizationMapper {
     }
 
     public Organization editInformationOrganization(Organization organization, OrganizationCreationDto organizationCreationDto) {
-
         organization.setName(organizationCreationDto.getName());
         organization.setImage(organizationCreationDto.getImage());
         organization.setAddress(organizationCreationDto.getAddress());
@@ -52,13 +54,10 @@ public class OrganizationMapper {
         organization.setFacebookUrl(organizationCreationDto.getFacebookUrl());
         organization.setInstagramUrl(organizationCreationDto.getInstagramUrl());
         organization.setLinkedInUrl(organizationCreationDto.getLinkedInUrl());
-
         return organization;
-
     }
     
     public OrganizationSlideDto organizationSlideToDto (Organization organization){
-        
         OrganizationSlideDto organizationSlideDto = new OrganizationSlideDto();
         organizationSlideDto.setName(organization.getName());
         organizationSlideDto.setImage(organization.getImage());
@@ -67,7 +66,6 @@ public class OrganizationMapper {
         organizationSlideDto.setFacebookUrl(organization.getFacebookUrl());
         organizationSlideDto.setInstagramUrl(organization.getInstagramUrl());
         organizationSlideDto.setLinkedinUrl(organization.getLinkedInUrl());
-        
         return organizationSlideDto;
     }
 }

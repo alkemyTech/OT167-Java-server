@@ -1,7 +1,6 @@
 package com.alkemy.ong.service;
 
 import com.alkemy.ong.dto.UserDto;
-import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.model.Role;
 import com.alkemy.ong.security.model.UserEntity;
 import java.util.List;
@@ -20,7 +19,7 @@ public interface UserService {
 
     Optional<UserEntity> findUserById(Long id);
 
-    UserEntity findById(Long id);
+    Optional<UserEntity> findById(Long id);
 
     void delete(Long id);
 

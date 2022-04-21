@@ -3,7 +3,7 @@ package com.alkemy.ong.controller;
 import com.alkemy.ong.dto.NewsDto;
 import com.alkemy.ong.exception.MessagesInfo;
 import com.alkemy.ong.service.NewsService;
-import com.alkemy.ong.utils.SwaggerConstantsNews;
+import com.alkemy.ong.utils.SwaggerConstants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -46,7 +45,7 @@ public class NewsController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),
                             examples = {
-                                    @ExampleObject(name = "Example 1", summary = "New created", description = "when the required fields are filled in, sends a new message successfully created", value = SwaggerConstantsNews.MODEL_NEW_CREATED)
+                                    @ExampleObject(name = "Example 1", summary = "New created", description = "when the required fields are filled in, sends a new message successfully created", value = SwaggerConstants.MODEL_NEW_CREATED)
                             }
                     )
             }),
@@ -54,7 +53,7 @@ public class NewsController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),
                             examples = {
-                                    @ExampleObject(name = "Example 1", summary = "New param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = SwaggerConstantsNews.MODEL_NEW_PARAM_ERROR),
+                                    @ExampleObject(name = "Example 1", summary = "New param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = SwaggerConstants.MODEL_NEW_PARAM_ERROR),
                             })})
     })
     @PostMapping
@@ -70,7 +69,7 @@ public class NewsController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),
                             examples = {
-                                    @ExampleObject(name = "Example 1", summary = "New has been found", description = "when the new has succesfully founded.", value = SwaggerConstantsNews.MODEL_NEW_FOUND)
+                                    @ExampleObject(name = "Example 1", summary = "New has been found", description = "when the new has succesfully founded.", value = SwaggerConstants.MODEL_NEW_FOUND)
                             }
                     )
             }),
@@ -78,7 +77,7 @@ public class NewsController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),
                             examples = {
-                                    @ExampleObject(name = "Example 1", summary = "New param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = SwaggerConstantsNews.MODEL_NEW_NOT_FOUND),
+                                    @ExampleObject(name = "Example 1", summary = "New param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = SwaggerConstants.MODEL_NEW_NOT_FOUND),
                             })})
     })
     @GetMapping("/{id}")
@@ -94,7 +93,7 @@ public class NewsController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),
                             examples = {
-                                    @ExampleObject(name = "Example 1", summary = "New has been successfully deleted", description = "when the new has succesfully deleted.", value = SwaggerConstantsNews.MODEL_NEW_DELETED)
+                                    @ExampleObject(name = "Example 1", summary = "New has been successfully deleted", description = "when the new has succesfully deleted.", value = SwaggerConstants.MODEL_NEW_DELETED)
                             }
                     )
             }),
@@ -102,10 +101,10 @@ public class NewsController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),
                             examples = {
-                                    @ExampleObject(name = "Example 1", summary = "New param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = SwaggerConstantsNews.MODEL_NEW_NOT_FOUND),
+                                    @ExampleObject(name = "Example 1", summary = "New param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = SwaggerConstants.MODEL_NEW_NOT_FOUND),
                             })})
     })
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> delete(@PathVariable Long id) {
         this.newsService.delete(id);
@@ -123,12 +122,12 @@ public class NewsController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),
                             examples = {
-                                    @ExampleObject(name = "Example 1", summary = "News founded", description = "when the news has successfully founded.", value = SwaggerConstantsNews.MODEL_NEW_LIST_FOUND)
+                                    @ExampleObject(name = "Example 1", summary = "News founded", description = "when the news has successfully founded.", value = SwaggerConstants.MODEL_NEW_LIST_FOUND)
                             }
                     )
             })
     })
-    @GetMapping("/query")
+    @GetMapping
     public ResponseEntity<?> findAllNewsPag(@RequestParam(value = "page", required = true) String page, WebRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(newsService.findAllPag(Integer.parseInt(page), request));
     }
@@ -140,7 +139,7 @@ public class NewsController {
                             mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),
                             examples = {
-                                    @ExampleObject(name = "Example 1", summary = "New has been successfully changed", description = "when the new has successfully saved his changes.", value = SwaggerConstantsNews.MODEL_NEW_SAVED)
+                                    @ExampleObject(name = "Example 1", summary = "New has been successfully changed", description = "when the new has successfully saved his changes.", value = SwaggerConstants.MODEL_NEW_SAVED)
                             }
                     )
             }),
@@ -148,10 +147,10 @@ public class NewsController {
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),
                             examples = {
-                                    @ExampleObject(name = "Example 1", summary = "New param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = SwaggerConstantsNews.MODEL_NEW_PARAM_ERROR),
+                                    @ExampleObject(name = "Example 1", summary = "New param Error", description = "when required fields are not filled in, sends a 400 (Bad Request) error message", value = SwaggerConstants.MODEL_NEW_PARAM_ERROR),
                             })})
     })
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+
     @PutMapping("/{id}")
     public ResponseEntity<?> editNews(@PathVariable Long id, @Valid @RequestBody NewsDto newsDto){
        return ResponseEntity.ok(newsService.updateNews(id, newsDto));

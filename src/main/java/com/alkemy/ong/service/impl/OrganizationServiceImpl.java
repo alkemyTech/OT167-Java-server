@@ -45,14 +45,23 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public OrganizationDto editOrganization(OrganizationCreationDto organizationCreationDto) {
 
-        Organization organization = organizationRepository.findAll().get(0);
-        if(organization == null) {
+        Organization organization;
+        try {
+          organization = organizationRepository.findAll().get(0);
+        }catch (Exception e)
+        {
             throw new NotFoundException(messageSource.getMessage("organization.not.found", null, Locale.ENGLISH));
         }
-        organization = organizationMapper.editInformationOrganization(organization,organizationCreationDto);
-
-        organization = organizationRepository.save(organization);
-        return organizationMapper.organizationToDto(organization);
+        organization.setAddress(organizationCreationDto.getAddress());
+        organization.setEmail(organizationCreationDto.getEmail());
+        organization.setImage(organizationCreationDto.getImage());
+        organization.setPhone(organizationCreationDto.getPhone());
+        organization.setName(organizationCreationDto.getName());
+        organization.setFacebookUrl(organizationCreationDto.getFacebookUrl());
+        organization.setInstagramUrl(organizationCreationDto.getLinkedInUrl());
+        organization.setWelcomeText(organizationCreationDto.getWelcomeText());
+        organization.setAboutUsText(organizationCreationDto.getAboutUsText());
+        return  organizationMapper.organizationToDto(organizationRepository.save(organization));
     }
 
     @Override

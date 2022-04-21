@@ -1,12 +1,10 @@
 package com.alkemy.ong.dto;
-import io.swagger.annotations.ApiModelProperty;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Setter
