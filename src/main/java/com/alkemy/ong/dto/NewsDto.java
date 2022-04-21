@@ -1,6 +1,8 @@
 package com.alkemy.ong.dto;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
