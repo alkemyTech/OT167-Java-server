@@ -1,8 +1,10 @@
 package com.alkemy.ong.security.service;
+import com.alkemy.ong.dto.UserDto;
 import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.repository.UserRepository;
+import com.alkemy.ong.security.dto.UserLoginRequest;
 import com.alkemy.ong.security.dto.UserRegisterRequest;
 import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.mapper.UserMapper;
@@ -14,6 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import java.util.Locale;
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.userdetails.User;
@@ -24,6 +27,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 
 @Service
 public class UserDetailsCustomService implements UserDetailsService {
@@ -55,18 +59,35 @@ public class UserDetailsCustomService implements UserDetailsService {
              
     }
 
-    public UserRegisterResponse logIn(UserEntity user) throws NotFoundException {
+    public UserRegisterResponse logIn(UserLoginRequest userLoginRequest) throws NotFoundException {
 
-        if (userService.findByEmail(user.getEmail()) == null) {
+        if (userService.findByEmail(userLoginRequest.getEmail()) == null) {
             throw new NotFoundException(messageSource.getMessage("email.not.found",null, Locale.ENGLISH));
         }
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        UserEntity user = userMapper.UserDtoToEntity(userLoginRequest);
         UserEntity userFound = userService.findByEmail(user.getEmail());
         if(!(passwordEncoder.matches(user.getPassword(),userFound.getPassword()))){
             throw new NotFoundException(messageSource.getMessage("password.not.same",null, Locale.ENGLISH));
         }
         return userMapper.user2UserRegisterResponseDto(userFound, jwtUtils.generateJwt(userFound));
     }
+    
+    public UserDto userDataFetching(HttpServletRequest request) throws NotFoundException {
+
+        final String authorizationHeader = request.getHeader("Authorization");
+
+        String username = null;
+        String jwt = null;
+
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            jwt = authorizationHeader.substring(7);
+            username = jwtUtils.extractUsername(jwt);
+        }
+
+        return userMapper.convertUserToDto(userService.findByEmail(username));
+    }
+    
 
     @Override
     @Transactional
@@ -81,6 +102,8 @@ public class UserDetailsCustomService implements UserDetailsService {
                 authorities
         );
     }
+    
+    
 
  }
 
