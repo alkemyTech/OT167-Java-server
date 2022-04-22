@@ -1,4 +1,6 @@
-package com.alkemy.ong.controller;
+package com.alkemy.ong.controller.utils;
+
+
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.mock.mockito.MockBean;
