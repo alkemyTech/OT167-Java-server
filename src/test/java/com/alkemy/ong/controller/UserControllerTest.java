@@ -1,5 +1,7 @@
 package com.alkemy.ong.controller;
+
 import com.alkemy.ong.dto.UserDto;
+import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.security.mapper.UserMapper;
 import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.security.service.UserDetailsCustomService;
@@ -34,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @TestPropertySource(locations = "")
 class UserControllerTest {
+
     @Autowired
     private WebApplicationContext context;
     protected MockMvc mockMvc;
@@ -45,6 +48,7 @@ class UserControllerTest {
     UserMapper userMapper;
     List<UserEntity> userEntityList = new ArrayList<>();
     List<UserDto> userDtoList = new ArrayList<>();
+
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
@@ -59,6 +63,25 @@ class UserControllerTest {
         userDtoList.add(userDto);
 
     }
+
+    @Test
+    void getAllUserDfailNotAuthenticated() throws Exception {
+        when(userService.getAllUsers()).thenReturn(userDtoList);
+        mockMvc.perform(get("/users")
+                .contentType(APPLICATION_JSON)
+                .with(csrf()))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void whenNotFoundUserById() throws Exception {
+        Long userId = 1L;
+        given(userService.findUserById(userId)).willThrow(new NotFoundException(""));
+        this.mockMvc.perform(get("/users/{id}", userId))
+                .andExpect(status().isNotFound());
+    }
+
     @Test
     @WithMockUser(roles = "ADMIN")
     void deleteUser() throws Exception {
@@ -69,6 +92,7 @@ class UserControllerTest {
         this.mockMvc.perform(delete("/users/{id}", user.getId()))
                 .andExpect(status().is(204));
     }
+
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldReturn404WhenDeletingNonExistingUser() throws Exception {
@@ -90,11 +114,11 @@ class UserControllerTest {
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    void getAllUsersD()  throws Exception {
+    void getAllUsersD() throws Exception {
         when(userService.getAllUsers()).thenReturn(userDtoList);
         mockMvc.perform(get("/users")
-                        .contentType(APPLICATION_JSON)
-                        .with(csrf()))
+                .contentType(APPLICATION_JSON)
+                .with(csrf()))
                 .andExpect(status().isOk());
     }
 }

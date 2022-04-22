@@ -18,7 +18,7 @@ public class OrganizationMapper {
         organizationDto.setPhone(organization.getPhone());
         organizationDto.setFacebookUrl(organization.getFacebookUrl());
         organizationDto.setInstagramUrl(organization.getInstagramUrl());
-        organizationDto.setLinkedinUrl(organization.getLinkedInUrl());
+        organizationDto.setLinkedInUrl(organization.getLinkedInUrl());
         return organizationDto;
     }
 
@@ -65,7 +65,7 @@ public class OrganizationMapper {
         organizationSlideDto.setPhone(organization.getPhone());
         organizationSlideDto.setFacebookUrl(organization.getFacebookUrl());
         organizationSlideDto.setInstagramUrl(organization.getInstagramUrl());
-        organizationSlideDto.setLinkedinUrl(organization.getLinkedInUrl());
+        organizationSlideDto.setLinkedInUrl(organization.getLinkedInUrl());
         return organizationSlideDto;
     }
 }

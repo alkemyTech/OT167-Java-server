@@ -144,7 +144,7 @@ public class CategoryController {
                     content = {@Content(schema = @Schema(implementation = MessageInfo.class),
                             examples = @ExampleObject(name = "Message of error 404", summary = "404 from the server, Category not found.", description = "The ID doesn't exist.", value = SwaggerConstants.MODEL_ERROR_404))})
     })
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> categoryDelete(@PathVariable String id) {
         categoryService.deleteCategoryById(Long.valueOf(id));
         Map<String, String> message = new HashMap<>() {{
