@@ -55,7 +55,4 @@ public class UserAuthController {
     public ResponseEntity<UserRegisterResponse> registerUser(@Valid @RequestBody UserRegisterRequest userReq) throws DataAlreadyExistException, IOException {
         return new ResponseEntity<>(userDetailsCustomService.register(userReq), HttpStatus.CREATED);
     }
-
-    
-
 }

@@ -19,7 +19,7 @@ public class UserRegisterRequest {
     @NotBlank(message = "Last name is mandatory.")
     private String lastName;
     
-    @Schema(name = "email", example = "tarazaga.mickaela@gmail.com", type = "String")
+    @Schema(name = "email", example = "mickaela@mail.com", type = "String")
     @NotBlank(message = "Email is mandatory.")
     @Email(message = "Email should be valid.", regexp = "[A-Za-z0-9._%-+]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")
     private String email;

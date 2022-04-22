@@ -117,7 +117,7 @@ public class CategoryController {
                     content = {@Content(schema = @Schema(implementation = MessageInfo.class),
                             examples = @ExampleObject(name = "Message of error 404", summary = "404 from the server, Category not found.", description = "The ID doesn't exist.", value = SwaggerConstants.MODEL_ERROR_404))})
     })
-    @PutMapping(value = "/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id,@RequestBody Category category){
         try{
             Category categoryUpdated= categoryService.updateCategory(id,category);
@@ -144,11 +144,13 @@ public class CategoryController {
                     content = {@Content(schema = @Schema(implementation = MessageInfo.class),
                             examples = @ExampleObject(name = "Message of error 404", summary = "404 from the server, Category not found.", description = "The ID doesn't exist.", value = SwaggerConstants.MODEL_ERROR_404))})
     })
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<?> categoryDelete(@PathVariable String id){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> categoryDelete(@PathVariable String id) {
         categoryService.deleteCategoryById(Long.valueOf(id));
-        Map<String, String> message = new HashMap<>(){{put("message: ", messageSource
-                .getMessage("category.delete.successfully", new Object[]{id}, Locale.ENGLISH));}};
+        Map<String, String> message = new HashMap<>() {{
+            put("message: ", messageSource
+                    .getMessage("category.delete.successfully", new Object[]{id}, Locale.ENGLISH));
+        }};
         return ResponseEntity.ok().body(message);
     }
 

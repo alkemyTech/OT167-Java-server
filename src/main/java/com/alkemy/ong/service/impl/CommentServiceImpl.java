@@ -39,7 +39,7 @@ public class CommentServiceImpl implements CommentService {
     private final PaginationMessage paginationMessage;
 
 
-    @Override
+   /*@Override
     public Comment save(Comment comment) {
         if (comment != null) {
 
@@ -52,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
         } else {
             throw new NullPointerException(messageSource.getMessage("comment.not.null", null, Locale.ENGLISH));
         }
-    }
+    }*/
 
     @Override
     public CommentDto updateComment(Long id, CommentDto commentDto) {
@@ -116,6 +116,14 @@ public class CommentServiceImpl implements CommentService {
         Sort sort = Sort.by(Sort.Direction.DESC,"creationDate");
         Page commentPage = commentRepository.findAll(PageRequest.of(page, SIZE_PAG_10,sort));
         return paginationMessage.messageInfo(commentPage, commentMapper.listCommentsDto(commentPage.getContent()), request);
+    }
+
+    @Override
+    public CommentDto save(CommentDto commentDto) {
+
+        Comment commentEntity =  commentRepository.save(commentMapper.commentDto2Entity(commentDto));
+
+        return commentMapper.commentEntity2Dto(commentEntity);
     }
 
 }

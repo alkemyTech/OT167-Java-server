@@ -1,17 +1,15 @@
 package com.alkemy.ong.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
 
 public class CommentBasicDto {
-    private Long id;
-    private LocalDate creationDate;
+    @Schema(name = "body", example = "1", type = "String", description = "description: comment to show in the page")
     private String body;
 }
