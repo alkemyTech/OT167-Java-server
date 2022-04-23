@@ -26,7 +26,7 @@ public class OrganizationController {
     
     @Operation(summary = "Get organization")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Successfully get organization",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = OrganizationSlideDto.class))}),
+            @ApiResponse(responseCode = "200", description = "Successfully get organization",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = OrganizationSlideDto.class))}),
             @ApiResponse(responseCode = "403", description = "You do not have the permissions to enter", content = @Content)                     
     })
     @GetMapping("/public")

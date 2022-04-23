@@ -36,7 +36,7 @@ public class ContactController {
 
     @Operation(summary = "Add a new contact")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Contact save successfully",content = @Content),
+            @ApiResponse(responseCode = "201", description = "Contact save successfully",content = @Content),
             @ApiResponse(responseCode = "403", description = "You do not have the permissions to enter", content = @Content)                     
     })
     @PostMapping("/register")
@@ -51,7 +51,7 @@ public class ContactController {
 
     @Operation(summary = "Get all contacts")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Successfully get all contacts",content = @Content),
+            @ApiResponse(responseCode = "200", description = "Successfully get all contacts",content = @Content),
             @ApiResponse(responseCode = "403", description = "You do not have the permissions to enter", content = @Content)                     
     })
     @GetMapping
