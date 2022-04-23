@@ -1,5 +1,10 @@
 package com.alkemy.ong.security.service;
+import com.alkemy.ong.dto.RoleDto;
 import com.alkemy.ong.dto.UserDto;
+import com.alkemy.ong.exception.BadRequestException;
+import com.alkemy.ong.mapper.RoleMapper;
+import com.alkemy.ong.model.Role;
+import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.security.model.UserEntity;
 import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.NotFoundException;
@@ -12,11 +17,15 @@ import com.alkemy.ong.service.UserService;
 import java.util.Collection;
 
 import com.alkemy.ong.service.impl.EmailServiceImpl;
+import com.amazonaws.services.cognitoidentity.model.RoleMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,9 +42,12 @@ import org.springframework.http.ResponseEntity;
 
 @Service
 public class UserDetailsCustomService implements UserDetailsService {
-
+    @Autowired
+    private RoleRepository roleRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleMapper roleMapping;
     
     @Autowired
     private UserMapper userMapper;
@@ -108,9 +120,29 @@ public class UserDetailsCustomService implements UserDetailsService {
                 authorities
         );
     }
-    
-    
-
+    public void addRoleToUser(Long id, String rolName) {
+        Optional<UserEntity> user = Optional.ofNullable(userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
+        Role roleFound = Optional.ofNullable(roleRepository.findByName(rolName)).orElseThrow(()-> new NotFoundException(messageSource.getMessage("role.not.found",null, Locale.ENGLISH)));
+        if(!user.get().getRoles().isEmpty()) throw new BadRequestException(messageSource.getMessage("user.has.role",null, Locale.ENGLISH));
+        user.get().getRoles().add(roleFound);
+        userRepository.save(user.get());
+    }
+    public void updateRoleToUser(Long id, String newRoleName){
+        Optional<UserEntity> user = Optional.ofNullable(userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
+        Role roleNew = Optional.ofNullable(roleRepository.findByName(newRoleName)).orElseThrow(()-> new NotFoundException(messageSource.getMessage("role.not.found",null, Locale.ENGLISH)));
+        if(user.get().getRoles().stream().anyMatch(role -> role.equals(roleNew))) throw new BadRequestException(messageSource.getMessage("user.has.that.role", new Object[]{newRoleName}, Locale.ENGLISH));
+        user.get().getRoles().add(roleNew);
+        user.get().getRoles().stream().forEach((r) -> {if(!roleNew.equals(r)) user.get().getRoles().remove(r);});
+        userRepository.save(user.get());
+    }
+    public void saveRole(Role role) {
+        roleRepository.save(role);
+    }
+    public void updateRole(Long id, RoleDto roleDto) {
+        Optional<Role> role = Optional.ofNullable(roleRepository.findById(id).orElseThrow(()-> new NotFoundException("role no encontrado")));
+        roleDto.setId(roleDto.getId());
+        roleRepository.save(roleMapping.createRole(roleDto));
+    }
  }
 
 
