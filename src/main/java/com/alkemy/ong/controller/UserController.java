@@ -63,4 +63,10 @@ public class UserController {
     public ResponseEntity<UserDto> findUserById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
     }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<?> assignRoleAdmin(@PathVariable Long id){
+        userService.setRole(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
