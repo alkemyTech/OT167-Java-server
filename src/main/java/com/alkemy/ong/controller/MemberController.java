@@ -45,7 +45,7 @@ public class MemberController {
     @Operation(summary = "create a new member", description = "Create a member with filling the params of the body and return a success or error message. \n" +
             "The required fields are: name and image. The name field can only be filled with non-numeric characters.")
     @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Member was created",
+    @ApiResponse(responseCode = "201", description = "Member was created",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
                     array = @ArraySchema(schema = @Schema(implementation = String.class)),

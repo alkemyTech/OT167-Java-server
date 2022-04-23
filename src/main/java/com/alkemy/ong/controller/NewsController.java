@@ -41,7 +41,7 @@ public class NewsController {
     @Operation(summary = "Save a New", description = "Create a new with filling the params of the body and return a success or error message. \n" +
             "The required fields are: name,content and image.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = {
+            @ApiResponse(responseCode = "201", description = "CREATED", content = {
                     @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),

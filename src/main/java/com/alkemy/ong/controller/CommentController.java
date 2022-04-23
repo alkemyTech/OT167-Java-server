@@ -33,7 +33,7 @@ public class CommentController {
 
     @Operation(summary = "Add new comment")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Comment save successfully",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CommentDto.class))}),
+            @ApiResponse(responseCode = "201", description = "Comment save successfully",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CommentDto.class))}),
             @ApiResponse(responseCode = "403", description = "You do not have the permissions to enter", content = @Content),
             @ApiResponse(responseCode = "400", description = "The given id must not be null!", content = @Content)
             
@@ -93,7 +93,7 @@ public class CommentController {
 
     @Operation(summary = "Get all comments")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Successfully get all comments",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MessagePag.class))}),
+            @ApiResponse(responseCode = "200", description = "Successfully get all comments",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MessagePag.class))}),
             @ApiResponse(responseCode = "403", description = "You do not have the permissions to enter", content = @Content)                     
     })
     @GetMapping

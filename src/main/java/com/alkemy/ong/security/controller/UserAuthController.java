@@ -32,7 +32,7 @@ public class UserAuthController {
 
     @Operation(summary = "User Data Fetching")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Succesfull User Data Fetching",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))}),
+            @ApiResponse(responseCode = "202", description = "Succesfull User Data Fetching",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))}),
             @ApiResponse(responseCode = "403", description = "Unsuccessful User Data Fetching, you do not have the permissions to enter", content = @Content)
     })
     @GetMapping("/me")
@@ -43,7 +43,7 @@ public class UserAuthController {
 
     @Operation(summary = "User login")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Succesfull login",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserLoginResponse.class))}),
+            @ApiResponse(responseCode = "202", description = "Succesfull login",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserLoginResponse.class))}),
             @ApiResponse(responseCode = "403", description = "Unsuccesfull login, you do not have the permissions to enter", content = @Content)
     })
     @PostMapping("/login")
@@ -54,7 +54,7 @@ public class UserAuthController {
 
     @Operation(summary = "Register a new user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Registration successful",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserRegisterResponse.class))}),
+            @ApiResponse(responseCode = "201", description = "Registration successful",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserRegisterResponse.class))}),
             @ApiResponse(responseCode = "406", description = "Email already in use by another user", content = @Content)
     })
     @PostMapping("/register")

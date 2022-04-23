@@ -131,7 +131,7 @@ public class CategoryController {
     @Tag(name = "Categories")
     @Operation(summary = "Delete category by id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Delete the category",
+            @ApiResponse(responseCode = "200", description = "Delete the category",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = MessageInfo.class),
                             array = @ArraySchema(schema = @Schema(implementation = String.class)),

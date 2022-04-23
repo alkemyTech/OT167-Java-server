@@ -80,7 +80,7 @@ public class SlideController {
 
     @Operation(summary = "Delete slide by id")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Slide deleted successfully", content = {
+        @ApiResponse(responseCode = "410", description = "Slide deleted successfully", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = SlideDto.class))}),
         @ApiResponse(responseCode = "403", description = "You do not have the permissions to enter", content = @Content)
     })
