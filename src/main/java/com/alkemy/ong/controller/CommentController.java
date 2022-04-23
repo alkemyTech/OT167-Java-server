@@ -5,6 +5,7 @@ import com.alkemy.ong.exception.MessagePag;
 import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.mapper.CommentMapper;
 import com.alkemy.ong.service.CommentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
 import java.util.Locale;
-
+@Tag(name = "Comment")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comments")

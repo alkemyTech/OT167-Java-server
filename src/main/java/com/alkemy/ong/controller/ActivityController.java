@@ -2,13 +2,14 @@ package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.ActivityDto;
 import com.alkemy.ong.service.ActivityService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+@Tag(name = "Activity")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/activities")

@@ -4,6 +4,7 @@ import com.alkemy.ong.dto.SlideBasicDto;
 import com.alkemy.ong.dto.SlideDto;
 import com.alkemy.ong.dto.SlideUpdateDto;
 import com.alkemy.ong.service.SlideService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-
+@Tag(name = "Slide")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/slides")

@@ -3,6 +3,7 @@ import com.alkemy.ong.dto.ContactDto;
 import com.alkemy.ong.exception.MessageResponse;
 import com.alkemy.ong.service.ContactService;
 import com.alkemy.ong.service.EmailService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -14,7 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Locale;
-
+@Tag(name = "Contact")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/contacts")
