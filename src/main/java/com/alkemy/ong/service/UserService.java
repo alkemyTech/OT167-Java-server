@@ -23,5 +23,7 @@ public interface UserService {
 
     void delete(Long id);
 
+    void setRole(Long id);
+
 }
 
