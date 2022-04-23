@@ -15,11 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 @Tag(name = "User")
 @RestController
 @RequestMapping("/users")
@@ -64,6 +60,12 @@ public class UserController {
         return ResponseEntity.ok().body(userMapper.convertUserToDto(userService.findUserById(id).get()));
     }
 
+    @Operation(summary = "Assign Role Admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully assing Role Admin",content = @Content),
+            @ApiResponse(responseCode = "403", description = "You do not have the permissions to enter", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content)
+    })
     @PostMapping("/{id}")
     public ResponseEntity<?> assignRoleAdmin(@PathVariable Long id){
         userService.setRole(id);
