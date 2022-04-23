@@ -139,8 +139,8 @@ public class UserDetailsCustomService implements UserDetailsService {
         roleRepository.save(role);
     }
     public void updateRole(Long id, RoleDto roleDto) {
-        Optional<Role> role = Optional.ofNullable(roleRepository.findById(id).orElseThrow(()-> new NotFoundException("role no encontrado")));
-        roleDto.setId(roleDto.getId());
+        Optional<Role> role = Optional.ofNullable(roleRepository.findById(id).orElseThrow(()-> new NotFoundException(messageSource.getMessage("role.not.found",null, Locale.ENGLISH))));
+        roleDto.setId(role.get().getId());
         roleRepository.save(roleMapping.createRole(roleDto));
     }
  }
