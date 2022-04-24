@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.nio.file.AccessDeniedException;
+
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @EnableWebSecurity
@@ -76,7 +78,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/auth/accessdenied")
                 .and().exceptionHandling().accessDeniedPage("/auth/accessdenied")
-                .and().sessionManagement(). sessionCreationPolicy(STATELESS).and().exceptionHandling().accessDeniedPage("/auth/login");
+                .and().sessionManagement(). sessionCreationPolicy(STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

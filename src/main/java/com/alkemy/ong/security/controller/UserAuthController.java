@@ -4,12 +4,11 @@ import com.alkemy.ong.dto.*;
 import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.MessageInfo;
 import com.alkemy.ong.exception.MessageResponse;
-import com.alkemy.ong.exception.MessagesInfo;
 import com.alkemy.ong.security.dto.UserLoginRequest;
 import com.alkemy.ong.security.dto.UserRegisterRequest;
 import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.service.UserDetailsCustomService;
-import com.alkemy.ong.service.RoleService;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,6 +29,9 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Locale;
 
+import static com.alkemy.ong.utils.SwaggerConstants.MODEL_ROL_ERROR_404;
+import static com.alkemy.ong.utils.SwaggerConstants.MODEL_ROL_UPDATE;
+
 @Tag(name = "Authentication")
 @Controller
 @RequestMapping("/auth")
@@ -40,6 +42,7 @@ public class UserAuthController {
     private MessageSource messageSource;
     @Autowired
     private UserDetailsCustomService userDetailsCustomService;
+
 
     @GetMapping("/me")
     public ResponseEntity<?> userData(HttpServletRequest request) {
@@ -72,11 +75,20 @@ public class UserAuthController {
         userDetailsCustomService.addRoleToUser(id, roleName.getRoleName());
         return ResponseEntity.status(HttpStatus.OK).body(messageResponse.messageOk(messageSource.getMessage("user.has.new.rol",new Object[]{roleName.getRoleName()}, Locale.ENGLISH), HttpStatus.OK.value(), request));
     }
+    @Operation(description = "Update a role")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "the update is correctly",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MessageInfo.class)
+                    ,examples = {@ExampleObject(name = "Example 1", summary = "Update with e new role", description = "when the update is successful send a status 200 message", value = MODEL_ROL_UPDATE)})}),
+            @ApiResponse(responseCode = "400", description = "the user already has a role", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MessageInfo.class)
+                    ,examples = {@ExampleObject(name = "Example 1", summary = "User has already the same rol", description = "when try to update a new rol and is the same, sends a 400 (Bad Request) error message", value = MODEL_ROL_ERROR_404)}
+               )})
+    })
     @PostMapping("/updateRolUser/{id}")
     public ResponseEntity<MessageInfo> updateRoleUser(@PathVariable Long id, @RequestBody AddRoleToUserForm roleName, WebRequest request) {
         userDetailsCustomService.updateRoleToUser(id, roleName.getRoleName());
         return ResponseEntity.status(HttpStatus.OK).body(messageResponse.messageOk(messageSource.getMessage("user.has.update.role",new Object[]{roleName.getRoleName()}, Locale.ENGLISH), HttpStatus.CREATED.value(), request));
     }
+
     @GetMapping("/accessdenied")
     public ResponseEntity<MessageInfo> accesDenied (WebRequest request){
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageResponse.messageOk(messageSource.getMessage("user.not.access",null, Locale.ENGLISH), HttpStatus.FORBIDDEN.value(), request));

@@ -116,14 +116,14 @@ public class UserDetailsCustomService implements UserDetailsService {
     }
     public void addRoleToUser(Long id, String rolName) {
         Optional<UserEntity> user = Optional.ofNullable(userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
-        Role roleFound = Optional.ofNullable(roleRepository.findByName(rolName)).orElseThrow(()-> new NotFoundException(messageSource.getMessage("role.not.found",null, Locale.ENGLISH)));
+        Role roleFound = Optional.ofNullable(roleRepository.findByName(rolName)).orElseThrow(()-> new NotFoundException(messageSource.getMessage("role.name.not.found",new Object[]{rolName}, Locale.ENGLISH)));
         if(!user.get().getRoles().isEmpty()) throw new BadRequestException(messageSource.getMessage("user.has.role",null, Locale.ENGLISH));
         user.get().getRoles().add(roleFound);
         userRepository.save(user.get());
     }
     public void updateRoleToUser(Long id, String newRoleName){
         Optional<UserEntity> user = Optional.ofNullable(userRepository.findById(id).orElseThrow(()-> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH))));
-        Role roleNew = Optional.ofNullable(roleRepository.findByName(newRoleName)).orElseThrow(()-> new NotFoundException(messageSource.getMessage("role.not.found",null, Locale.ENGLISH)));
+        Role roleNew = Optional.ofNullable(roleRepository.findByName(newRoleName)).orElseThrow(()-> new NotFoundException(messageSource.getMessage("role.name.not.found",new Object[]{newRoleName}, Locale.ENGLISH)));
         if(user.get().getRoles().stream().anyMatch(role -> role.equals(roleNew))) throw new BadRequestException(messageSource.getMessage("user.has.that.role", new Object[]{newRoleName}, Locale.ENGLISH));
         user.get().getRoles().add(roleNew);
         user.get().getRoles().stream().forEach((r) -> {if(!roleNew.equals(r)) user.get().getRoles().remove(r);});
