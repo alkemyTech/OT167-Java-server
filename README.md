@@ -227,8 +227,7 @@ Path:
 Body:
 
     {   
-        "email": "roberT@mail.com",
-        "password": "password123"     
+      "roleName": "ROLE_ADMIN"   
     }
 
 
