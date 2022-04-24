@@ -88,7 +88,6 @@ public class UserAuthController {
         userDetailsCustomService.updateRoleToUser(id, roleName.getRoleName());
         return ResponseEntity.status(HttpStatus.OK).body(messageResponse.messageOk(messageSource.getMessage("user.has.update.role",new Object[]{roleName.getRoleName()}, Locale.ENGLISH), HttpStatus.CREATED.value(), request));
     }
-
     @GetMapping("/accessdenied")
     public ResponseEntity<MessageInfo> accesDenied (WebRequest request){
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageResponse.messageOk(messageSource.getMessage("user.not.access",null, Locale.ENGLISH), HttpStatus.FORBIDDEN.value(), request));
