@@ -1,4 +1,4 @@
-# GRURO 167 -  Java - Spring Boot (Proyecto: API REST) 🚀
+# GRUPO 167 -  Java - Spring Boot (Proyecto: API REST) 🚀
 
 ### Objetivo
 
