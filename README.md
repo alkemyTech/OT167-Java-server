@@ -22,7 +22,7 @@ Desarrollar una API como parte de un equipo de desarrolladores, deberás desarro
 ## Requerimientos técnicos
 ## 1. A. Modelado de Base de Datos
 
-Además de las caracteristicas descriptas a continucación las entidades cuentan con columnas referidas a: sofdelete, modifiedDate y createDate.
+Además de las caracteristicas descriptas a continucación las entidades cuentan con columnas referidas a: softDelete, modifiedDate y createDate.
 
 **UserEntity:**  deberá tener:
     
