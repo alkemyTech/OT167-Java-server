@@ -95,5 +95,6 @@ public class UserAuthController {
 }
 @Data
 class AddRoleToUserForm{
+    @Schema(name = "roleName", example = "ROLE_ADMIN", type = "String", description = "must be a name of a rol save into the data base")
     private String roleName;
 }
