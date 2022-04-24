@@ -15,6 +15,7 @@ Desarrollar una API como parte de un equipo de desarrolladores, deberás desarro
 - 👉 Paginación.
 - 👉 Utilización de DTOs (creación manual).
 - 👉 Testing (JUnit y Mockito).
+- 👉 Api documentada a través de Swagger.
 
 ---------------------------
 
