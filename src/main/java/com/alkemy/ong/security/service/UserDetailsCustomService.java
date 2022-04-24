@@ -1,13 +1,11 @@
 package com.alkemy.ong.security.service;
 import com.alkemy.ong.dto.RoleDto;
 import com.alkemy.ong.dto.UserDto;
-import com.alkemy.ong.exception.BadRequestException;
+import com.alkemy.ong.exception.*;
 import com.alkemy.ong.mapper.RoleMapper;
 import com.alkemy.ong.model.Role;
 import com.alkemy.ong.repository.RoleRepository;
 import com.alkemy.ong.security.model.UserEntity;
-import com.alkemy.ong.exception.DataAlreadyExistException;
-import com.alkemy.ong.exception.NotFoundException;
 import com.alkemy.ong.repository.UserRepository;
 import com.alkemy.ong.security.dto.UserLoginRequest;
 import com.alkemy.ong.security.dto.UserRegisterRequest;
@@ -17,13 +15,10 @@ import com.alkemy.ong.service.UserService;
 import java.util.Collection;
 
 import com.alkemy.ong.service.impl.EmailServiceImpl;
-import com.amazonaws.services.cognitoidentity.model.RoleMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,7 +33,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
-import org.springframework.http.ResponseEntity;
 
 @Service
 public class UserDetailsCustomService implements UserDetailsService {

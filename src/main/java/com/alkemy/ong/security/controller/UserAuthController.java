@@ -74,6 +74,10 @@ public class UserAuthController {
         userDetailsCustomService.updateRoleToUser(id, roleName.getRoleName());
         return ResponseEntity.status(HttpStatus.OK).body(messageResponse.messageOk("user update a new role how " + roleName.getRoleName(), HttpStatus.CREATED.value(), request));
     }
+    @GetMapping("/accessdenied")
+    public ResponseEntity<MessageInfo> accesDenied (WebRequest request){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageResponse.messageOk("Cannot access the resource. Login first.", HttpStatus.FORBIDDEN.value(), request));
+    }
 }
 @Data
 class AddRoleToUserForm{
