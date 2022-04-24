@@ -1,4 +1,4 @@
-# GURO 167 -  Java - Spring Boot (Proyecto: API REST) 🚀
+# GRURO 167 -  Java - Spring Boot (Proyecto: API REST) 🚀
 
 ### Objetivo
 
