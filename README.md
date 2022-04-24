@@ -129,7 +129,7 @@ Además de las caracteristicas descriptas a continucación las entidades cuentan
 - victor@mail.com
 - facundo@mail.com
 - andres@mail.com
-- pablo@mail. com
+- pablo@mail.com
 - mickaela@mail.com
 - agustin@mail.com
 - luz@mail.com
