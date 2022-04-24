@@ -28,6 +28,7 @@ import org.springframework.web.context.request.WebRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Locale;
 
 @Tag(name = "Authentication")
 @Controller
@@ -35,6 +36,8 @@ import java.io.IOException;
 public class UserAuthController {
     @Autowired
     private MessageResponse messageResponse;
+    @Autowired
+    private MessageSource messageSource;
     @Autowired
     private UserDetailsCustomService userDetailsCustomService;
 
@@ -67,16 +70,16 @@ public class UserAuthController {
     @PostMapping("/addRole/{id}")
     public ResponseEntity<MessageInfo> addRoleUser(@PathVariable Long id, @RequestBody AddRoleToUserForm roleName, WebRequest request) {
         userDetailsCustomService.addRoleToUser(id, roleName.getRoleName());
-        return ResponseEntity.status(HttpStatus.OK).body(messageResponse.messageOk("user add a new role how " + roleName.getRoleName(), HttpStatus.OK.value(), request));
+        return ResponseEntity.status(HttpStatus.OK).body(messageResponse.messageOk(messageSource.getMessage("user.has.new.rol",new Object[]{roleName.getRoleName()}, Locale.ENGLISH), HttpStatus.OK.value(), request));
     }
     @PostMapping("/updateRolUser/{id}")
     public ResponseEntity<MessageInfo> updateRoleUser(@PathVariable Long id, @RequestBody AddRoleToUserForm roleName, WebRequest request) {
         userDetailsCustomService.updateRoleToUser(id, roleName.getRoleName());
-        return ResponseEntity.status(HttpStatus.OK).body(messageResponse.messageOk("user update a new role how " + roleName.getRoleName(), HttpStatus.CREATED.value(), request));
+        return ResponseEntity.status(HttpStatus.OK).body(messageResponse.messageOk(messageSource.getMessage("user.has.update.role",new Object[]{roleName.getRoleName()}, Locale.ENGLISH), HttpStatus.CREATED.value(), request));
     }
     @GetMapping("/accessdenied")
     public ResponseEntity<MessageInfo> accesDenied (WebRequest request){
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageResponse.messageOk("Cannot access the resource. Login first.", HttpStatus.FORBIDDEN.value(), request));
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(messageResponse.messageOk(messageSource.getMessage("user.not.access",null, Locale.ENGLISH), HttpStatus.FORBIDDEN.value(), request));
     }
 }
 @Data
