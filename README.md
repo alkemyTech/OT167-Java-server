@@ -19,6 +19,13 @@ Desarrollar una API como parte de un equipo de desarrolladores, deberás desarro
 
 ---------------------------
 
+### Para ejecutar la API 👇🏻
+* Descargar el proyecto o clonarlo.
+* Abra la consola y vaya a la carpeta del proyecto.
+* Ejecute estos comandos: ``` mvn clean install ```  y luego ``` mvn spring-boot:run ``` .
+* Abra su navegador e ingrese a http://localhost:8080/swagger-ui/index.html#/ .
+* Puede ver la documentación de la API e interactuar con los endpoints.
+
 
 ## Requerimientos técnicos
 ## 1. A. Modelado de Base de Datos
@@ -153,31 +160,36 @@ Además de las caracteristicas descriptas a continucación las entidades cuentan
 ## 1. C. Role Admin
 ### PATHS habilitados solo para usuarios con ROLE_ADMIN, los demás paths que no están expresamente incluidos en la lista pueden ser accedidos por usuarios con ROLE_USER.
 
-| ROLE_ADMIN                                     |
-|------------------------------------------------|
-| http://localhost:8080//auth/updateRolUser/{id} |
-| http://localhost:8080/activities               |
-| http://localhost:8080/activities/{id}          |
-| http://localhost:8080/categories               |
-| http://localhost:8080/news                     |
-| http://localhost:8080/slides                   |
-| http://localhost:8080/testimonials             |
-| http://localhost:8080/activities               |
-| http://localhost:8080/categories/{id}          |
-| http://localhost:8080/news/{id}                |
-| http://localhost:8080/organization/public      |
-| http://localhost:8080/slides/{id}              |
-| http://localhost:8080/testimonials/{id}        |
-| http://localhost:8080/users/{id}               |
-| http://localhost:8080/categories               |
-| http://localhost:8080/categories/{id}          |
-| http://localhost:8080/members                  |
-| http://localhost:8080/slides                   |
-| http://localhost:8080/slides/{id}              |
-| http://localhost:8080/categories/{id}          |
-| http://localhost:8080/members/{id}             |
-| http://localhost:8080/news/{id}                |
-| http://localhost:8080/slides/{id}              |
+| METHOD | ROLE_ADMIN                                    |
+|--------|-----------------------------------------------|
+| POST   | http://localhost:8080/auth/addRole/{id}       |
+| POST   | http://localhost:8080/auth/updateRolUser/{id} |
+| POST   | http://localhost:8080/activities              |
+| PUT    | http://localhost:8080/activities/{id}         |
+| POST   | http://localhost:8080/categories              |
+| POST   | http://localhost:8080/news                    |
+| POST   | http://localhost:8080/slides                  |
+| POST   | http://localhost:8080/testimonials            |
+| PUT    | http://localhost:8080/activities              |
+| PUT    | http://localhost:8080/categories/{id}         |
+| PUT    | http://localhost:8080/news/{id}               |
+| PUT    | http://localhost:8080/organization/public     |
+| PUT    | http://localhost:8080/slides/{id}             |
+| PUT    | http://localhost:8080/testimonials/{id}       |
+| PUT    | http://localhost:8080/users/{id}              |
+| GET    | http://localhost:8080/categories              |
+| GET    | http://localhost:8080/categories/{id}         |
+| GET    | http://localhost:8080/comments                |
+| PUT    | http://localhost:8080/comments/{id}           |
+| GET    | http://localhost:8080/contacts                |
+| GET    | http://localhost:8080/members                 |
+| GET    | http://localhost:8080/slides                  |
+| GET    | http://localhost:8080/slides/{id}             |
+| DELETE | http://localhost:8080/categories/{id}         |
+| DELETE | http://localhost:8080/members/{id}            |
+| DELETE | http://localhost:8080/news/{id}               |
+| DELETE | http://localhost:8080/slides/{id}             |
+| DELETE | http://localhost:8080/testimonials/{id}       |
 
 
 
@@ -750,4 +762,21 @@ Ejemplo:
 
 
 
+## El equipo de Desarrollo 🖥️
+
+* **Agustín García** - [LinkedIn](https://www.linkedin.com/in/agustin-garcia-1303191b1 ) - [GitHub](https://github.com/agusgar409)
+* **Andrés Rodriguez** - [LinkedIn](https://www.linkedin.com/in/andres-rodriguez-60a166208/) - [GitHub](https://github.com/AndrRod)
+* **Facundo Villalba** - [LinkedIn](https://www.linkedin.com/in/facundo-villalba-a7909238/) - [GitHub](https://github.com/facuvillalba)
+* **Luciano Lattante** - [LinkedIn](https://www.linkedin.com/in/luciano-lattante) - [GitHub](https://github.com/lucianoLattante)
+* **María Luz Brito** - [LinkedIn](https://www.linkedin.com/in/maria-luz-brito/) - [GitHub](https://github.com/britomluz)
+* **Mickaela Tarazaga** - [LinkedIn](https://www.linkedin.com/in/mickaelatarazaga/) - [GitHub](https://www.linkedin.com/in/mickaelatarazaga/)
+* **Pablo Ibañez** - [LinkedIn](https://www.linkedin.com/in/pablo-ibañez-442046218/ ) - [GitHub](https://github.com/kbza91)
+* **Victor Salvatierra** - [LinkedIn](https://www.linkedin.com/in/victor-salvatierra-910a88211/) - [GitHub](https://github.com/salvatierra1)
+
+## Nuestro Mentor 🤓
+* **Yamil Amado Selene** - [LinkedIn](https://www.linkedin.com/in/yamil-amado-selene/)
+
+## ESTE PROYECTO ES PARTE DE LA ACELERACIÓN DE [ALKEMY](https://www.alkemy.org/) ❤️
+
+* Nuestro agradecimiento para ellos que brindaron esta oportunidad y nos facilitan el camino para ingresar al mundo laboral IT.
 
