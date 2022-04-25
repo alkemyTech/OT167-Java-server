@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -23,7 +24,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
+@Tag(name = "News")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/news")
@@ -40,7 +41,7 @@ public class NewsController {
     @Operation(summary = "Save a New", description = "Create a new with filling the params of the body and return a success or error message. \n" +
             "The required fields are: name,content and image.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = {
+            @ApiResponse(responseCode = "201", description = "CREATED", content = {
                     @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = MessagesInfo.class),

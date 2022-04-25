@@ -2,6 +2,7 @@ package com.alkemy.ong.controller;
 
 import com.alkemy.ong.dto.TestimonialDto;
 import com.alkemy.ong.exception.MessageInfo;
+import com.alkemy.ong.exception.MessagePag;
 import com.alkemy.ong.exception.MessagesInfo;
 import com.alkemy.ong.service.TestimonialService;
 import java.util.HashMap;
@@ -128,6 +129,11 @@ public class TestimonialController {
         return ResponseEntity.status(HttpStatus.OK).body(message);
     }
 
+    @Operation(summary = "Get all News")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully get all news",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MessagePag.class))}),
+            @ApiResponse(responseCode = "403", description = "You do not have the permissions to enter", content = @Content)                     
+    })
     @GetMapping
     public ResponseEntity<?> findAllNewsPag(@RequestParam(value = "page", required = true) String page, WebRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(testimonialService.findAllPag(Integer.parseInt(page), request));

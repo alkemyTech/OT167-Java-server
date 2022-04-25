@@ -62,8 +62,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);}
     @Override
     public Optional<UserEntity> findUserById(Long id) {
-        return Optional.ofNullable(this.userRepository.findById(id))
-                .orElseThrow(() -> new NotFoundException(messageSource.getMessage("user.not.found",null, Locale.ENGLISH)));}
+        if (userRepository.findById(id).isEmpty())throw new NotFoundException(messageSource.getMessage("user.not.found", null, Locale.ENGLISH));
+        return userRepository.findById(id);
+    }
     @Override
     public Optional<UserEntity> findById(Long id) {
         return userRepository.findById(id);}
