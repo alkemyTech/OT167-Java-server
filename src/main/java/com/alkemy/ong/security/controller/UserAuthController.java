@@ -5,6 +5,7 @@ import com.alkemy.ong.exception.DataAlreadyExistException;
 import com.alkemy.ong.exception.MessageInfo;
 import com.alkemy.ong.exception.MessageResponse;
 import com.alkemy.ong.security.dto.UserLoginRequest;
+import com.alkemy.ong.security.dto.UserLoginResponse;
 import com.alkemy.ong.security.dto.UserRegisterRequest;
 import com.alkemy.ong.security.dto.UserRegisterResponse;
 import com.alkemy.ong.security.service.UserDetailsCustomService;
@@ -44,16 +45,21 @@ public class UserAuthController {
     private UserDetailsCustomService userDetailsCustomService;
 
 
+    @Operation(summary = "User Data Fetching")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Succesfull User Data Fetching",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))}),
+            @ApiResponse(responseCode = "403", description = "Unsuccessful User Data Fetching, you do not have the permissions to enter", content = @Content)
+    })
     @GetMapping("/me")
-    public ResponseEntity<?> userData(HttpServletRequest request) {
+    public ResponseEntity<UserDto> userData(HttpServletRequest request) {
         
         return new ResponseEntity<>(userDetailsCustomService.userDataFetching(request), HttpStatus.ACCEPTED);
     }
 
-    @Operation(description = "User login")
+    @Operation(summary = "User login")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Succesfull login",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class))}),
-            @ApiResponse(responseCode = "403", description = "Unsuccesfull login", content = @Content)
+            @ApiResponse(responseCode = "202", description = "Succesfull login",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserLoginResponse.class))}),
+            @ApiResponse(responseCode = "403", description = "Unsuccesfull login, you do not have the permissions to enter", content = @Content)
     })
     @PostMapping("/login")
     public ResponseEntity<UserRegisterResponse> logIn(@Valid @RequestBody UserLoginRequest userDto){
@@ -61,10 +67,10 @@ public class UserAuthController {
         return new ResponseEntity<>(userDetailsCustomService.logIn(userDto), HttpStatus.ACCEPTED);
     }
 
-    @Operation(description = "Register a new user")
+    @Operation(summary = "Register a new user")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Registration successful",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserRegisterResponse.class))}),
-            @ApiResponse(responseCode = "400", description = "Email already in use by another user", content = @Content)
+            @ApiResponse(responseCode = "201", description = "Registration successful",content = { @Content(mediaType = "application/json", schema = @Schema(implementation = UserRegisterResponse.class))}),
+            @ApiResponse(responseCode = "406", description = "Email already in use by another user", content = @Content)
     })
     @PostMapping("/register")
     public ResponseEntity<UserRegisterResponse> registerUser(@Valid @RequestBody UserRegisterRequest userReq) throws DataAlreadyExistException, IOException {

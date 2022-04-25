@@ -11,15 +11,15 @@ import lombok.*;
 @NoArgsConstructor
 public class UserRegisterRequest {
 
-    @Schema(name = "firstName", example = "Mickaela", type = "String")
+    @Schema(name = "firstName", example = "Mariana", type = "String")
     @NotBlank(message = "Name is mandatory.")
     private String firstName;
 
-    @Schema(name = "lastName", example = "Tarazaga", type = "String")
+    @Schema(name = "lastName", example = "López", type = "String")
     @NotBlank(message = "Last name is mandatory.")
     private String lastName;
     
-    @Schema(name = "email", example = "mickaela@mail.com", type = "String")
+    @Schema(name = "email", example = "marianalopez@mail.com", type = "String")
     @NotBlank(message = "Email is mandatory.")
     @Email(message = "Email should be valid.", regexp = "[A-Za-z0-9._%-+]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}")
     private String email;

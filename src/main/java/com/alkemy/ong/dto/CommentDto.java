@@ -13,8 +13,8 @@ public class CommentDto {
     private Long id;
     @Schema(name = "body", example = "i love the ONG!", type = "String", description = "description: comment from user about the ONG")
     private String body;
-    @Schema(name = "userId", example = "3", type = "Long", description = "description: id of user linked to this comment")
+    @Schema(name = "userId", example = "1", type = "Long", description = "description: id of user linked to this comment")
     private Long user_id;
-    @Schema(name = "newsId", example = "7", type = "Long", description = "description: id of news linked to this comment")
+    @Schema(name = "newsId", example = "1", type = "Long", description = "description: id of news linked to this comment")
     private Long news_id;
 }

@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -26,7 +27,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
 import java.util.Locale;
-
+@Tag(name = "Member")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
@@ -44,7 +45,7 @@ public class MemberController {
     @Operation(summary = "create a new member", description = "Create a member with filling the params of the body and return a success or error message. \n" +
             "The required fields are: name and image. The name field can only be filled with non-numeric characters.")
     @ApiResponses(value = {
-    @ApiResponse(responseCode = "200", description = "Member was created",
+    @ApiResponse(responseCode = "201", description = "Member was created",
             content = { @Content(mediaType = "application/json",
                     schema = @Schema(implementation = MessageInfo.class),
                     array = @ArraySchema(schema = @Schema(implementation = String.class)),
