@@ -66,4 +66,8 @@ public class SwaggerConstants {
     public static final String MODEL_MEMBER_CREATED = "{\n" + "  \"message\": \"The member was created successfully.\",\n" + "  \"status_code\": 401,\n" + "  \"path\": \"/members\"\n" + "}";
     public static final String MODEL_MEMBER_DELETE = "{\n" + "  \"message\": \"The member was deleted.\",\n" + "  \"status_code\": 200,\n" + "  \"path\": \"/members\"\n" + "}";
 
+    //-------------------{ user }----------------------------
+    public static final String MODEL_ROL_ERROR_404 = "{\n" + "  \"message\": \"The user already has the ROLE_USER role!!.\",\n" + "  \"status_code\": 400,\n" + "  \"path\": \"/auth/updateRolUser/22\"\n" + "}";
+    public static final String MODEL_ROL_UPDATE = "{\n" + "  \"message\": \"User update a new role how ROLE_ADMIN.\",\n" + "  \"status_code\": 200,\n" + "  \"path\": \"/auth/updateRolUser/22\"\n" + "}";
+
 }

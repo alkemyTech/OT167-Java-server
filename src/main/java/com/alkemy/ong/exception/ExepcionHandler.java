@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class ExepcionHandler {
     @Autowired
     private MessageSource messageSource;
+
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<MessagesInfo> handleValidationError(HttpServletRequest request, ConstraintViolationException exception) {
         Map<String, String> transformedError = new HashMap<>();
@@ -33,6 +35,7 @@ public class ExepcionHandler {
         MessagesInfo errorInfo = new MessagesInfo(transformedError, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<MessagesInfo> methodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
         Map<String, String> transformedError = new HashMap<>();
@@ -41,24 +44,28 @@ public class ExepcionHandler {
         MessagesInfo errorInfo = new MessagesInfo(transformedError, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})
     public ResponseEntity<MessageInfo> metodArgumentEypeExcept(HttpServletRequest request, MethodArgumentTypeMismatchException exception) {
         String message = exception.getMessage();
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<MessageInfo> notFoundExcept(HttpServletRequest request, NotFoundException exception) {
         String message = exception.getMessage();
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.NOT_FOUND.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<MessageInfo> badException(HttpServletRequest request, BadRequestException exception) {
         String message = exception.getMessage();
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler({NumberFormatException.class})
     public ResponseEntity<MessageInfo> numberFormatException(HttpServletRequest request) {
         String message = messageSource.getMessage
@@ -66,6 +73,7 @@ public class ExepcionHandler {
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler({HttpMessageNotReadableException.class})
     public ResponseEntity<MessageInfo> messageNotReadableException(HttpServletRequest request) {
         String message = messageSource.getMessage
@@ -73,12 +81,14 @@ public class ExepcionHandler {
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<MessageInfo> illegalArgExcept(HttpServletRequest request, IllegalArgumentException ex) {
         String message = ex.getMessage();
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler({NotFoundList.class})
     public ResponseEntity<MessageInfo> notFoundList(HttpServletRequest request, NotFoundList exception) {
         String message = exception.getMessage();
@@ -92,4 +102,13 @@ public class ExepcionHandler {
         MessageInfo errorInfo = new MessageInfo(message, HttpStatus.BAD_REQUEST.value(), request.getRequestURI());
         return new ResponseEntity<>(errorInfo, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    public ResponseEntity<MessageInfo> httpRequestMethodNotSupportedException(HttpServletRequest request) {
+        String message = messageSource.getMessage
+                ("user.method.not.access", null, Locale.ENGLISH);
+        MessageInfo errorInfo = new MessageInfo(message, HttpStatus.FORBIDDEN.value(), request.getRequestURI());
+        return new ResponseEntity<>(errorInfo, HttpStatus.FORBIDDEN);
+    }
+
 }

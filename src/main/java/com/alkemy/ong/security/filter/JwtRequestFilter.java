@@ -1,5 +1,6 @@
 package com.alkemy.ong.security.filter;
 
+import com.alkemy.ong.exception.BadRequestException;
 import com.alkemy.ong.security.service.JwtUtils;
 import com.alkemy.ong.security.service.UserDetailsCustomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
             jwt = authorizationHeader.substring(7);
-            username = jwtUtil.extractUsername(jwt);
+            try {
+                username = jwtUtil.extractUsername(jwt);
+            }catch (Exception e){
+                new BadRequestException(e.getMessage());
+            }
+
         }
 
         if (username !=null && SecurityContextHolder.getContext().getAuthentication() == null) {

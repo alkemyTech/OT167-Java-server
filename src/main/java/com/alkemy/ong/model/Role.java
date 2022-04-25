@@ -27,7 +27,7 @@ public class Role {
     @Getter @Setter
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     @Getter @Setter
     @NotNull(message = "name can't be null")
     private String name;
