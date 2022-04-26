@@ -105,8 +105,7 @@ public class MemberControllerTest {
         memberDto.setLinkedinUrl("linkedinUrl");
         memberDto.setImage("imageUrl");
         memberDto.setDescription("description");
-        memberDto.setCreationDate(null);
-        memberDto.setUpdateDate(null);
+
         memberDtoList.add(memberDto);
     }
 

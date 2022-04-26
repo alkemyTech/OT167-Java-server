@@ -55,6 +55,7 @@ public class UserMapper {
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setCreationDate(LocalDate.now());
+        user.setPhoto(userDto.getPhoto());
         user.setRoles(roleList);
 
         return user;

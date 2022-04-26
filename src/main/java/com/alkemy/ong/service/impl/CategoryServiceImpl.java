@@ -59,7 +59,6 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryDto save(CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption {
         Category categorySaved = null;
         Category entity = categoryMapper.categoryDto2Entity(categoryDto);
-        CategoryDto categoryResponse;
         try{
             if(categoryRepository.findByName(entity.getName()) == null){
                 this.validate(entity.getName());
