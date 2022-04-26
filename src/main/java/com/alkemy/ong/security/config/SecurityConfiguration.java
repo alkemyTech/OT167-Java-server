@@ -48,7 +48,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/login", "/auth/register", "/users/accessdenied").permitAll()
                 .antMatchers("/api/docs/**","/api/swagger-ui/**","/v3/api-docs/**","/swagger-ui/**").permitAll()
-                .antMatchers("/auth/addRole/{id}", "/auth/updateRolUser/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/activities").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/activities/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
@@ -77,8 +76,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/slides/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/testimonials/{id}").hasRole("ADMIN")
                 .anyRequest().authenticated()
-                .and().formLogin().loginPage("/auth/accessdenied")
-                .and().exceptionHandling().accessDeniedPage("/auth/accessdenied")
+                .and().formLogin().loginPage("/users/accessdenied")
+                .and().exceptionHandling().accessDeniedPage("/users/accessdenied")
                 .and().sessionManagement(). sessionCreationPolicy(STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
