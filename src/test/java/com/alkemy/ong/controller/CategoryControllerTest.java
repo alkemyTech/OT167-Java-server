@@ -157,7 +157,7 @@ public class CategoryControllerTest {
     void updateCategoryNotFound() throws Exception {
         Long id = 999L;
         categoryDto.setName("cualquiera");
-        when(categoryService.updateCategory(id, category)).thenThrow(new ParameterNotFoundException(""));
+        when(categoryService.updateCategory(id, categoryDto)).thenThrow(new ParameterNotFoundException(""));
         mockMvc.perform(put("/categories" + id))
                 .andExpect(status().isNotFound());
     }
@@ -194,7 +194,7 @@ public class CategoryControllerTest {
     @Test
     void deleteCategoryForbidden() throws Exception {
         Long id = 1L;
-        mockMvc.perform(MockMvcRequestBuilders.delete("/categories/{id}", id)
+        mockMvc.perform(delete("/categories/{id}", id)
                         .contentType(APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isForbidden());

@@ -13,7 +13,7 @@ public interface CategoryService {
     Optional<Category> findById(Long id);
     CategoryDto save(CategoryDto categoryDto) throws DataAlreadyExistException, IncorrectPatternExeption;
     void deleteCategoryById(Long id);
-    Category updateCategory(Long id, Category category);
+    Category updateCategory(Long id, CategoryDto category)throws IncorrectPatternExeption;
     List<String> getAllCategoriesByName();
     MessagePag findAllPag(int page, WebRequest request);
 }

@@ -118,13 +118,13 @@ public class CategoryController {
                             examples = @ExampleObject(name = "Message of error 404", summary = "404 from the server, Category not found.", description = "The ID doesn't exist.", value = SwaggerConstants.MODEL_ERROR_404))})
     })
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCategory(@PathVariable Long id,@RequestBody Category category){
+    public ResponseEntity<?> updateCategory(@PathVariable Long id,@RequestBody CategoryDto categoryDto){
         try{
-            Category categoryUpdated= categoryService.updateCategory(id,category);
+            Category categoryUpdated= categoryService.updateCategory(id,categoryDto);
             CategoryDto categoryDtoResponse = categoryMapper.categoryEntity2Dto(categoryUpdated);
             return ResponseEntity.ok(categoryDtoResponse);
-        }catch (NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(category);
+        }catch (NotFoundException | IncorrectPatternExeption e){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(categoryDto);
         }
     }
 

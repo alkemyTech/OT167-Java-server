@@ -36,8 +36,6 @@ public class CategoryServiceImpl implements CategoryService {
     private static final int SIZE_PAG_10 = 10;
     @Autowired
     private PaginationMessage paginationMessage;
-    @Autowired
-    private WebRequest request;
 
     private List<Category> getALLCategories(){
         return categoryRepository.findAll();
@@ -76,13 +74,14 @@ public class CategoryServiceImpl implements CategoryService {
         }
         return categoryRepository.findById(id);
     }
-    public Category updateCategory(Long id, Category category ){
-        Category categoryExist=categoryRepository.findById(id).get();
+    public Category updateCategory(Long id, CategoryDto categoryDto ) throws IncorrectPatternExeption {
+        Category categoryExist = categoryRepository.findById(id).get();
+        Category categoryEdited;
 
         if (categoryExist != null){
-            category.setIdCategories(categoryExist.getIdCategories());
-
-            return categoryRepository.save(category);
+            categoryDto.setId(categoryExist.getIdCategories());
+            categoryEdited = categoryMapper.categoryDto2Entity(categoryDto);
+            return categoryRepository.save(categoryEdited);
         }else{
             throw new NotFoundException(messageSource.getMessage("category.not.found", null,Locale.ENGLISH));
         }
